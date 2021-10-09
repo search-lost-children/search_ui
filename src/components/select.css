@@ -1,0 +1,8 @@
+select {
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: beige;
+}
+select:hover {
+    background-color: #a5a58d;
+}
