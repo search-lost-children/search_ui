@@ -3,7 +3,7 @@ import './checkbox.css'
 function CheckBox(props) {
 
     function onClick() {
-        props.onCheckBoxClick()
+        props.onChange()
     }
 
     return (

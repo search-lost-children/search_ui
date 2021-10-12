@@ -3,11 +3,11 @@ import './select.css'
 function Select(props) {
     function onChange(event) {
         const element = event.target.value;
-        props.onSelectChange(element)
+        props.onChange(element)
     }
     const options = props.options || [];
-    const makeOptions = function(name) {
-        return <option key={name} value={name}>{name}</option>;
+    const makeOptions = function(el) {
+        return <option key={el.value} value={el.value}>{el.label}</option>;
     };
     return (
         <div className="selectForm">

@@ -2,8 +2,8 @@ import './input.css'
 
 function Input(props) {
     function onChange(event) {
-        const element = event.target.value;
-        props.onInputChange(element)
+        const value = event.target.value;
+        props.onChange(value)
     }
 
     return (
