@@ -5,9 +5,9 @@ function Select(props) {
         const element = event.target.value;
         props.onSelectChange(element)
     }
-    const {options} = props;
+    const options = props.options || [];
     const makeOptions = function(name) {
-        return <option>{name}</option>;
+        return <option key={name} value={name}>{name}</option>;
     };
     return (
         <div className="selectForm">
