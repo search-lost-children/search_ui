@@ -7,7 +7,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import DocumentationPage from "./pages/Documentation";
+import DocumentationPage from "./pages/documentation/Documentation";
 
 function App() {
   return (

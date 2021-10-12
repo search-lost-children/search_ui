@@ -3,7 +3,7 @@ import './textarea.css'
 function TextArea(props) {
     function onChange(event) {
         const element = event.target.value;
-        props.onTextAreaChange(element)
+        props.onChange(element)
     }
 
     return (
