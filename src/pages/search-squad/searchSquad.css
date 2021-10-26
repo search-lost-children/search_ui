@@ -1,0 +1,42 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.wrapper-inputs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.all-wrapper {
+    margin: 40px;
+}
+
+.save {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.search-header {
+    border: 1px solid black;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.left-side {
+    width: 36%;
+    display: flex;
+    justify-content: space-between;
+}

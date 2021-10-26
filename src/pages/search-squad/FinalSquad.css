@@ -1,0 +1,26 @@
+
+.wrapper {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: left;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+
+.final-table {
+    margin: 0;
+}
+
+.deleteBtn {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}

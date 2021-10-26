@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from "react";
 
@@ -8,6 +7,7 @@ import {
   Route
 } from "react-router-dom";
 import DocumentationPage from "./pages/documentation/Documentation";
+import SearchSquad from "./pages/search-squad/SearchSquad";
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
       <Router>
         <Switch>
           <Route path={'/documentation'} component={DocumentationPage}/>
+          <Route path={'/search-squad'} component={SearchSquad}/>
         </Switch>
       </Router>
     </div>
