@@ -6,6 +6,8 @@ import Radio from "../../components/radio/radio";
 import TextArea from "../../components/textarea/textarea";
 import Select from "../../components/select/select";
 import CheckBox from "../../components/checkbox/checkbox";
+import GridTable from '@nadavshaar/react-grid-table';
+
 
 function DocumentationPage () {
     const [inputVal, setInputVal] = useState('');
@@ -14,6 +16,70 @@ function DocumentationPage () {
     const [selectVal, setSelectVal] = useState('');
     const [checkboxVal, setCheckboxVal] = useState(false);
 
+
+    const Username = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+        return (
+            <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
+                <img src={data.avatar} alt="user avatar" />
+                <span className='rgt-text-truncate' style={{marginLeft: 10}}>{value}</span>
+            </div>
+        )
+    }
+    const columns = [
+        {
+            id: 1,
+            field: 'username',
+            label: 'Username',
+            cellRenderer: Username,
+        },
+        {
+            id: 2,
+            field: 'gender',
+            label: 'Gender',
+        },
+        {
+            id: 3,
+            field: 'last_visited',
+            label: 'Last Visited',
+            sort: ({a, b, isAscending}) => {
+                let aa = a.split('/').reverse().join(),
+                    bb = b.split('/').reverse().join();
+                return aa < bb ? isAscending ? -1 : 1 : (aa > bb ? isAscending ? 1 : -1 : 0);
+            }
+        },
+        {
+            id: 4,
+            field: 'test',
+            label: 'Score',
+            getValue: ({value, column}) => value.x + value.y
+        }
+    ];
+    const rows = [
+        {
+            "id": 1,
+            "username": "wotham0",
+            "gender": "Male",
+            "last_visited": "12/08/2019",
+            "test": {"x": 1, "y": 2},
+            "avatar":"https://robohash.org/atquenihillaboriosam.bmp?size=32x32&set=set1"
+        },
+        {
+            "id": 2,
+            "username": "dbraddon2",
+            "gender": "Female",
+            "last_visited": "16/07/2018",
+            "test": {"x": 3, "y": 4},
+            "avatar":"https://robohash.org/etsedex.bmp?size=32x32&set=set1"
+        },
+        {
+            "id": 3,
+            "username": "dridett3",
+            "gender": "Male",
+            "last_visited": "20/11/2016",
+            "test": {"x": 5, "y": 8},
+            "avatar":"https://robohash.org/inimpeditquam.bmp?size=32x32&set=set1"
+        }
+    ];
     return (<div className={"documentationPage"}>
         <div>
             <h3>Input</h3>
@@ -104,6 +170,14 @@ function DocumentationPage () {
                 </code>
             </pre>
             <CheckBox name={'CheckBox'} checked={checkboxVal} label={'CheckBox'} onChange={(val)=> {setCheckboxVal(val)}}></CheckBox>
+        </div>
+
+        <div>
+            <h3>Table</h3>
+            <pre>
+
+            </pre>
+            <GridTable columns={columns} rows={rows}></GridTable>
         </div>
     </div>);
 }
