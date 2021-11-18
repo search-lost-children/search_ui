@@ -8,6 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import DocumentationPage from "./pages/documentation/Documentation";
+import Coordinators from "./pages/Coordinators";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Router>
         <Switch>
           <Route path={'/documentation'} component={DocumentationPage}/>
+          <Route path={'/searches/:id/coordinators/'} component={Coordinators}/>
         </Switch>
       </Router>
     </div>
