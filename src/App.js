@@ -8,6 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import DocumentationPage from "./pages/documentation/Documentation";
+import NewTask from './pages/new_task/NewTask';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Router>
         <Switch>
           <Route path={'/documentation'} component={DocumentationPage}/>
+          <Route  path={'/new_task'} component={NewTask}/>
         </Switch>
       </Router>
     </div>
