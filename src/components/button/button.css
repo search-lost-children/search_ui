@@ -1,10 +1,16 @@
 .button {
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
-    background-color: beige;
+    background-color: rgba(245, 245, 230, 0.57);
     box-sizing: border-box;
+    height: 30px;
 }
 .button:hover {
-    background-color: #a5a58d;
+    background-color: rgba(143, 231, 219, 0.83);
+}
+
+.buttonForm {
+    display: inline-block;
+    height: 30px;
 }
