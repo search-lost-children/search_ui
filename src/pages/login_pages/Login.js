@@ -28,6 +28,7 @@ function Login_page (){
         } else {
             alert(' verification good')
             axios.post('api/v1/users', user);
+            history.push('/')
 
         }
     }

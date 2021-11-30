@@ -12,6 +12,7 @@ import DocumentationPage from "./pages/documentation/Documentation";
 import Login_page from './pages/login_pages/Login'
 import Login_organization from "./pages/login_pages/login_organization";
 import Registration_page from "./pages/login_pages/registration_page";
+import Registration_error from "./pages/login_pages/registration_error";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route exact path={'/login_page'} component={Login_page}/>
           <Route exact path={'/login_page/organizations'} component={Login_organization}/>
           <Route exact path={'/registration_page'} component={Registration_page}/>
+          <Route exact path={'/registration_error'} component={Registration_error}/>
         </Switch>
       </Router>
     </div>
