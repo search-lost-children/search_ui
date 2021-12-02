@@ -69,7 +69,12 @@ function Coordinators() {
         {id: '777', firstName: 'James', lastName:'Raynor'},
         {id: '122', firstName: 'Sara', lastName:'Kerrigan'},
         {id: '364', firstName: 'Tychus', lastName:'Findly'}]
-    let lostNNName = "Terra Nova"
+    let lostNNName = {
+        id: '56735',
+        date: '17.10.2011',
+        firstName: 'Terra',
+        lastName: 'Nova'
+    }
     const columns = [
         {
             id: 1,
@@ -112,7 +117,7 @@ function Coordinators() {
                 setParticipantsVal(idksomevar1)
             })
         getCoordinators()
-        axios.get('http://localhost:3000/api/v1/searches/:id/')
+        axios.get(`http://localhost:3000/api/v1/searches/${id}/`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
                 setLostName(lostNNName)
