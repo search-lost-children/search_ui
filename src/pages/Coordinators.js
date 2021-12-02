@@ -202,14 +202,6 @@ function Coordinators() {
                     }}
 
 
-
-
-
-                        {
-
-                        id: selectVal
-                    }
-
                     value={"Add"}>
                 </Button>
                 <GridTable columns={columns} rows={tableRows}></GridTable>
