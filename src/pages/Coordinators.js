@@ -24,20 +24,17 @@ function Coordinators() {
     const [participantsVal, setParticipantsVal] = useState([])
     const [coordinatorsVal, setCoordinatorsVal] = useState([])
 
+    const id = match.params.id
+
     function getCoordinators(){
-        axios.get('http://localhost:3000/api/v1/searches/:id/coordinators')
+        axios.get(`http://localhost:3000/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
                 setCoordinatorsVal(idksomevar)
             })
             .catch(function (error) {
                 setCoordinatorsVal(idksomevar)
-
-            })
-            .then(function () {
-                // always executed
-            });
-    }
+            })}
 
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
@@ -53,24 +50,18 @@ function Coordinators() {
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
                 <Button
                     onClick={() => {
-                        axios.delete(`http://localhost:3000/api/v1/searches/:id/coordinators/${data.id}`)
+                        axios.delete(`http://localhost:3000/api/v1/searches/${id}/coordinators/${data.id}`)
                         .then(function (response) {
                             getCoordinators()
                         })
                         .catch(function (error) {
-
-                        })
-                        .then(function () {
-                            // always executed
-                        });}}
+                        })}}
                     value = {"Удалить"}
                 >
                 </Button>
             </div>
         )
     }
-
-
     let idksomevar = [
         {id: '777', firstName: 'James', lastName:'Raynor'},
         {id: '122', firstName: 'Sara', lastName:'Kerrigan'}]
@@ -112,7 +103,7 @@ function Coordinators() {
     ];
 
     function postData(firstName, SecondName){
-        axios.post('/api/v1/searches/:id/coordinators', {
+        axios.post(`/api/v1/searches/${id}/coordinators`, {
 
         })
             .tahen(function (response) {
@@ -123,7 +114,7 @@ function Coordinators() {
             });}
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/v1/searches/:id/participants')
+        axios.get(`http://localhost:3000/api/v1/searches/${id}/participants`)
             .then(function (response) {
                 // setParticipantsVal(response.data)
                 setParticipantsVal(idksomevar1)
@@ -147,7 +138,7 @@ function Coordinators() {
             .then(function () {
                 // always executed
             });
-        axios.get('http://localhost:3000/api/v1/searches/:id/tableRows')
+        axios.get(`http://localhost:3000/api/v1/searches/${id}/tableRows`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
                 setTableRows(rows)
@@ -178,9 +169,8 @@ function Coordinators() {
     }
 
     let selectOptions = filtering()
-    debugger
     return (
-        <div className="?????????????????????????????????????">
+        <div>
             <h1> Координаторы поиска {lostName} </h1>
             <div>
                 <Select
@@ -190,7 +180,7 @@ function Coordinators() {
                     onChange={(val)=>{setSelectVal(val)}}/>
                 <Button
                     onClick = {() => {
-                        axios.post('http://localhost:3000/api/v1/searches/:id/coordinators', {
+                        axios.post(`http://localhost:3000/api/v1/searches/${id}/coordinators`, {
                             id: selectVal
                         })
                             .then(function (response) {
@@ -200,8 +190,6 @@ function Coordinators() {
                                 console.log(error);
                             });
                     }}
-
-
                     value={"Add"}>
                 </Button>
                 <GridTable columns={columns} rows={tableRows}></GridTable>
