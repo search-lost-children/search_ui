@@ -19,7 +19,7 @@ function Coordinators() {
     let history = useHistory()
     let match = useRouteMatch()
     const [selectVal, setSelectVal] = useState('')
-    const [lostName, setLostName] = useState('')
+    const [lostName, setLostName] = useState({})
     const [tableRows, setTableRows] = useState([])
     const [participantsVal, setParticipantsVal] = useState([])
     const [coordinatorsVal, setCoordinatorsVal] = useState([])
@@ -45,7 +45,7 @@ function Coordinators() {
         )
     }
 
-    const deleteButton = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
+    const DeleteButton = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
                 <Button
@@ -81,7 +81,7 @@ function Coordinators() {
             id: 2,
             field: 'action',
             label: 'Action',
-            cellRenderer: deleteButton
+            cellRenderer: DeleteButton
         },
     ];
     const rows = [
@@ -102,17 +102,6 @@ function Coordinators() {
         }
     ];
 
-    function postData(firstName, SecondName){
-        axios.post(`/api/v1/searches/${id}/coordinators`, {
-
-        })
-            .tahen(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });}
-
     useEffect(() => {
         axios.get(`http://localhost:3000/api/v1/searches/${id}/participants`)
             .then(function (response) {
@@ -122,9 +111,6 @@ function Coordinators() {
             .catch(function (error) {
                 setParticipantsVal(idksomevar1)
             })
-            .then(function () {
-                // always executed
-            });
         getCoordinators()
         axios.get('http://localhost:3000/api/v1/searches/:id/')
             .then(function (response) {
@@ -133,11 +119,7 @@ function Coordinators() {
             })
             .catch(function (error) {
                 setLostName(lostNNName)
-
             })
-            .then(function () {
-                // always executed
-            });
         axios.get(`http://localhost:3000/api/v1/searches/${id}/tableRows`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
@@ -145,11 +127,7 @@ function Coordinators() {
             })
             .catch(function (error) {
                 setTableRows(rows)
-
             })
-            .then(function () {
-                // always executed
-            });
     }, [match.params.id]);
     useEffect(() => {
 
@@ -171,7 +149,7 @@ function Coordinators() {
     let selectOptions = filtering()
     return (
         <div>
-            <h1> Координаторы поиска {lostName} </h1>
+            <h1> Координаторы поиска {lostName.firstName + " " + lostName.lastName} </h1>
             <div>
                 <Select
                     label={'Select Form'}
