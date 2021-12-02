@@ -6,6 +6,7 @@ import './SearchesPage.css';
 import axios from "axios";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);
@@ -59,47 +60,14 @@ function SearchesPage() {
     const Do = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <Popup trigger={<Button value={'Edit'}></Button>} position="right center" modal>
-                    {close => (<div className="modal">
-                        <button className="close" onClick={close}>
-                            &times;
-                        </button>
-                        <div className="header"> Modal Title</div>
-                        <div className="content">
-                            {' '}
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-                            Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-                            delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-                            <br/>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-                            commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-                            explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-                        </div>
-                        <div className="actions">
-                            <Popup
-                                trigger={<button className="button"> Trigger </button>}
-                                position="top center"
-                                nested
-                            >
-            <span>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-              magni omnis delectus nemo, maxime molestiae dolorem numquam
-              mollitia, voluptate ea, accusamus excepturi deleniti ratione
-              sapiente! Laudantium, aperiam doloribus. Odit, aut.
-            </span>
-                            </Popup>
-                            <button
-                                className="button"
-                                onClick={() => {
-                                    console.log('modal closed ');
-                                    close();
-                                }}
-                            >
-                                close modal
-                            </button>
-                        </div>
-                    </div>)}
-                </Popup>
+                <ModalWindow
+                    trigger={<Button value={'Edit'}></Button>}
+                    title={'Modal Title'}
+                >
+                    <div>
+                        Some random text
+                    </div>
+                </ModalWindow>
             </div>
         )
     }

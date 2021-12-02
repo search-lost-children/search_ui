@@ -7,6 +7,8 @@ import TextArea from "../../components/textarea/textarea";
 import Select from "../../components/select/select";
 import CheckBox from "../../components/checkbox/checkbox";
 import GridTable from '@nadavshaar/react-grid-table';
+import Popup from "reactjs-popup";
+import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
 
 function DocumentationPage () {
@@ -80,6 +82,17 @@ function DocumentationPage () {
             "avatar":"https://robohash.org/inimpeditquam.bmp?size=32x32&set=set1"
         }
     ];
+    function Actions (close){
+        return (<Button
+            className="button"
+            value={'Close'}
+            onClick={() => {
+                console.log('modal closed ');
+                close();
+            }}
+        >
+        </Button>)
+    }
     return (<div className={"documentationPage"}>
         <div>
             <h3>Input</h3>
@@ -173,12 +186,44 @@ function DocumentationPage () {
         </div>
 
         <div>
+            <h3>Modal Window</h3>
+            <pre>
+                <code>
+                    {'<ModalWindow trigger={<Button value={\'OPEN MODAL\'}></Button>} title={\'Modal Title\'} actions={Actions}>'}
+                        <br/>{'<div> You can put your text here </div>'}
+                    <br/>{'</ModalWindow>'}
+                    <div>trigger=то, как будет открываться модальное окно(в данном случае при нажатии на кнопку)</div>
+                    <div>title='заголовок'</div>
+                    <div>actions=любое действие(в данном случае кнопка закрытия, может быть еще один Popup)</div>
+                    <div>Внутри div контекст модального окна</div>
+                 </code>
+            </pre>
+            <ModalWindow
+                trigger={<Button value={'OPEN MODAL'}></Button>}
+                title={'Modal Title'}
+                actions={Actions}
+            >
+                <div>
+                    <i>You can put your text here, like this:</i><br/>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+                    Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+                    delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+                    <br/>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+                    commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+                    explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+                </div>
+            </ModalWindow>
+        </div>
+
+        <div>
             <h3>Table</h3>
             <pre>
 
             </pre>
             <GridTable columns={columns} rows={rows}></GridTable>
         </div>
+
     </div>);
 }
 
