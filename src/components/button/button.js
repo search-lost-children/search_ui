@@ -10,7 +10,12 @@ function Button(props) {
 
     return (
         <div className="buttonForm">
-            <UiButton disabled={props.disabled} variant={variant} onClick={onClick}>{props.value}</UiButton>
+            <UiButton
+                disabled={props.disabled}
+                variant={variant}
+                onClick={onClick}>
+                {props.value}
+            </UiButton>
         </div>
     );
 }

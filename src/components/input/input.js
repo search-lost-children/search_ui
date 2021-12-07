@@ -9,8 +9,17 @@ function Input(props) {
 
     return (
         <div className="inputForm">
-                <TextField id="outlined-basic" type={props.type}  label={props.label} value={props.value} onChange={onChange} variant="outlined"></TextField>
+            <TextField
+                id="outlined-basic"
+                disabled={props.disabled}
+                type={props.type}
+                label={props.label}
+                value={props.value}
+                onChange={onChange}
+                variant="outlined">
+            </TextField>
         </div>
     );
 }
+
 export default Input;

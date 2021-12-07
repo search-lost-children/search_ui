@@ -9,17 +9,17 @@ import CheckBox from "../../components/checkbox/checkbox";
 import GridTable from '@nadavshaar/react-grid-table';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 
-function DocumentationPage () {
+function DocumentationPage() {
     const [inputVal, setInputVal] = useState('');
     const [textAreaVal, setTextAreaVal] = useState('');
     const [radioVal, setRadioVal] = useState('');
     const [selectVal, setSelectVal] = useState('');
     const [checkboxVal, setCheckboxVal] = useState(false);
 
-    const Username = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
+    const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <img src={data.avatar} alt="user avatar" />
+                <img src={data.avatar} alt="user avatar"/>
                 <span className='rgt-text-truncate' style={{marginLeft: 10}}>{value}</span>
             </div>
         )
@@ -60,7 +60,7 @@ function DocumentationPage () {
             "gender": "Male",
             "last_visited": "12/08/2019",
             "test": {"x": 1, "y": 2},
-            "avatar":"https://robohash.org/atquenihillaboriosam.bmp?size=32x32&set=set1"
+            "avatar": "https://robohash.org/atquenihillaboriosam.bmp?size=32x32&set=set1"
         },
         {
             "id": 2,
@@ -68,7 +68,7 @@ function DocumentationPage () {
             "gender": "Female",
             "last_visited": "16/07/2018",
             "test": {"x": 3, "y": 4},
-            "avatar":"https://robohash.org/etsedex.bmp?size=32x32&set=set1"
+            "avatar": "https://robohash.org/etsedex.bmp?size=32x32&set=set1"
         },
         {
             "id": 3,
@@ -76,10 +76,11 @@ function DocumentationPage () {
             "gender": "Male",
             "last_visited": "20/11/2016",
             "test": {"x": 5, "y": 8},
-            "avatar":"https://robohash.org/inimpeditquam.bmp?size=32x32&set=set1"
+            "avatar": "https://robohash.org/inimpeditquam.bmp?size=32x32&set=set1"
         }
     ];
-    function Actions (close){
+
+    function Actions(close) {
         return (<Button
             className="button"
             value={'Close'}
@@ -90,6 +91,7 @@ function DocumentationPage () {
         >
         </Button>)
     }
+
     return (<div className={"documentationPage"}>
         <div>
             <h3>Input</h3>
@@ -104,7 +106,7 @@ function DocumentationPage () {
                     <div>onChange='Что будет делать инпут при нажатии'</div>
                 </code>
             </pre>
-            <Input type='login' label={'Login'} value={inputVal} onChange={(val)=> setInputVal((val))}></Input>
+            <Input type='login' label={'Login'} value={inputVal} onChange={(val) => setInputVal((val))}></Input>
         </div>
         <div>
             <h3>Button</h3>
@@ -117,7 +119,9 @@ function DocumentationPage () {
                 </code>
             </pre>
 
-            <Button value={'PUSH ME'} onClick={()=>{alert('button is clicked')}}></Button>
+            <Button value={'PUSH ME'} onClick={() => {
+                alert('button is clicked')
+            }}></Button>
         </div>
 
         <div>
@@ -132,8 +136,12 @@ function DocumentationPage () {
                     <div>onChange='Что будет делать радио-баттон при нажатии'</div>
                 </code>
             </pre>
-            <Radio value={'val1'} onChange={(val)=>{setRadioVal(val)}} label={'Radio Button1'} name={'RadioButton'} checked={radioVal === 'val1'}></Radio>
-            <Radio value={'val2'} onChange={(val)=>{setRadioVal(val)}} label={'Radio Button2'} name={'RadioButton'} checked={radioVal === 'val2'}></Radio>
+            <Radio value={'val1'} onChange={(val) => {
+                setRadioVal(val)
+            }} label={'Radio Button1'} name={'RadioButton'} checked={radioVal === 'val1'}></Radio>
+            <Radio value={'val2'} onChange={(val) => {
+                setRadioVal(val)
+            }} label={'Radio Button2'} name={'RadioButton'} checked={radioVal === 'val2'}></Radio>
         </div>
         <div>
             <h3>TextArea</h3>
@@ -146,7 +154,9 @@ function DocumentationPage () {
                     <div>onChange='Что будет делать текстовое поле при нажатии'</div>
                 </code>
             </pre>
-            <TextArea type='text' label={'Text Area'} value={textAreaVal} onChange={(val)=>{setTextAreaVal(val)}}></TextArea>
+            <TextArea type='text' label={'Text Area'} value={textAreaVal} onChange={(val) => {
+                setTextAreaVal(val)
+            }}></TextArea>
         </div>
 
         <div>
@@ -163,8 +173,13 @@ function DocumentationPage () {
             <Select
                 label={'Select Form'}
                 value={selectVal}
-                options={[{label:'', value:''},{label: 'это лейбл 1', value:'value1'}, {label: 'это лейбл 2', value:'value2'}]}
-                onChange={(val)=>{setSelectVal(val)}}></Select>
+                options={[{label: '', value: ''}, {label: 'это лейбл 1', value: 'value1'}, {
+                    label: 'это лейбл 2',
+                    value: 'value2'
+                }]}
+                onChange={(val) => {
+                    setSelectVal(val)
+                }}></Select>
         </div>
 
         <div>
@@ -178,7 +193,9 @@ function DocumentationPage () {
                     <div>onChange='Что будет делать чекбокс при нажатии'</div>
                 </code>
             </pre>
-            <CheckBox name={'CheckBox'} checked={checkboxVal} label={'CheckBox'} onChange={(val)=>{setCheckboxVal(val)}}></CheckBox>
+            <CheckBox name={'CheckBox'} checked={checkboxVal} label={'CheckBox'} onChange={(val) => {
+                setCheckboxVal(val)
+            }}></CheckBox>
         </div>
 
         <div>
@@ -186,7 +203,7 @@ function DocumentationPage () {
             <pre>
                 <code>
                     {'<ModalWindow trigger={<Button value={\'OPEN MODAL\'}></Button>} title={\'Modal Title\'} actions={Actions}>'}
-                        <br/>{'<div> You can put your text here </div>'}
+                    <br/>{'<div> You can put your text here </div>'}
                     <br/>{'</ModalWindow>'}
                     <div>trigger=то, как будет открываться модальное окно(в данном случае при нажатии на кнопку)</div>
                     <div>title='заголовок'</div>

@@ -11,7 +11,14 @@ function Radio(props) {
         <div className="radioForm">
             <label>
                 {props.label}
-                <UIRadio color="primary" value={props.value} onChange={onChange} name={props.name} checked={props.checked}></UIRadio>
+                <UIRadio
+                    color="primary"
+                    disabled={props.disabled}
+                    value={props.value}
+                    onChange={onChange}
+                    name={props.name}
+                    checked={props.checked}>
+                </UIRadio>
             </label>
         </div>
     );

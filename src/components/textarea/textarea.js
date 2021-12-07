@@ -9,8 +9,14 @@ function TextArea(props) {
 
     return (
         <div className="textAreaForm">
-                <TextField multiline rows={3} variant="outlined" label={props.label} value={props.value} onChange={onChange}></TextField>
+            <TextField multiline rows={3} variant="outlined"
+                       disabled={props.disabled}
+                       label={props.label}
+                       value={props.value}
+                       onChange={onChange}>
+            </TextField>
         </div>
     );
 }
+
 export default TextArea;

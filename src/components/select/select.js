@@ -8,20 +8,25 @@ function Select(props) {
         const element = event.target.value;
         props.onChange(element)
     }
+
     const options = props.options || [];
-    const makeOptions = function(el) {
+    const makeOptions = function (el) {
         return <option key={el.value} value={el.value}>{el.label}</option>;
     };
 
     return (
         <div className="selectForm">
-            <FormControl >
+            <FormControl>
                 <InputLabel>{props.label}</InputLabel>
-                    <UiSelect native value={props.value} onChange={onChange}>
-                        {options.map(makeOptions)}
-                    </UiSelect>
+                <UiSelect native
+                          disabled={props.disabled}
+                          value={props.value}
+                          onChange={onChange}>
+                    {options.map(makeOptions)}
+                </UiSelect>
             </FormControl>
         </div>
     );
 }
+
 export default Select;

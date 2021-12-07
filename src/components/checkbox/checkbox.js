@@ -11,7 +11,12 @@ function CheckBox(props) {
         <div className="checkBoxForm">
             <label>
                 {props.label}
-                <UiCheckBox disabled={props.disabled} onChange={onChange} checked={props.checked} color="primary"></UiCheckBox>
+                <UiCheckBox
+                    disabled={props.disabled}
+                    onChange={onChange}
+                    checked={props.checked}
+                    color="primary">
+                </UiCheckBox>
             </label>
         </div>
     );
