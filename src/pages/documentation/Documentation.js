@@ -7,15 +7,7 @@ import TextArea from "../../components/textarea/textarea";
 import Select from "../../components/select/select";
 import CheckBox from "../../components/checkbox/checkbox";
 import GridTable from '@nadavshaar/react-grid-table';
-import Popup from "reactjs-popup";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
-import FormLabel from "@material-ui/core/FormLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import UIRadio from "@material-ui/core/Radio";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-
 
 function DocumentationPage () {
     const [inputVal, setInputVal] = useState('');
@@ -23,7 +15,6 @@ function DocumentationPage () {
     const [radioVal, setRadioVal] = useState('');
     const [selectVal, setSelectVal] = useState('');
     const [checkboxVal, setCheckboxVal] = useState(false);
-
 
     const Username = ({ tableManager, value, field, data, column, colIndex, rowIndex }) => {
         return (
