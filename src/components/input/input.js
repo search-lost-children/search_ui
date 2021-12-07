@@ -1,4 +1,5 @@
 import './input.css'
+import TextField from '@material-ui/core/TextField';
 
 function Input(props) {
     function onChange(event) {
@@ -8,11 +9,17 @@ function Input(props) {
 
     return (
         <div className="inputForm">
-            <label>
-                {props.label}
-                <input type={props.type} value={props.value} onChange={onChange}></input>
-            </label>
+            <TextField
+                id="outlined-basic"
+                disabled={props.disabled}
+                type={props.type}
+                label={props.label}
+                value={props.value}
+                onChange={onChange}
+                variant="outlined">
+            </TextField>
         </div>
     );
 }
+
 export default Input;

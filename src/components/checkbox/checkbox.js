@@ -1,16 +1,22 @@
 import './checkbox.css'
+import UiCheckBox from '@material-ui/core/Checkbox';
 
 function CheckBox(props) {
 
-    function onClick() {
-        props.onChange()
+    function onChange(event) {
+        props.onChange(event.target.checked)
     }
 
     return (
         <div className="checkBoxForm">
             <label>
                 {props.label}
-                <input type="checkbox" onClick={onClick} name={props.name} checked={props.checked}></input>
+                <UiCheckBox
+                    disabled={props.disabled}
+                    onChange={onChange}
+                    checked={props.checked}
+                    color="primary">
+                </UiCheckBox>
             </label>
         </div>
     );
