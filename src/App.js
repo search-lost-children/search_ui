@@ -16,7 +16,7 @@ function App() {
       <Router>
         <Switch>
           <Route path={'/documentation'} component={DocumentationPage}/>
-          <Route  path={'/new_task'} component={NewTask}/>
+          <Route  path={'/searches/:id/new_task'} component={NewTask}/>
         </Switch>
       </Router>
     </div>

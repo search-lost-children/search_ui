@@ -1,23 +1,24 @@
 import React, {useState, useEffect}from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 import './new_task.css'
 import Radio from "../../components/radio/radio";
 import Select from "../../components/select/select";
 import Button from "../../components/button/button";
 import axios from "axios";
 
-
 function NewTask() {
     const [radioVal1, setRadioVal1 ] = useState('');
     const [radioVal2, setRadioVal2 ] = useState('');
     const [selectVal, setSelectVal] = useState('');
-    const [DataPart, setDataPart]= useState([{id:"4", firstName:'part1', lastName:'part2'}]);
-    const [DataSq, setDataSq]= useState([{id:"5", firstName:'squad1', lastName:'squad2'}]);
+    const [DataPart, setDataPart]= useState([]);
+    const [DataSq, setDataSq]= useState([]);
+    const history = useHistory();
+    let match = useRouteMatch()
+    const id = match.params.id
 
     useEffect(() => {
         axios.get('/api/v1/searches/:id/coordinators/participants').then(function (response) {
             setDataPart (response.data)
-            // [{id:"", firstName:'', lastName:''}]
         }).catch(function (error) {
             console.log('error')
         })
@@ -27,19 +28,21 @@ function NewTask() {
         }).catch(function (error) {
             console.log('error')
         })
-    })
+    }, [])
 
     let arr;
 
     if (radioVal1==='поисковая группа'){
-        arr=DataSq
+        arr = DataSq
     }else {
-        arr=DataPart
+        arr = DataPart
     }
 
-    let options =arr.map (function(elem){ // {id:"", firstName:'', lastName:''}
-    return {label: elem.firstName+' '+elem.lastName,
-            value: elem.id} //{label: 'ФИО2', value:'value2'}
+    let options = arr.map (function(elem){
+        return {
+            label: elem.firstName + ' ' + elem.lastName,
+            value: elem.id
+        }
     })
 
     return (
@@ -55,7 +58,6 @@ function NewTask() {
                             value={selectVal}
                             options={options}
                             onChange={(val)=>{setSelectVal(val)}}>
-
                     </Select>
             </div>
             <div className="Radio" >
@@ -66,11 +68,21 @@ function NewTask() {
                     <p> ТУТ БУДЕТ КАРТА</p>
             </div>
             <div className="Button">
-                    <Button value={'Применить'} onClick={()=>{alert('обработка данных')}}></Button>
+                    <Button value={'Применить'} onClick={()=>{
+                        console.log(selectVal);
+                        axios.post(`http://localhost:3000/api/v1/searches/${id}/new_task`,{
+                            id:selectVal,
+                            searchResource: radioVal1,
+                            searchAddress: radioVal2
+                        })
+                            .then(function (response) {
+                                history.push(`/searches/${id}`)
+                            }).catch(function (error) {
+                                console.log('error')
+                            })
+                    }}></Button>
             </div>
-
         </div>
-
     )
 }
 
