@@ -1,4 +1,5 @@
 import './textarea.css'
+import TextField from '@material-ui/core/TextField';
 
 function TextArea(props) {
     function onChange(event) {
@@ -8,10 +9,7 @@ function TextArea(props) {
 
     return (
         <div className="textAreaForm">
-            <label>
-                {props.label}
-                <textarea type={props.type} onChange={onChange} value={props.value}></textarea>
-            </label>
+                <TextField multiline rows={3} variant="outlined" label={props.label} value={props.value} onChange={onChange}></TextField>
         </div>
     );
 }

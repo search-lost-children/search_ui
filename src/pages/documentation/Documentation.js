@@ -9,6 +9,12 @@ import CheckBox from "../../components/checkbox/checkbox";
 import GridTable from '@nadavshaar/react-grid-table';
 import Popup from "reactjs-popup";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
+import FormLabel from "@material-ui/core/FormLabel";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import UIRadio from "@material-ui/core/Radio";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 
 function DocumentationPage () {
@@ -127,7 +133,7 @@ function DocumentationPage () {
             <h3>Radio</h3>
             <pre>
                 <code>
-                    {'<Radio name={\'RadioButton\'} checked={false} label={\'Radio Button\'} onClick={()=>{}}></Radio>'}
+                    {'<Radio name={\'RadioButton\'} value={\'val1\'} checked={false} label={\'Radio Button\'} onClick={()=>{}}></Radio>'}
                     <div>name='имя радио-баттона'</div>
                     <div>value= значение радио</div>
                     <div>checked=false-если радио-баттон выбран</div>
@@ -135,9 +141,8 @@ function DocumentationPage () {
                     <div>onChange='Что будет делать радио-баттон при нажатии'</div>
                 </code>
             </pre>
-            <Radio name={'RadioButton'} checked={radioVal === 'val1'} label={'Radio Button1'} value={'val1'} onChange={(val)=>{setRadioVal(val)}}></Radio>
-            <Radio name={'RadioButton'} checked={radioVal === 'val2'} label={'Radio Button2'} value={'val2'} onChange={(val)=>{setRadioVal(val)}}></Radio>
-            <Radio name={'RadioButton'} checked={radioVal === 'val3'} label={'Radio Button3'} value={'val3'} onChange={(val)=>{setRadioVal(val)}}></Radio>
+            <Radio value={'val1'} onChange={(val)=>{setRadioVal(val)}} label={'Radio Button1'} name={'RadioButton'} checked={radioVal === 'val1'}></Radio>
+            <Radio value={'val2'} onChange={(val)=>{setRadioVal(val)}} label={'Radio Button2'} name={'RadioButton'} checked={radioVal === 'val2'}></Radio>
         </div>
         <div>
             <h3>TextArea</h3>
@@ -167,7 +172,7 @@ function DocumentationPage () {
             <Select
                 label={'Select Form'}
                 value={selectVal}
-                options={[{label: 'это лейбл 1', value:'value1'}, {label: 'это лейбл 2', value:'value2'}]}
+                options={[{label:'', value:''},{label: 'это лейбл 1', value:'value1'}, {label: 'это лейбл 2', value:'value2'}]}
                 onChange={(val)=>{setSelectVal(val)}}></Select>
         </div>
 
@@ -175,14 +180,14 @@ function DocumentationPage () {
             <h3>CheckBox</h3>
             <pre>
                 <code>
-                    {'<CheckBox name={\'CheckBox\'} checked={checked} label={\'CheckBox\'} onClick={onClick}></CheckBox>'}
+                    {'<CheckBox name={\'CheckBox\'} checked={checked} label={\'CheckBox\'} onChange={onClick}></CheckBox>'}
                     <div> name='имя чекбокса'</div>
                     <div>checked=true - если чекбокс выбран</div>
                     <div>label='лейбл для чекбокса'</div>
                     <div>onChange='Что будет делать чекбокс при нажатии'</div>
                 </code>
             </pre>
-            <CheckBox name={'CheckBox'} checked={checkboxVal} label={'CheckBox'} onChange={(val)=> {setCheckboxVal(val)}}></CheckBox>
+            <CheckBox name={'CheckBox'} checked={checkboxVal} label={'CheckBox'} onChange={(val)=>{setCheckboxVal(val)}}></CheckBox>
         </div>
 
         <div>

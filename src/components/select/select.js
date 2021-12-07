@@ -1,4 +1,7 @@
 import './select.css'
+import UiSelect from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 function Select(props) {
     function onChange(event) {
@@ -9,14 +12,15 @@ function Select(props) {
     const makeOptions = function(el) {
         return <option key={el.value} value={el.value}>{el.label}</option>;
     };
+
     return (
         <div className="selectForm">
-            <label>
-                {props.label}
-                <select onChange={onChange} value={props.value}>
-                    {options.map(makeOptions)}
-                </select>
-            </label>
+            <FormControl >
+                <InputLabel>{props.label}</InputLabel>
+                    <UiSelect native value={props.value} onChange={onChange}>
+                        {options.map(makeOptions)}
+                    </UiSelect>
+            </FormControl>
         </div>
     );
 }
