@@ -6,7 +6,7 @@ import './SearchesPage.css';
 import axios from "axios";
 import 'reactjs-popup/dist/index.css';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
-import {serverURL} from "../../../config";
+import {serverURL} from "../../config";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);

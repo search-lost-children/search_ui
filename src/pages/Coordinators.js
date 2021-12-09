@@ -12,7 +12,7 @@ import Select from "../components/select/select";
 import Button from "../components/button/button";
 import * as axios from "axios";
 import GridTable from "@nadavshaar/react-grid-table";
-import {serverURL} from "../../config";
+import {serverURL} from "../config";
 
 
 function Coordinators() {
