@@ -10,6 +10,7 @@ import {
 import DocumentationPage from "./pages/documentation/Documentation";
 import SearchesPage from "./pages/Searches_Page/SearchesPage";
 import Coordinators from "./pages/Coordinators";
+import SearchDetails from "./pages/Search_Details/SearchDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path={'/documentation'} component={DocumentationPage}/>
           <Route exact path={'/searches'} component={SearchesPage}/>
             <Route path={'/searches/:id/coordinators/'} component={Coordinators}/>
+            <Route exact path={'/searches/:id/details'} component={SearchDetails}/>
         </Switch>
       </Router>
       </div>
