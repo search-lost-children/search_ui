@@ -92,6 +92,7 @@ function DocumentationPage() {
         </Button>)
     }
 
+
     return (<div className={"documentationPage"}>
         <div>
             <h3>Input</h3>
@@ -112,8 +113,10 @@ function DocumentationPage() {
             <h3>Button</h3>
             <pre>
                 <code>
-                    {'<Button value={\'PUSH ME\'} onClick={()=>{alert(\'button is clicked\')}}></Button>'}
+                    {'<Button value={\'PUSH ME\'} variant={\'outlined\'} color={\'default\'} onClick={()=>{alert(\'button is clicked\')}}></Button>'}
                     <div>value='надпись внутри кнопки'</div>
+                    <div>variant: outlined (граница), contained (с заливкой)</div>
+                    <div>color: default (серый), primary (синий), secondary (красный)</div>
                     <div>label='лейбл для кнопки'</div>
                     <div>onClick='Что будет делать кнопка при нажатии' </div>
                 </code>

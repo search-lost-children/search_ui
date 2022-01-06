@@ -1,5 +1,5 @@
 import './textarea.css'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 function TextArea(props) {
     function onChange(event) {

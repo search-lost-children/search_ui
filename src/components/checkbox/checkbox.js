@@ -1,5 +1,5 @@
 import './checkbox.css'
-import UiCheckBox from '@material-ui/core/Checkbox';
+import UiCheckBox from '@mui/material/Checkbox';
 
 function CheckBox(props) {
 
@@ -10,13 +10,13 @@ function CheckBox(props) {
     return (
         <div className="checkBoxForm">
             <label>
-                {props.label}
                 <UiCheckBox
                     disabled={props.disabled}
                     onChange={onChange}
                     checked={props.checked}
                     color="primary">
                 </UiCheckBox>
+                {props.label}
             </label>
         </div>
     );

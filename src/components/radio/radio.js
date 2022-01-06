@@ -1,5 +1,5 @@
 import './radio.css'
-import UIRadio from '@material-ui/core/Radio';
+import UIRadio from '@mui/material/Radio';
 
 function Radio(props) {
 
