@@ -12,7 +12,6 @@ import SearchesPage from "./pages/Searches_Page/SearchesPage";
 import Coordinators from "./pages/Coordinators";
 import NewTask from './pages/new_task/NewTask';
 
-
 function App() {
   return (
     <div className="App">
