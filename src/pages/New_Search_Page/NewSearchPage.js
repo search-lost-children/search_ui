@@ -186,8 +186,8 @@ function NewSearchPage() {
                     axios.post(`${serverURL}/api/v1/searches/new`, {
 
                     })
-                        .then(function (response) {
-                            console.log(response);
+                        .then(function () {
+                            history.push(`${serverURL}/api/v1/searches/${id}/edit`);
                         })
                         .catch(function (error) {
                             console.log(error);
