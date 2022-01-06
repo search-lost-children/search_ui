@@ -10,6 +10,7 @@ import {
 import DocumentationPage from "./pages/documentation/Documentation";
 import SearchesPage from "./pages/Searches_Page/SearchesPage";
 import Coordinators from "./pages/Coordinators";
+import SearchDetails from "./pages/Search_Details/SearchDetails";
 import NewTask from './pages/new_task/NewTask';
 
 function App() {
@@ -21,8 +22,9 @@ function App() {
         <Switch>
           <Route path={'/documentation'} component={DocumentationPage}/>
           <Route exact path={'/searches'} component={SearchesPage}/>
-            <Route path={'/searches/:id/coordinators/'} component={Coordinators}/>
-            <Route  path={'/searches/:id/new_task'} component={NewTask}/>
+          <Route path={'/searches/:id/coordinators/'} component={Coordinators}/>
+          <Route  path={'/searches/:id/new_task'} component={NewTask}/>
+          <Route exact path={'/searches/:id/details'} component={SearchDetails}/>
         </Switch>
       </Router>
       </div>
