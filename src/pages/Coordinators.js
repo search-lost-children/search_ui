@@ -13,7 +13,6 @@ import Button from "../components/button/button";
 import * as axios from "axios";
 import GridTable from "@nadavshaar/react-grid-table";
 
-
 function Coordinators() {
     let location = useLocation()
     let history = useHistory()
@@ -29,11 +28,10 @@ function Coordinators() {
     function getCoordinators(){
         axios.get(`http://localhost:3000/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
-                //  setCoordinatorsVal(response.data)
-                setCoordinatorsVal(idksomevar)
+                setCoordinatorsVal(response.data)
             })
             .catch(function (error) {
-                setCoordinatorsVal(idksomevar)
+
             })}
 
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
@@ -62,19 +60,6 @@ function Coordinators() {
             </div>
         )
     }
-    let idksomevar = [
-        {id: '777', firstName: 'James', lastName:'Raynor'},
-        {id: '122', firstName: 'Sara', lastName:'Kerrigan'}]
-    let idksomevar1 = [
-        {id: '777', firstName: 'James', lastName:'Raynor'},
-        {id: '122', firstName: 'Sara', lastName:'Kerrigan'},
-        {id: '364', firstName: 'Tychus', lastName:'Findly'}]
-    let lostNNName = {
-        id: '56735',
-        date: '17.10.2011',
-        firstName: 'Terra',
-        lastName: 'Nova'
-    }
     const columns = [
         {
             id: 1,
@@ -89,53 +74,33 @@ function Coordinators() {
             cellRenderer: DeleteButton
         },
     ];
-    const rows = [
-        {
-            id: 2154,
-            firstName: "Some",
-            lastName: "Name"
-        },
-        {
-            id: 2356,
-            firstName: "rghk",
-            lastName: "ghfjg"
-        },
-        {
-            id: 4578,
-            firstName: "fghjgfj",
-            lastName: "fghjfhjf"
-        }
-    ];
 
     useEffect(() => {
         axios.get(`http://localhost:3000/api/v1/searches/${id}/participants`)
             .then(function (response) {
                 // setParticipantsVal(response.data)
-                setParticipantsVal(idksomevar1)
+                setParticipantsVal(response.data)
             })
             .catch(function (error) {
-                setParticipantsVal(idksomevar1)
+
             })
         getCoordinators()
         axios.get(`http://localhost:3000/api/v1/searches/${id}/`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
-                setLostName(lostNNName)
+                setLostName(response.data)
             })
             .catch(function (error) {
-                setLostName(lostNNName)
+
             })
-        axios.get(`http://localhost:3000/api/v1/searches/${id}/tableRows`)
+        axios.get(`http://localhost:3000/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
-                setTableRows(rows)
+                setTableRows(response.data)
             })
             .catch(function (error) {
-                setTableRows(rows)
-            })
-    }, [match.params.id]);
-    useEffect(() => {
 
+            })
     }, [match.params.id]);
 
     function filtering() {
