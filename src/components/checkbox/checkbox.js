@@ -1,5 +1,5 @@
 import './checkbox.css'
-import UiCheckBox from '@material-ui/core/Checkbox';
+import UiCheckBox from '@mui/material/Checkbox';
 
 function CheckBox(props) {
 

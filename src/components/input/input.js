@@ -1,5 +1,5 @@
 import './input.css'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 function Input(props) {
     function onChange(event) {
