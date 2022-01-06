@@ -71,7 +71,6 @@ function NewTask() {
                     <Button value={'Применить'} onClick={()=>{
                         console.log(selectVal);
                         axios.post(`http://localhost:3000/api/v1/searches/${id}/newTask`,{
-                            id:selectVal,
                             searchResource: radioVal1,
                             searchAddress: radioVal2
                         })
