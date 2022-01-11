@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from "react";
+import jwt_interceptor from "./config_interceptors";
 
 import {
   BrowserRouter as Router,
@@ -15,6 +16,7 @@ import Registration_page from "./pages/login_pages/registration_page";
 import Registration_error from "./pages/login_pages/registration_error";
 
 function App() {
+    jwt_interceptor();
   return (
     <div className="App">
       <div></div>
