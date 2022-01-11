@@ -1,0 +1,53 @@
+.pageDetails {
+    display: flex;
+    justify-content: space-between;
+}
+.bottomBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.map {
+    border: 1px solid black;
+    width: 70%;
+    height: 700px;
+}
+.checkboxes {
+    border: 1px solid black;
+    width: 220px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+.checkboxes>div {
+    margin-left: 15px;
+}
+.searchDetails .buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.buttons>div {
+    margin-bottom: 20px;
+}
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.searchDetails button {
+    width: 220px;
+}
+.space {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0 250px;
+}
+.space button {
+    width: 150px;
+    font-weight: bold;
+}

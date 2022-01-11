@@ -4,50 +4,22 @@ import {useHistory} from "react-router-dom";
 import Button from "../../components/button/button";
 import './SearchesPage.css';
 import axios from "axios";
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
+import {serverURL} from "../../config";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);
     const history = useHistory();
     useEffect(() => {
-        axios.get('https://example.com/').then(function (response) {
+        axios.get(`${serverURL}/api/v1/searches`).then(function (response) {
             setData(response.data)
         }).catch(function (error) {
             console.log('error')
-            setData([
-                {
-                    "id": 1,
-                    'firstName': 'Ada',
-                    'lastName': 'Lovelace',
-                    'status': 'в процессе',
-                },
-                {
-                    "id": 2,
-                    'firstName': 'Grace',
-                    'lastName': 'Hopper',
-                    'status': 'завершен',
-                },
-                {
-                    "id": 3,
-                    'firstName': 'Margaret',
-                    'lastName': 'Hamilton',
-                    'status': 'завершен',
-                },
-                {
-                    "id": 4,
-                    'firstName': 'Joan',
-                    'lastName': 'Clarke',
-                    'status': 'завершен',
-                },
-            ])
-
         }).then(function () {
             // always executed
         });
     });
-
 
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
