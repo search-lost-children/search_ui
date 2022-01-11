@@ -16,8 +16,19 @@ import Select from "../../components/select/select";
 function NewSearchPage() {
 
     const [rows, setData] = useState([]);
+    const [firstName, setFName] = useState();
+    const [lastName, setLName] = useState();
+    const [place, setPlace] = useState();
+    const [text, setText] = useState();
+    const [priority, setPriority] = useState();
+    const [date, setDate] = useState();
+    const [time, setTime] = useState();
+    const [author, setAuthor] = useState();
+    const [type, setType] = useState();
+    const [description, setDescription] = useState();
     const history = useHistory();
-    const match = useRouteMatch('/searches/new');
+    const isNew = useRouteMatch('/searches/new');
+    const match = useRouteMatch();
     const id = match.params.id;
 
     useEffect(() => {
@@ -28,17 +39,17 @@ function NewSearchPage() {
         }).then(function () {
             // always executed
         });
-    });
+    }, []);
 
     function getTable() {
-        if (match) {
+        if (isNew) {
             return null
         }
-        return(<div>
+        return (<div>
             <div className={'event'}>
                 События
                 <ModalWindow
-                    trigger={<IconButton disabled={match} aria-label="add">
+                    trigger={<IconButton disabled={isNew} aria-label="add">
                         <AddCircleOutline/>
                     </IconButton>}
                     title={'Добавить событие'}
@@ -52,26 +63,29 @@ function NewSearchPage() {
                                     {label: '2', value: '2'},
                                     {label: '3', value: '3'}
                                 ]}
-                                onChange={() => {
-
+                                onChange={(priority) => {
+                                    setPriority(priority)
                                 }}
                         >
                         </Select>
                         <p>Время поиска</p>
-                        <Input type="time" label={'Время'} onChange={() => {
-
+                        <Input type="date" label={'Дата'} onChange={(date) => {
+                            setDate(date)
+                        }}></Input>
+                        <Input type="time" label={'Время'} onChange={(time) => {
+                            setTime(time)
                         }}></Input>
                         <p>Назначте автора задания</p>
-                        <Input type="author" label={'Автор'} onChange={() => {
-
+                        <Input type="author" label={'Автор'} onChange={(author) => {
+                            setAuthor(author)
                         }}></Input>
                         <p>Выберите тип задания: информативный либо ...</p>
-                        <Input type="type" label={'Тип'} onChange={() => {
-
+                        <Input type="type" label={'Тип'} onChange={(type) => {
+                            setType(type)
                         }}></Input>
                         <p>Введите описание: "видели"</p>
-                        <Input type="description" label={'Описание'} onChange={() => {
-
+                        <Input type="description" label={'Описание'} onChange={(description) => {
+                            setDescription(description)
                         }}></Input>
                     </div>
                 </ModalWindow>
@@ -83,12 +97,24 @@ function NewSearchPage() {
             </div>
         </div>)
     }
+
     function Actions(close) {
         return (<div className={'save'}>
             <Button value={'Сохранить'} onClick={() => {
-                // axios.put(`${serverURL}/api/v1/searches/new`, {data.}).then(() => {
-                //     close();
-                // })
+                axios.post(`${serverURL}/api/v1/searches/${id}/new_event`, {
+                    "priority": priority,
+                    "date": date,
+                    "time": time,
+                    "author": author,
+                    "type": type,
+                    "description": description
+                })
+                    .then(function (resp) {
+                       close()
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }}></Button>
 
             <Button value={'Отменить'} onClick={() => {
@@ -156,11 +182,14 @@ function NewSearchPage() {
     ];
 
     return (<div className={'newSearchPage'}>
-            <h1>ФИО: ... </h1>
+            <h1>ФИО: {firstName} {lastName} </h1>
             <div className={'content'}>
                 <div className={'whenFind'}>
-                    <Input type="name" label={"ФИО"} onChange={() => {
-
+                    <Input type="firstName" label={"Имя"} onChange={(firstName) => {
+                        setFName(firstName)
+                    }}></Input>
+                    <Input type="lastName" label={"Фамилия"} onChange={(lastName) => {
+                        setLName(lastName)
                     }}></Input>
                     <IconButton aria-label="add">
                         <Search/>
@@ -168,28 +197,32 @@ function NewSearchPage() {
                     <p>Последний раз искали ...</p>
                 </div>
                 <div className={'place'}>
-                    <Input type="place" label={"Точка сбора"}  onChange={() => {
-
+                    <Input type="place" label={"Точка сбора"} onChange={(place) => {
+                        setPlace(place)
                     }}></Input>
                     <div className={'map_small'}></div>
                 </div>
-                <TextArea type='text' label={"Вводная информация"}  onChange={() => {
-
+                <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
+                    setText(text)
                 }}></TextArea>
 
             </div>
 
-            { getTable() }
+            {getTable()}
 
             <div className={'buttonStart'}>
                 <Button value={'Начать'} onClick={() => {
                     axios.post(`${serverURL}/api/v1/searches/new`, {
-
+                        "first name": firstName,
+                        "last name": lastName,
+                        "place": place,
+                        "text": text
                     })
-                        .then(function () {
-                            history.push(`${serverURL}/api/v1/searches/${id}/edit`);
+                        .then(function (resp) {
+                            history.push(`/searches/${resp.data.id}/edit`);
                         })
                         .catch(function (error) {
+                            history.push(`/searches/1/edit`);
                             console.log(error);
                         });
                 }}></Button>
