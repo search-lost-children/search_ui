@@ -28,7 +28,8 @@ function Coordinators() {
     function getCoordinators(){
         axios.get(`http://localhost:3000/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
-                setCoordinatorsVal(response.data)
+                //  setCoordinatorsVal(response.data)
+                setTableRows(response.data)
             })
             .catch(function (error) {
 
@@ -48,7 +49,7 @@ function Coordinators() {
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
                 <Button
                     onClick={() => {
-                        axios.delete(`http://localhost:3000/api/v1/searches/${id}/coordinators/${data.id}`, data = data.id)
+                        axios.delete(`http://localhost:3000/api/v1/searches/${id}/coordinators/${data.id}`)
                         .then(function (response) {
                             getCoordinators()
                         })
@@ -89,14 +90,6 @@ function Coordinators() {
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
                 setLostName(response.data)
-            })
-            .catch(function (error) {
-
-            })
-        axios.get(`http://localhost:3000/api/v1/searches/${id}/coordinators`)
-            .then(function (response) {
-                //  setCoordinatorsVal(response.data)
-                setTableRows(response.data)
             })
             .catch(function (error) {
 
