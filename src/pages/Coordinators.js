@@ -48,7 +48,7 @@ function Coordinators() {
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
                 <Button
                     onClick={() => {
-                        axios.delete(`http://localhost:3000/api/v1/searches/${id}/coordinators/${data.id}`)
+                        axios.delete(`http://localhost:3000/api/v1/searches/${id}/coordinators/${data.id}`, data = data.id)
                         .then(function (response) {
                             getCoordinators()
                         })
