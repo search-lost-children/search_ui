@@ -1,8 +1,9 @@
 import './radio.css'
+import UIRadio from '@material-ui/core/Radio';
 
 function Radio(props) {
 
-    function onClick(event) {
+    function onChange(event) {
         props.onChange(event.target.value)
     }
 
@@ -10,7 +11,14 @@ function Radio(props) {
         <div className="radioForm">
             <label>
                 {props.label}
-            <input type="radio" value={props.value} onClick={onClick} name={props.name} checked={props.checked}></input>
+                <UIRadio
+                    color="primary"
+                    disabled={props.disabled}
+                    value={props.value}
+                    onChange={onChange}
+                    name={props.name}
+                    checked={props.checked}>
+                </UIRadio>
             </label>
         </div>
     );

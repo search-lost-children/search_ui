@@ -12,6 +12,8 @@ import Select from "../components/select/select";
 import Button from "../components/button/button";
 import * as axios from "axios";
 import GridTable from "@nadavshaar/react-grid-table";
+import {serverURL} from "../config";
+
 
 function Coordinators() {
     let location = useLocation()
@@ -26,7 +28,7 @@ function Coordinators() {
     const id = match.params.id
 
     function getCoordinators(){
-        axios.get(`http://localhost:3000/api/v1/searches/${id}/coordinators`)
+        axios.get(`${serverURL}/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
                 setTableRows(response.data)
@@ -49,7 +51,7 @@ function Coordinators() {
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
                 <Button
                     onClick={() => {
-                        axios.delete(`http://localhost:3000/api/v1/searches/${id}/coordinators/${data.id}`)
+                        axios.delete(`${serverURL}/api/v1/searches/${id}/coordinators/${data.id}`)
                         .then(function (response) {
                             getCoordinators()
                         })
@@ -77,7 +79,7 @@ function Coordinators() {
     ];
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/v1/searches/${id}/participants`)
+        axios.get(`${serverURL}/api/v1/searches/${id}/participants`)
             .then(function (response) {
                 // setParticipantsVal(response.data)
                 setParticipantsVal(response.data)
@@ -86,7 +88,7 @@ function Coordinators() {
 
             })
         getCoordinators()
-        axios.get(`http://localhost:3000/api/v1/searches/${id}/`)
+        axios.get(`${serverURL}/api/v1/searches/${id}/`)
             .then(function (response) {
                 //  setCoordinatorsVal(response.data)
                 setLostName(response.data)
@@ -121,7 +123,7 @@ function Coordinators() {
                     onChange={(val)=>{setSelectVal(val)}}/>
                 <Button
                     onClick = {() => {
-                        axios.post(`http://localhost:3000/api/v1/searches/${id}/coordinators`, {
+                        axios.post(`${serverURL}/api/v1/searches/${id}/coordinators`, {
                             id: selectVal
                         })
                             .then(function (response) {
