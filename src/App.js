@@ -17,6 +17,7 @@ import Login_page from './pages/login_pages/Login'
 import Login_organization from "./pages/login_pages/login_organization";
 import Registration_page from "./pages/login_pages/registration_page";
 import Registration_error from "./pages/login_pages/registration_error";
+import GuardedRoute from "./guarded";
 
 function App() {
     jwt_interceptor();
@@ -26,15 +27,16 @@ function App() {
       <div className={"container"}>
       <Router>
         <Switch>
-            <Route path={'/documentation'} component={DocumentationPage}/>
-            <Route exact path={'/searches'} component={SearchesPage}/>
-            <Route path={'/searches/:id/coordinators/'} component={Coordinators}/>
-            <Route path={'/searches/:id/new_task'} component={NewTask}/>
-            <Route exact path={'/searches/:id/details'} component={SearchDetails}/>
-            <Route exact path={'/login_page/organizations'} component={Login_organization}/>
+            <GuardedRoute path={'/documentation'} component={DocumentationPage}/>
+            <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
+            <GuardedRoute path={'/searches/:id/coordinators/'} component={Coordinators}/>
+            <GuardedRoute path={'/searches/:id/new_task'} component={NewTask}/>
+            <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
+            <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
             <Route exact path={'/login_page'} component={Login_page}/>
             <Route exact path={'/registration_page'} component={Registration_page}/>
             <Route exact path={'/registration_error'} component={Registration_error}/>
+
         </Switch>
       </Router>
       </div>
