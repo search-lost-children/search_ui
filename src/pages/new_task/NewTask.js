@@ -71,8 +71,10 @@ function NewTask() {
                     <Button value={'Применить'} onClick={()=>{
                         console.log(selectVal);
                         axios.post(`http://localhost:3000/api/v1/searches/${id}/newTask`,{
-                            searchResource: radioVal1,
-                            searchAddress: radioVal2
+                            taskType: radioVal1,
+                            locationType: radioVal2,
+                            location: [],
+                            executorId: ''
                         })
                             .then(function (response) {
                                 history.push(`/searches/${id}`)

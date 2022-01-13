@@ -12,6 +12,7 @@ import SearchesPage from "./pages/Searches_Page/SearchesPage";
 import Coordinators from "./pages/Coordinators";
 import SearchDetails from "./pages/Search_Details/SearchDetails";
 import NewTask from './pages/new_task/NewTask';
+import TasksList from './pages/Tasks_List_Page/TasksList';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path={'/searches/:id/coordinators/'} component={Coordinators}/>
             <Route exact path={'/searches/:id/details'} component={SearchDetails}/>
             <Route  path={'/searches/:id/new_task'} component={NewTask}/>
+            <Route path={'/searches/:id/tasks_list'} component={TasksList}/>
         </Switch>
       </Router>
       </div>
