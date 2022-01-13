@@ -37,6 +37,8 @@
 .field {
     margin-left: 20px;
     font-size: larger;
+    width: calc(100% - 40px);
+
 }
 .field select {
     width: 80px;

@@ -12,6 +12,7 @@ import {useHistory, useRouteMatch} from "react-router-dom";
 import axios from "axios";
 import {serverURL} from "../../config";
 import Select from "../../components/select/select";
+import TextField from "../../components/textarea/textarea";
 
 function NewSearchPage() {
 
@@ -21,24 +22,29 @@ function NewSearchPage() {
     const [place, setPlace] = useState();
     const [text, setText] = useState();
     const [priority, setPriority] = useState();
-    const [date, setDate] = useState();
     const [time, setTime] = useState();
     const [author, setAuthor] = useState();
-    const [type, setType] = useState();
     const [description, setDescription] = useState();
     const history = useHistory();
     const isNew = useRouteMatch('/searches/new');
     const match = useRouteMatch();
     const id = match.params.id;
 
-    useEffect(() => {
-        axios.get(`${serverURL}/api/v1/searches/new`).then(function (response) {
+    function axiosGet() {
+        axios.get(`${serverURL}/api/v1/searches/${id}/events`).then(function (response) {
             setData(response.data)
         }).catch(function (error) {
             console.log('error')
         }).then(function () {
             // always executed
-        });
+        })
+    }
+
+    useEffect(() => {
+        if (isNew) {
+            return null
+        }
+        return axiosGet();
     }, []);
 
     function getTable() {
@@ -68,28 +74,21 @@ function NewSearchPage() {
                                 }}
                         >
                         </Select>
-                        <p>Время поиска</p>
-                        <Input type="date" label={'Дата'} onChange={(date) => {
-                            setDate(date)
-                        }}></Input>
-                        <Input type="time" label={'Время'} onChange={(time) => {
+                        <p>Дата и время поиска</p>
+                        <Input shrink type="datetime-local" label={'Дата и время'} onChange={(time) => {
                             setTime(time)
                         }}></Input>
                         <p>Назначте автора задания</p>
                         <Input type="author" label={'Автор'} onChange={(author) => {
                             setAuthor(author)
                         }}></Input>
-                        <p>Выберите тип задания: информативный либо ...</p>
-                        <Input type="type" label={'Тип'} onChange={(type) => {
-                            setType(type)
-                        }}></Input>
-                        <p>Введите описание: "видели"</p>
-                        <Input type="description" label={'Описание'} onChange={(description) => {
-                            setDescription(description)
-                        }}></Input>
+                        <p>Введите основные детали, примечания</p>
+                        <TextField style={{width: '100%'}} type="description" label={'Описание'}
+                                   onChange={(description) => {
+                                       setDescription(description)
+                                   }}></TextField>
                     </div>
                 </ModalWindow>
-
 
             </div>
             <div className={'table'}>
@@ -101,20 +100,19 @@ function NewSearchPage() {
     function Actions(close) {
         return (<div className={'save'}>
             <Button value={'Сохранить'} onClick={() => {
-                axios.post(`${serverURL}/api/v1/searches/${id}/new_event`, {
+                axios.post(`${serverURL}/api/v1/searches/${id}/events`, {
                     "priority": priority,
-                    "date": date,
-                    "time": time,
+                    "when": new Date(time),
                     "author": author,
-                    "type": type,
                     "description": description
                 })
                     .then(function (resp) {
-                       close()
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                        close()
+                    }).catch(function (error) {
+                    console.log(error);
+                }).then(function () {
+                    axiosGet()
+                })
             }}></Button>
 
             <Button value={'Отменить'} onClick={() => {
@@ -165,16 +163,11 @@ function NewSearchPage() {
         },
         {
             id: 4,
-            field: 'type',
-            label: 'Тип',
-        },
-        {
-            id: 5,
             field: 'description',
             label: 'Описание',
         },
         {
-            id: 6,
+            id: 5,
             field: ' ',
             label: 'Действие',
             cellRenderer: Do
@@ -205,26 +198,33 @@ function NewSearchPage() {
                 <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
                     setText(text)
                 }}></TextArea>
-
             </div>
 
             {getTable()}
 
             <div className={'buttonStart'}>
-                <Button value={'Начать'} onClick={() => {
-                    axios.post(`${serverURL}/api/v1/searches/new`, {
+                <Button value={isNew ? 'Начать' : 'Сохранить'} onClick={() => {
+                    if (isNew) {
+                        return axios.post(`${serverURL}/api/v1/searches/new`, {
+                            "first name": firstName,
+                            "last name": lastName,
+                            "place": place,
+                            "text": text
+                        })
+                            .then(function (resp) {
+                                history.push(`/searches/${resp.data.id}/edit`);
+                            })
+                            .catch(function (error) {
+                                history.push(`/searches/1/edit`);
+                                console.log(error);
+                            });
+                    }
+                    return axios.put(`${serverURL}/api/v1/searches/${id}`, {
                         "first name": firstName,
                         "last name": lastName,
                         "place": place,
                         "text": text
                     })
-                        .then(function (resp) {
-                            history.push(`/searches/${resp.data.id}/edit`);
-                        })
-                        .catch(function (error) {
-                            history.push(`/searches/1/edit`);
-                            console.log(error);
-                        });
                 }}></Button>
             </div>
         </div>

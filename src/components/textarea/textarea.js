@@ -13,6 +13,7 @@ function TextArea(props) {
                        disabled={props.disabled}
                        label={props.label}
                        value={props.value}
+                       style={props.style}
                        onChange={onChange}>
             </TextField>
         </div>
