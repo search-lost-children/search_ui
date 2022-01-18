@@ -29,8 +29,8 @@ function App() {
         <Switch>
             <GuardedRoute path={'/documentation'} component={DocumentationPage}/>
             <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
-            <GuardedRoute path={'/searches/:id/coordinators/'} component={Coordinators}/>
-            <GuardedRoute path={'/searches/:id/new_task'} component={NewTask}/>
+            <GuardedRoute exact path={'/searches/:id/coordinators/'} component={Coordinators}/>
+            <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>
             <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
             <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
             <Route exact path={'/login_page'} component={Login_page}/>

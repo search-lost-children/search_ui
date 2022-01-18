@@ -5,6 +5,7 @@ import Radio from "../../components/radio/radio";
 import Select from "../../components/select/select";
 import Button from "../../components/button/button";
 import axios from "axios";
+import Map from "../../components/map/Map";
 
 function NewTask() {
     const [radioVal1, setRadioVal1 ] = useState('');
@@ -65,7 +66,7 @@ function NewTask() {
                     <Radio name={'RadioButton2'} checked={radioVal2 === 'маршрут'} label={'Путь'} value={'маршрут'} onChange={(val)=>{setRadioVal2(val)}}></Radio>
             </div>
             <div className="Map">
-                    <p> ТУТ БУДЕТ КАРТА</p>
+                    <Map />
             </div>
             <div className="Button">
                     <Button value={'Применить'} onClick={()=>{
