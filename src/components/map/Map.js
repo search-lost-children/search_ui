@@ -1,4 +1,4 @@
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps"
+import { GoogleMap, Marker, withGoogleMap, withScriptjs, Polyline} from "react-google-maps"
 import { compose, withProps } from "recompose"
 
 
@@ -14,9 +14,9 @@ const Map = compose(
 )((props) =>
     <GoogleMap
         defaultZoom={8}
-        defaultCenter={{ lat: -34.397, lng: 150.644 }}
+        defaultCenter={props.defaultCenter}
     >
-         <Marker position={{ lat: -34.397, lng: 150.644 }} />
+        {props.children}
     </GoogleMap>
 )
 
