@@ -14,6 +14,8 @@ function Coordinates() {
     const [lostName, setLostName] = useState({})
     const [coordinates, setCoordinates] = useState([])
     const [taskList, setTaskList] = useState([])
+    const [latitude, setLatitude] = useState(0)
+    const [longitude, setLongitude] = useState(0)
 
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/`)
@@ -37,6 +39,29 @@ function Coordinates() {
             .catch(function (error) {
 
             })
+        let timerId = setInterval(function (){
+            function success(position) {
+                setLatitude(position.coords.latitude)
+                setLongitude(position.coords.longitude)
+
+                axios.post(`${serverURL}/api/v1/searches/${id}/me`, [
+                    latitude, longitude
+                ])
+                    .then(function (response) {
+
+                    })
+                    .catch(function (error) {
+                        console.error("Братан, данные не отправились")
+                    });
+            }
+            function error() {
+                console.error('Невозможно получить ваше местоположение')
+            }
+
+            if (!navigator.geolocation) {
+                console.error('Geolocation не поддерживается вашим устройством/браузером')
+            } else {
+                navigator.geolocation.getCurrentPosition(success, error);}}, 60000)
     }, [match.params.id]);
 
 
@@ -46,6 +71,34 @@ function Coordinates() {
             tasksList.push()
         }
     }
+
+    function DDOS(){
+        let timerId = setInterval(function (){
+            function success(position) {
+                setLatitude(position.coords.latitude)
+                setLongitude(position.coords.longitude)
+
+                axios.post(`${serverURL}/api/v1/searches/${id}/coordinators`, [
+                    latitude, longitude
+                ])
+                    .then(function (response) {
+
+                    })
+                    .catch(function (error) {
+
+                    });
+                clearInterval(timerId)
+            }
+            function error() {
+                console.error('Невозможно получить ваше местоположение')
+            }
+
+            if (!navigator.geolocation) {
+                console.error('Geolocation не поддерживается вашим устройством/браузером')
+            } else {
+                navigator.geolocation.getCurrentPosition(success, error);}}, 60000)
+
+
 
 
     return (
@@ -69,4 +122,4 @@ function Coordinates() {
             </div>
         </div>
     );
-}
+}}
