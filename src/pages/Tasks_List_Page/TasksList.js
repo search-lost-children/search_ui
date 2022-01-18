@@ -3,6 +3,7 @@ import React, {useState, useEffect}from 'react';
 import './TasksList.css'
 import axios from "axios";
 import {serverURL} from "../../config";
+import {useRouteMatch} from "react-router-dom";
 
 
 function TasksList() {
@@ -30,8 +31,11 @@ function TasksList() {
             label: 'Исполнитель'
         },
 ]
+    let match = useRouteMatch()
+    const id = match.params.id
+
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/v1/searches/${id}/newTask`).then(function (response) {
+        axios.get(`http://localhost:3000/api/v1/searches/${id}/tasks`).then(function (response) {
             setRows(response.data)
         }).catch(function (error) {
             console.log('error')
