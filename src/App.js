@@ -13,6 +13,7 @@ import SearchesPage from "./pages/Searches_Page/SearchesPage";
 import Coordinators from "./pages/Coordinators";
 import SearchDetails from "./pages/Search_Details/SearchDetails";
 import NewTask from './pages/new_task/NewTask';
+import NewSearchPage from "./pages/New_Search_Page/NewSearchPage";
 import Login_page from './pages/login_pages/Login'
 import Login_organization from "./pages/login_pages/login_organization";
 import Registration_page from "./pages/login_pages/registration_page";
@@ -29,14 +30,15 @@ function App() {
         <Switch>
             <GuardedRoute path={'/documentation'} component={DocumentationPage}/>
             <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
+            <GuardedRoute exact path={'/searches/new'} component={NewSearchPage}/>
             <GuardedRoute exact path={'/searches/:id/coordinators/'} component={Coordinators}/>
             <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>
+            <GuardedRoute exact path={'/searches/:id/edit'} component={NewSearchPage}/>
             <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
             <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
             <Route exact path={'/login_page'} component={Login_page}/>
             <Route exact path={'/registration_page'} component={Registration_page}/>
             <Route exact path={'/registration_error'} component={Registration_error}/>
-
         </Switch>
       </Router>
       </div>

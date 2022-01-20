@@ -1,5 +1,5 @@
 import './textarea.css'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 function TextArea(props) {
     function onChange(event) {
@@ -13,6 +13,7 @@ function TextArea(props) {
                        disabled={props.disabled}
                        label={props.label}
                        value={props.value}
+                       style={props.style}
                        onChange={onChange}>
             </TextField>
         </div>

@@ -2,6 +2,7 @@ select {
     cursor: pointer;
     border-radius: 10px;
     background-color: beige;
+    min-width: 100px;
 }
 select:hover {
     background-color: #a5a58d;

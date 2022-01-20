@@ -1,5 +1,5 @@
 import './input.css'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 function Input(props) {
     function onChange(event) {
@@ -16,7 +16,8 @@ function Input(props) {
                 label={props.label}
                 value={props.value}
                 onChange={onChange}
-                variant="outlined">
+                variant="outlined"
+                InputLabelProps={{ shrink: props.shrink }}>
             </TextField>
         </div>
     );

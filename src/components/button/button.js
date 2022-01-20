@@ -1,9 +1,9 @@
 import './button.css';
-import UiButton from '@material-ui/core/Button';
+import UiButton from '@mui/material/Button';
 
 function Button(props) {
     const variant = (props.variant ? (props.variant) : "outlined")
-    const color = (props.color ? (props.color) : "default")
+    const color = (props.color ? (props.color) : "primary")
 
     function onClick() {
         props.onClick()
@@ -15,7 +15,8 @@ function Button(props) {
                 disabled={props.disabled}
                 variant={variant}
                 color={color}
-                onClick={onClick}>
+                onClick={onClick}
+            >
                 {props.value}
             </UiButton>
         </div>

@@ -1,0 +1,45 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+.whenFind, .place{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+.event {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.map_small {
+    border: 1px solid black;
+    height: 53px;
+    width: 50px;
+    margin-left: 20px;
+}
+.buttonStart, .buttonSave{
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.table {
+    width: 100%;
+}
+.field {
+    margin-left: 20px;
+    font-size: larger;
+    width: calc(100% - 40px);
+
+}
+.field select {
+    width: 80px;
+}
