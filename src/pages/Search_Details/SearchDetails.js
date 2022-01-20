@@ -6,6 +6,7 @@ import {useHistory, useRouteMatch} from "react-router-dom";
 import axios from "axios";
 import {serverURL} from "../../config";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
+import Map from "../../components/map/Map";
 
 function SearchDetails() {
     const history = useHistory();
@@ -46,7 +47,9 @@ function SearchDetails() {
     return (<div className={'searchDetails'}>
             <h1>Поиск ФИО</h1>
             <div className={'pageDetails'}>
-                <div className={'map'}></div>
+                <div className={'map'}>
+                    <Map />
+                </div>
                 <div className={'info'}>
                     <div className={'buttons'}>
                         <Button value={'Учасники'} onClick={() => {
