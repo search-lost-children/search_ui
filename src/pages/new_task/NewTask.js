@@ -70,11 +70,11 @@ function NewTask() {
             <div className="Button">
                     <Button value={'Применить'} onClick={()=>{
                         console.log(selectVal);
-                        axios.post(`http://localhost:3000/api/v1/searches/${id}/task`,{
+                        axios.post(`http://localhost:3000/api/v1/searches/${id}/tasks`,{
                             taskType: radioVal1,
                             locationType: radioVal2,
                             location: [],
-                            executorId: ''
+                            executorId: '1'
                         })
                             .then(function (response) {
                                 history.push(`/searches/${id}`)

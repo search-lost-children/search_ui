@@ -42,7 +42,7 @@ function TasksList() {
         }).then(function () {
           // always executed
         });
-    });
+    }, []);
 
     return (<div className={'tasksListPage'}>
             <h2>Список задач</h2>
