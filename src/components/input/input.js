@@ -3,7 +3,10 @@ import TextField from '@mui/material/TextField';
 
 function Input(props) {
     function onChange(event) {
-        const value = event.target.value;
+        let value = event.target.value;
+        if (props.type ==='file') {
+            value = event.target.files
+        }
         props.onChange(value)
     }
 

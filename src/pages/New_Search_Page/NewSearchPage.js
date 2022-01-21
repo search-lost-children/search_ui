@@ -25,6 +25,7 @@ function NewSearchPage() {
     const [time, setTime] = useState();
     const [author, setAuthor] = useState();
     const [description, setDescription] = useState();
+    const [photo, setPhoto] = useState();
     const history = useHistory();
     const isNew = useRouteMatch('/searches/new');
     const match = useRouteMatch();
@@ -104,7 +105,7 @@ function NewSearchPage() {
                     "priority": priority,
                     "when": new Date(time),
                     "author": author,
-                    "description": description
+                    "description": description,
                 })
                     .then(function (resp) {
                         close()
@@ -198,6 +199,18 @@ function NewSearchPage() {
                 <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
                     setText(text)
                 }}></TextArea>
+                <div className={'photo'}>
+                    <p>Прикрепите фото человека, которого ищете:</p>
+                    <Input type={'file'} onChange={(photo) => {
+                        const reader = new FileReader();
+                        const file = photo[0];
+                        reader.readAsDataURL(file);
+                        reader.addEventListener('load', (event) => {
+                            setPhoto(event.target.result)
+                        });
+                    }}></Input>
+                    {photo ? <img className={'img'} src={photo} /> : null}
+                </div>
             </div>
 
             {getTable()}
@@ -209,7 +222,8 @@ function NewSearchPage() {
                             "first name": firstName,
                             "last name": lastName,
                             "place": place,
-                            "text": text
+                            "text": text,
+                            "photo": photo
                         })
                             .then(function (resp) {
                                 history.push(`/searches/${resp.data.id}/edit`);
@@ -223,7 +237,8 @@ function NewSearchPage() {
                         "first name": firstName,
                         "last name": lastName,
                         "place": place,
-                        "text": text
+                        "text": text,
+                        "photo": photo
                     })
                 }}></Button>
             </div>
