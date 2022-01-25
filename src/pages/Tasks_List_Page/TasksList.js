@@ -5,7 +5,6 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import {useRouteMatch} from "react-router-dom";
 
-
 function TasksList() {
     const [rows, setRows ] = useState([]);
     const columns = [
@@ -13,7 +12,6 @@ function TasksList() {
             id: 1,
             field: 'taskType',
             label: 'Индивидуально/Группа'
-
         },
         {
             id: 2,
@@ -49,7 +47,6 @@ function TasksList() {
             <div className={'table'}>
                 <GridTable columns={columns} rows={rows}></GridTable>
             </div>
-
         </div>
     )
 }
