@@ -1,0 +1,22 @@
+.squadsPage {
+    border: 1px solid black;
+    width: 100%;
+}
+
+.Title {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.table {
+    border: 1px solid gray;
+    width: 100%;
+    align-content: center;
+}
+
+.Button {
+    margin-top: 100px;
+    display: flex;
+    height: 50px;
+}
