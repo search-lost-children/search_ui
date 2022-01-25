@@ -31,12 +31,21 @@
     margin-bottom: 10px;
 }
 
+.img {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    margin: 20px;
+}
+
 .table {
     width: 100%;
 }
 .field {
     margin-left: 20px;
     font-size: larger;
+    width: calc(100% - 40px);
+
 }
 .field select {
     width: 80px;

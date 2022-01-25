@@ -3,7 +3,10 @@ import TextField from '@mui/material/TextField';
 
 function Input(props) {
     function onChange(event) {
-        const value = event.target.value;
+        let value = event.target.value;
+        if (props.type ==='file') {
+            value = event.target.files
+        }
         props.onChange(value)
     }
 
@@ -16,7 +19,8 @@ function Input(props) {
                 label={props.label}
                 value={props.value}
                 onChange={onChange}
-                variant="outlined">
+                variant="outlined"
+                InputLabelProps={{ shrink: props.shrink }}>
             </TextField>
         </div>
     );
