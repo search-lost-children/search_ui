@@ -17,6 +17,7 @@ import Login_page from './pages/login_pages/Login'
 import Login_organization from "./pages/login_pages/login_organization";
 import Registration_page from "./pages/login_pages/registration_page";
 import Registration_error from "./pages/login_pages/registration_error";
+import Coordinates from "./pages/Coordinates";
 import GuardedRoute from "./guarded";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <GuardedRoute path={'/searches/:id/new_task'} component={NewTask}/>
             <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
             <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
+            <GuardedRoute exact path={'/searches/:id/coordinates'} component={Coordinates}/>
             <Route exact path={'/login_page'} component={Login_page}/>
             <Route exact path={'/registration_page'} component={Registration_page}/>
             <Route exact path={'/registration_error'} component={Registration_error}/>
