@@ -19,8 +19,8 @@ function NewSearchPage() {
     const [rows, setData] = useState([]);
     const [firstName, setFName] = useState();
     const [lastName, setLName] = useState();
-    const [place, setPlace] = useState();
-    const [text, setText] = useState();
+    const [coordinates, setCoordinates] = useState({latitude:9, longitude:0});
+    const [info, setInfo] = useState();
     const [priority, setPriority] = useState();
     const [time, setTime] = useState();
     const [author, setAuthor] = useState();
@@ -191,13 +191,13 @@ function NewSearchPage() {
                     <p>Последний раз искали ...</p>
                 </div>
                 <div className={'place'}>
-                    <Input type="place" label={"Точка сбора"} onChange={(place) => {
-                        setPlace(place)
+                    <Input type="coordinates" label={"Точка сбора"} onChange={(coordinates) => {
+                        setCoordinates(coordinates)
                     }}></Input>
                     <div className={'map_small'}></div>
                 </div>
-                <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
-                    setText(text)
+                <TextArea type='info' label={"Вводная информация"} onChange={(info) => {
+                    setInfo(info)
                 }}></TextArea>
                 <div className={'photo'}>
                     <p>Прикрепите фото человека, которого ищете:</p>
@@ -218,11 +218,11 @@ function NewSearchPage() {
             <div className={'buttonStart'}>
                 <Button value={isNew ? 'Начать' : 'Сохранить'} onClick={() => {
                     if (isNew) {
-                        return axios.post(`${serverURL}/api/v1/searches/new`, {
-                            "first name": firstName,
-                            "last name": lastName,
-                            "place": place,
-                            "text": text,
+                        return axios.post(`${serverURL}/api/v1/searches/`, {
+                            "firstName": firstName,
+                            "lastName": lastName,
+                            "coordinates": coordinates,
+                            "info": info,
                             "photo": photo
                         })
                             .then(function (resp) {
@@ -234,10 +234,10 @@ function NewSearchPage() {
                             });
                     }
                     return axios.put(`${serverURL}/api/v1/searches/${id}`, {
-                        "first name": firstName,
-                        "last name": lastName,
-                        "place": place,
-                        "text": text,
+                        "firstName": firstName,
+                        "lastName": lastName,
+                        "coordinates": coordinates,
+                        "info": info,
                         "photo": photo
                     })
                 }}></Button>
