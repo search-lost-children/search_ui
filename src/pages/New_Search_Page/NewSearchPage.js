@@ -13,6 +13,8 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import Select from "../../components/select/select";
 import TextField from "../../components/textarea/textarea";
+import Map from "../../components/map/Map";
+import MapIcon from '@mui/icons-material/Map';
 
 function NewSearchPage() {
 
@@ -175,6 +177,16 @@ function NewSearchPage() {
         }
     ];
 
+    const mapSettings = {
+        onClick: (coords) => {
+            console.log('onClick')
+            debugger
+        },
+        onDblClick: (coords) => {
+            console.log('onDblClick')
+        }
+    }
+
     return (<div className={'newSearchPage'}>
             <h1>ФИО: {firstName} {lastName} </h1>
             <div className={'content'}>
@@ -194,7 +206,17 @@ function NewSearchPage() {
                     <Input type="place" label={"Точка сбора"} onChange={(place) => {
                         setPlace(place)
                     }}></Input>
-                    <div className={'map_small'}></div>
+                    <div className={'map_small'}>
+                        <ModalWindow
+                            trigger={<MapIcon ></MapIcon>}
+                            title={'Modal Title'}>
+                            <div style={{height: '50vh', width:'50vw'}}>
+                                <Map dim={{height: '50vh', width:'50vw'}} map={mapSettings}/>
+                            </div>
+
+                        </ModalWindow>
+
+                    </div>
                 </div>
                 <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
                     setText(text)
