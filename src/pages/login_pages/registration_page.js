@@ -31,8 +31,8 @@ function Registration_page (){
     }
     function verif_good(Password,PasswordVer) {
     if(Password === PasswordVer){
-            alert('password verification ')
-            axios.post('api/v1/users', new_user);
+
+            axios.post('api/v1/registration', new_user);
             history.push('/login_page')
         }
     }
