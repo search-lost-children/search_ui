@@ -1,0 +1,44 @@
+.squadsPage{
+    border: 1px black;
+}
+
+h2{
+    display: flex;
+    height: 50px;
+}
+.Title{
+    display: flex;
+
+}
+.Select1 select {
+    height:15px;
+    width: 150px;
+}
+.Select2 select {
+    height:15px;
+    width: 150px;
+}
+.Select1 {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.Select2 {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Button1 {
+    margin-left: 50px;
+    height:20px;
+}
+.table {
+    width: 100%;
+    align-content: center;
+}
+.Button2 {
+    margin-top: 100px;
+    display: flex;
+    height: 50px;
+}
