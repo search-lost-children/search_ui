@@ -20,6 +20,7 @@ function NewSearchPage() {
     const [firstName, setFName] = useState();
     const [lastName, setLName] = useState();
     const [coordinates, setCoordinates] = useState({latitude:9, longitude:0});
+    const [address, setAddress] = useState('');
     const [info, setInfo] = useState();
     const [priority, setPriority] = useState();
     const [time, setTime] = useState();
@@ -191,8 +192,8 @@ function NewSearchPage() {
                     <p>Последний раз искали ...</p>
                 </div>
                 <div className={'place'}>
-                    <Input type="coordinates" label={"Точка сбора"} onChange={(coordinates) => {
-                        setCoordinates(coordinates)
+                    <Input type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
+                        setAddress(addressToSave)
                     }}></Input>
                     <div className={'map_small'}></div>
                 </div>
@@ -222,6 +223,7 @@ function NewSearchPage() {
                             "firstName": firstName,
                             "lastName": lastName,
                             "coordinates": coordinates,
+                            "address": address,
                             "info": info,
                             "photo": photo
                         })
@@ -237,6 +239,7 @@ function NewSearchPage() {
                         "firstName": firstName,
                         "lastName": lastName,
                         "coordinates": coordinates,
+                        "address": address,
                         "info": info,
                         "photo": photo
                     })
