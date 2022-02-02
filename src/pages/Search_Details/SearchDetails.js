@@ -48,7 +48,7 @@ function SearchDetails() {
             <h1>Поиск ФИО</h1>
             <div className={'pageDetails'}>
                 <div className={'map'}>
-                    <Map />
+                    <Map dim={{height:'100%', width:'100%'}}/>
                 </div>
                 <div className={'info'}>
                     <div className={'buttons'}>
