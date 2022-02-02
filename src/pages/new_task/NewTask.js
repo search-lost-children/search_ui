@@ -66,7 +66,7 @@ function NewTask() {
                     <Radio name={'RadioButton2'} checked={radioVal2 === 'маршрут'} label={'Путь'} value={'маршрут'} onChange={(val)=>{setRadioVal2(val)}}></Radio>
             </div>
             <div className="Map">
-                    <Map />
+                    <Map dim={{width: '100%', height:'100%'}} />
             </div>
             <div className="Button">
                     <Button value={'Применить'} onClick={()=>{
