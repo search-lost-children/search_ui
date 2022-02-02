@@ -8,11 +8,13 @@ import axios from "axios";
 import Map from "../../components/map/Map";
 
 function NewTask() {
-    const [radioVal1, setRadioVal1 ] = useState('');
-    const [radioVal2, setRadioVal2 ] = useState('');
+    const [groupOrIndividual, setGroupOrIndividual ] = useState('group');
+    const [WayOrSquare, setWayOrSquare ] = useState('way');
     const [selectVal, setSelectVal] = useState('');
     const [DataPart, setDataPart]= useState([]);
     const [DataSq, setDataSq]= useState([]);
+    const [waypoints, setWaypoints] = useState([])
+
     const history = useHistory();
     let match = useRouteMatch()
     const id = match.params.id
@@ -33,7 +35,7 @@ function NewTask() {
 
     let arr;
 
-    if (radioVal1==='поисковая группа'){
+    if (groupOrIndividual==='group'){
         arr = DataSq
     }else {
         arr = DataPart
@@ -46,12 +48,30 @@ function NewTask() {
         }
     })
 
+    const mapSettings = {
+        onClick: (coords) => {
+            const _waypoints = [...waypoints];
+            _waypoints.push({
+                lat:coords.lat,
+                lng: coords.lng
+            })
+            setWaypoints(_waypoints)
+        }
+    }
+
+    const mapWaypoints = {}
+    if(WayOrSquare === 'square') {
+        mapWaypoints.square=waypoints
+    } else {
+        mapWaypoints.pathes = [waypoints]
+    }
+
     return (
         <div className="New Task">
             <h2>Новое задание</h2>
             <div className="Radio">
-                    <Radio name={'RadioButton1'} checked={radioVal1 === 'поисковая группа'} label={'Экипаж'} value={'поисковая группа'} onChange={(val)=>{setRadioVal1(val)}}></Radio>
-                    <Radio name={'RadioButton1'} checked={radioVal1 === 'один человек'} label={'Индивидуально'} value={'один человек'} onChange={(val)=>{setRadioVal1(val)}}></Radio>
+                    <Radio name={'groupOrIndividual'} checked={groupOrIndividual === 'group'} label={'Экипаж'} value={'group'} onChange={(val)=>{setGroupOrIndividual(val)}}></Radio>
+                    <Radio name={'groupOrIndividual'} checked={groupOrIndividual === 'individual'} label={'Индивидуально'} value={'individual'} onChange={(val)=>{setGroupOrIndividual(val)}}></Radio>
             </div>
             <div className="Select">
                     <Select
@@ -62,19 +82,19 @@ function NewTask() {
                     </Select>
             </div>
             <div className="Radio" >
-                    <Radio name={'RadioButton2'} checked={radioVal2 === 'область карты'} label={'Область'} value={'область карты'} onChange={(val)=>{setRadioVal2(val)}}></Radio>
-                    <Radio name={'RadioButton2'} checked={radioVal2 === 'маршрут'} label={'Путь'} value={'маршрут'} onChange={(val)=>{setRadioVal2(val)}}></Radio>
+                    <Radio name={'RadioButton2'} checked={WayOrSquare === 'square'} label={'Область'} value={'square'} onChange={(val)=>{setWayOrSquare(val); setWaypoints([])}}></Radio>
+                    <Radio name={'RadioButton2'} checked={WayOrSquare === 'way'} label={'Путь'} value={'way'} onChange={(val)=>{setWayOrSquare(val); setWaypoints([])}}></Radio>
             </div>
             <div className="Map">
-                    <Map dim={{width: '100%', height:'100%'}} />
+                    <Map {...mapWaypoints} map={mapSettings} dim={{width: '100%', height:'100%'}} />
             </div>
             <div className="Button">
                     <Button value={'Применить'} onClick={()=>{
                         console.log(selectVal);
                         axios.post(`http://localhost:3000/api/v1/searches/${id}/tasks`,{
-                            taskType: radioVal1,
-                            locationType: radioVal2,
-                            location: [],
+                            taskType: groupOrIndividual,
+                            locationType: WayOrSquare,
+                            location: waypoints,
                             executorId: '1'
                         })
                             .then(function (response) {
