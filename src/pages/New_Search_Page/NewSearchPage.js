@@ -20,6 +20,7 @@ function NewSearchPage() {
     const [rows, setData] = useState([]);
     const [firstName, setFName] = useState();
     const [lastName, setLName] = useState();
+    const [date, setDate] = useState();
     const [coordinates, setCoordinates] = useState();
     const [address, setAddress] = useState('');
     const [info, setInfo] = useState();
@@ -179,6 +180,7 @@ function NewSearchPage() {
 
     function onMapApply(coords) {
         setCoordinates(coords)
+        setAddress(JSON.stringify(coords))
     }
 
     return (<div className={'newSearchPage'}>
@@ -196,17 +198,24 @@ function NewSearchPage() {
                     </IconButton>
                     <p>Последний раз искали ...</p>
                 </div>
+                <div className={'date'}>
+                    <Input shrink type="datetime-local" label={"Дата пропажи"} onChange={(date) => {
+                        setDate(date)
+                    }}></Input>
+                </div>
                 <div className={'place'}>
-                    <Input type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
+                    <Input value={address} type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
                         setAddress(addressToSave)
                     }}></Input>
                     <div className={'map_small'}>
                         <MapInModal onApply={onMapApply}></MapInModal>
                     </div>
                 </div>
+                <div className={"info"}>
                 <TextArea type='info' label={"Вводная информация"} onChange={(info) => {
                     setInfo(info)
                 }}></TextArea>
+                </div>
                 <div className={'photo'}>
                     <p>Прикрепите фото человека, которого ищете:</p>
                     <Input type={'file'} onChange={(photo) => {
@@ -229,6 +238,7 @@ function NewSearchPage() {
                         return axios.post(`${serverURL}/api/v1/searches/`, {
                             "firstName": firstName,
                             "lastName": lastName,
+                            "date": date,
                             "coordinates": coordinates,
                             "address": address,
                             "info": info,
@@ -245,6 +255,7 @@ function NewSearchPage() {
                     return axios.put(`${serverURL}/api/v1/searches/${id}`, {
                         "firstName": firstName,
                         "lastName": lastName,
+                        "date": date,
                         "coordinates": coordinates,
                         "address": address,
                         "info": info,
