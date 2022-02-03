@@ -31,7 +31,7 @@ function App() {
                 <GuardedRoute path={'/documentation'} component={DocumentationPage}/>
                 <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
                 <GuardedRoute exact path={'/searches/new'} component={NewSearchPage}/>
-                <GuardedRoute exact path={'/searches/:id/coordinators/'} component={Coordinators}/>
+                <GuardedRoute exact path={'/searches/:id/coordinators'} component={Coordinators}/>
                 <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>
                 <GuardedRoute exact path={'/searches/:id/edit'} component={NewSearchPage}/>
                 <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
