@@ -16,9 +16,12 @@ function ModalWindow(props) {
                     <div className="content">
                         {props.children}
                     </div>
-                    <div className="actions">
-                        { props.actions ? (props.actions(close)) : null }
-                    </div>
+                        { props.actions ? (
+                            <div className="actions">
+                                <props.actions close={close}></props.actions>
+                            </div>
+                        ) :null }
+
                 </div>)}
             </Popup>
         </div>

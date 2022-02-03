@@ -29,7 +29,7 @@ function SearchDetails() {
         })
     });
 
-    function Actions(close) {
+    function Actions({close}) {
         return (<div className={'space'}>
             <Button value={'ДА'} color="secondary" onClick={() => {
                 axios.delete(`${serverURL}/api/v1/searches/${id}`).then(() => {
