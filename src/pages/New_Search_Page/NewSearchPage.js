@@ -13,8 +13,6 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import Select from "../../components/select/select";
 import TextField from "../../components/textarea/textarea";
-import Map from "../../components/map/Map";
-import MapIcon from '@mui/icons-material/Map';
 import MapInModal from "./MapInModal";
 
 function NewSearchPage() {
@@ -22,7 +20,7 @@ function NewSearchPage() {
     const [rows, setData] = useState([]);
     const [firstName, setFName] = useState();
     const [lastName, setLName] = useState();
-    const [coordinates, setCoordinates] = useState({latitude:9, longitude:0});
+    const [coordinates, setCoordinates] = useState();
     const [address, setAddress] = useState('');
     const [info, setInfo] = useState();
     const [priority, setPriority] = useState();
@@ -180,7 +178,7 @@ function NewSearchPage() {
     ];
 
     function onMapApply(coords) {
-
+        setCoordinates(coords)
     }
 
     return (<div className={'newSearchPage'}>
