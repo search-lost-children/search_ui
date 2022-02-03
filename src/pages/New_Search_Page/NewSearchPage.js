@@ -13,6 +13,9 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import Select from "../../components/select/select";
 import TextField from "../../components/textarea/textarea";
+import Map from "../../components/map/Map";
+import MapIcon from '@mui/icons-material/Map';
+import MapInModal from "./MapInModal";
 
 function NewSearchPage() {
 
@@ -99,7 +102,7 @@ function NewSearchPage() {
         </div>)
     }
 
-    function Actions(close) {
+    function Actions({close}) {
         return (<div className={'save'}>
             <Button value={'Сохранить'} onClick={() => {
                 axios.post(`${serverURL}/api/v1/searches/${id}/events`, {
@@ -176,6 +179,10 @@ function NewSearchPage() {
         }
     ];
 
+    function onMapApply(coords) {
+
+    }
+
     return (<div className={'newSearchPage'}>
             <h1>ФИО: {firstName} {lastName} </h1>
             <div className={'content'}>
@@ -195,7 +202,9 @@ function NewSearchPage() {
                     <Input type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
                         setAddress(addressToSave)
                     }}></Input>
-                    <div className={'map_small'}></div>
+                    <div className={'map_small'}>
+                        <MapInModal onApply={onMapApply}></MapInModal>
+                    </div>
                 </div>
                 <TextArea type='info' label={"Вводная информация"} onChange={(info) => {
                     setInfo(info)
