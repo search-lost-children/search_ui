@@ -29,7 +29,7 @@ function SearchDetails() {
         })
     });
 
-    function Actions(close) {
+    function Actions({close}) {
         return (<div className={'space'}>
             <Button value={'ДА'} color="secondary" onClick={() => {
                 axios.delete(`${serverURL}/api/v1/searches/${id}`).then(() => {
@@ -48,7 +48,7 @@ function SearchDetails() {
             <h1>Поиск ФИО</h1>
             <div className={'pageDetails'}>
                 <div className={'map'}>
-                    <Map />
+                    <Map dim={{height:'100%', width:'100%'}}/>
                 </div>
                 <div className={'info'}>
                     <div className={'buttons'}>

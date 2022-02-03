@@ -80,7 +80,7 @@ function DocumentationPage() {
         }
     ];
 
-    function Actions(close) {
+    function Actions({close}) {
         return (<Button
             className="button"
             value={'Close'}

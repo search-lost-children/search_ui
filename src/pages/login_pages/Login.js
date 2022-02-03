@@ -4,13 +4,15 @@ import Button from "../../components/button/button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Snackbar from '@mui/material/Snackbar';
-
+import { login, logout } from '../../features/userSlice'
+import { useDispatch } from "react-redux";
 
 function Login_page (){
     const [Login, setLogin] = useState('');
     const [Password, setPassword] = useState('');
     const history  = useHistory();
     const [open, setOpen] = React.useState(false);
+    const dispatch = useDispatch()
 
     let user =
         {
@@ -24,8 +26,8 @@ function Login_page (){
                 function (res) {
                     if(res.data){
                         sessionStorage.setItem('json', res.data);
+                        dispatch(login(res.data))
                         history.push('/');
-
                     }
                 }, (resp) => {
                     setOpen(true)
@@ -35,9 +37,6 @@ function Login_page (){
 
 
     }
-
-
-
     function user_verification (login,Password) {
         if (login === '') {
             return(true)

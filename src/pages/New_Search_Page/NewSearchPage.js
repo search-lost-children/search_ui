@@ -15,6 +15,7 @@ import Select from "../../components/select/select";
 import TextField from "../../components/textarea/textarea";
 import Map from "../../components/map/Map";
 import MapIcon from '@mui/icons-material/Map';
+import MapInModal from "./MapInModal";
 
 function NewSearchPage() {
 
@@ -100,7 +101,7 @@ function NewSearchPage() {
         </div>)
     }
 
-    function Actions(close) {
+    function Actions({close}) {
         return (<div className={'save'}>
             <Button value={'Сохранить'} onClick={() => {
                 axios.post(`${serverURL}/api/v1/searches/${id}/events`, {
@@ -177,14 +178,8 @@ function NewSearchPage() {
         }
     ];
 
-    const mapSettings = {
-        onClick: (coords) => {
-            console.log('onClick')
-            debugger
-        },
-        onDblClick: (coords) => {
-            console.log('onDblClick')
-        }
+    function onMapApply(coords) {
+
     }
 
     return (<div className={'newSearchPage'}>
@@ -207,15 +202,7 @@ function NewSearchPage() {
                         setPlace(place)
                     }}></Input>
                     <div className={'map_small'}>
-                        <ModalWindow
-                            trigger={<MapIcon ></MapIcon>}
-                            title={'Modal Title'}>
-                            <div style={{height: '50vh', width:'50vw'}}>
-                                <Map dim={{height: '50vh', width:'50vw'}} map={mapSettings}/>
-                            </div>
-
-                        </ModalWindow>
-
+                        <MapInModal onApply={onMapApply}></MapInModal>
                     </div>
                 </div>
                 <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
