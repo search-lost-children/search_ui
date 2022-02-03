@@ -1,53 +1,75 @@
 import React, {useState} from 'react';
 import Input from "../../components/input/input";
 import Button from "../../components/button/button";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar/Snackbar";
 
-function Registration_page (){
+function Registration_page() {
 
-    const [NewLogin,setNewLogin] = useState('');
-    const [NewPassword,setNewPassword] = useState('');
-    const [NewPasswordVer,setNewPasswordVer] = useState('');
-    const history  = useHistory();
-    let new_user =
-            {
-                login: NewLogin, password: NewPassword
-            }
+    const [NewLogin, setNewLogin] = useState('');
+    const [NewFirstName, setNewFirstName] = useState('');
+    const [NewLastName, setNewLastName] = useState('');
+    const [NewPhoneNumber, setNewPhoneNumber] = useState('');
+    const [NewPassword, setNewPassword] = useState('');
+    const [NewPasswordVer, setNewPasswordVer] = useState('');
+    const [NewError, setNewError] = useState('');
+    const [open, setOpen] = React.useState(false);
+    const history = useHistory();
 
 
-    function verification (Password,PasswordVer,login) {
+    function verification() {
 
-        if ( Password === ''|| PasswordVer === ''||login === ''){
-            return (true)
-        }
-        else if(Password !== PasswordVer){
-            alert(' failed verification ')
-            return (true)
-        }
-        else{
-            return (false)
-        }
+        return (!NewLogin) || (!NewPassword) || !(NewPassword === NewPasswordVer) || (!NewPhoneNumber) || (!NewFirstName)
+
     }
-    function verif_good(Password,PasswordVer) {
-    if(Password === PasswordVer){
 
-            axios.post('api/v1/registration', new_user);
+    async function verif_good(Password, PasswordVer) {
+
+
+        axios.post('http://localhost:3000/api/v1/registration', {
+            login: NewLogin,
+            password: NewPassword,
+            firstName: NewFirstName,
+            lastName: NewLastName,
+            phoneNumber: NewPhoneNumber
+        }).then(() => {
             history.push('/login_page')
-        }
+        }, ({response}) => {
+            if (response.data.code === 23505) {
+                setNewError("login is already taken")
+            }else{
+                setNewError(`invalid value in the ${response.data.details[0].context.key} field`)
+            }
+            setOpen(true)
+        });
     }
-    return(
+    return (
         <div className="About">
             <h1>Registration page</h1>
-            <p>login</p>
-            <Input type='login' label={'Login'} value={NewLogin} onChange={(val)=> setNewLogin((val))}></Input>
-            <p>password</p>
-            <Input type='password' label={'password'} value={NewPassword} onChange={(val)=> setNewPassword((val))}></Input>
 
-            <p>password verification</p>
-            <Input type='password' label={'password'} value={NewPasswordVer} onChange={(val)=> setNewPasswordVer((val))}></Input>
+            <Input type='login' label={'Login'} value={NewLogin} onChange={(val) => setNewLogin((val))}></Input>
+            <Input type='string' label={'имя'} value={NewFirstName} onChange={(val) => setNewFirstName((val))}></Input>
+            <Input type='string' label={'фамилия'} value={NewLastName}
+                   onChange={(val) => setNewLastName((val))}></Input>
+            <Input type='string' label={'номер телефона'} value={NewPhoneNumber}
+                   onChange={(val) => setNewPhoneNumber((val))}></Input>
+            <Input type='password' label={'пароль'} value={NewPassword}
+                   onChange={(val) => setNewPassword((val))}></Input>
+            <Input type='password' label={'подтверждение пароля'} value={NewPasswordVer}
+                   onChange={(val) => setNewPasswordVer((val))}></Input>
 
-            <Button disabled = {verification()} value={'Registration'} onClick={()=>verif_good(NewPassword, NewPasswordVer, NewLogin)}></Button>
+            <Button disabled={verification()} value={'Registration'} onClick={() => verif_good()}></Button>
+
+
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={() => {
+                    setOpen(false)
+                }}
+                message={NewError}
+            />
         </div>
     )
 }
