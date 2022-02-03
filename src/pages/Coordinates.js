@@ -3,8 +3,6 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useRouteMatch} from "react-router-dom";
 import TaskString from "../components/taskString/taskString";
-import tableCells from './Coordinates.css'
-
 
 
 function Coordinates() {
@@ -40,17 +38,6 @@ function Coordinates() {
                 navigator.geolocation.getCurrentPosition(success, error);}}, 60000)
     }
 
-    let test = [{
-        label: "Task1",
-        type: "solo",
-        coordinates: [0.1111111, 0.77777777],
-        status: "open"
-    }, {
-        label: "Task2",
-        type: "group",
-        coordinates: [0.1111111, 0.77777777],
-        status: "open"
-    }]
 
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/`)
@@ -61,11 +48,9 @@ function Coordinates() {
             })
         axios.get(`${serverURL}/api/v1/searches/${id}/tasks`)
             .then(function (response) {
-                // setTasksList(response.data)
-                setTasksList(test)
+                setTasksList(response.data)
             })
             .catch(function (error) {
-                setTasksList(test)
             })
        startSendingCoordinates()
 

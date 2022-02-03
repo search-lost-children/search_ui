@@ -1,0 +1,11 @@
+.tasksListPage {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+}
+
+
+.table {
+    width: 800px;
+    align-content: center;
+}

@@ -22,20 +22,17 @@ function Coordinators() {
     const [selectVal, setSelectVal] = useState('')
     const [lostName, setLostName] = useState({})
     const [tableRows, setTableRows] = useState([])
-    const [participantsVal, setParticipantsVal] = useState([])
-    const [coordinatorsVal, setCoordinatorsVal] = useState([])
+    const [participants, setParticipants] = useState([])
+    const [coordinators, setCoordinators] = useState([])
 
     const id = match.params.id
 
     function getCoordinators(){
         axios.get(`${serverURL}/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
-                //  setCoordinatorsVal(response.data)
-                setCoordinatorsVal(idksomevar)
+                 setCoordinators(response.data)
             })
-            .catch(function (error) {
-                setCoordinatorsVal(idksomevar)
-            })}
+    }
 
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
@@ -55,26 +52,12 @@ function Coordinators() {
                         .then(function (response) {
                             getCoordinators()
                         })
-                        .catch(function (error) {
-                        })}}
+                    }}
                     value = {"Удалить"}
                 >
                 </Button>
             </div>
         )
-    }
-    let idksomevar = [
-        {id: '777', firstName: 'James', lastName:'Raynor'},
-        {id: '122', firstName: 'Sara', lastName:'Kerrigan'}]
-    let idksomevar1 = [
-        {id: '777', firstName: 'James', lastName:'Raynor'},
-        {id: '122', firstName: 'Sara', lastName:'Kerrigan'},
-        {id: '364', firstName: 'Tychus', lastName:'Findly'}]
-    let lostNNName = {
-        id: '56735',
-        date: '17.10.2011',
-        firstName: 'Terra',
-        lastName: 'Nova'
     }
     const columns = [
         {
@@ -90,60 +73,20 @@ function Coordinators() {
             cellRenderer: DeleteButton
         },
     ];
-    const rows = [
-        {
-            id: 2154,
-            firstName: "Some",
-            lastName: "Name"
-        },
-        {
-            id: 2356,
-            firstName: "rghk",
-            lastName: "ghfjg"
-        },
-        {
-            id: 4578,
-            firstName: "fghjgfj",
-            lastName: "fghjfhjf"
-        }
-    ];
 
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/participants`)
             .then(function (response) {
-                // setParticipantsVal(response.data)
-                setParticipantsVal(idksomevar1)
-            })
-            .catch(function (error) {
-                setParticipantsVal(idksomevar1)
+                setParticipants(response.data)
             })
         getCoordinators()
-        axios.get(`${serverURL}/api/v1/searches/${id}/`)
-            .then(function (response) {
-                //  setCoordinatorsVal(response.data)
-                setLostName(lostNNName)
-            })
-            .catch(function (error) {
-                setLostName(lostNNName)
-            })
-        axios.get(`${serverURL}/api/v1/searches/${id}/tableRows`)
-            .then(function (response) {
-                //  setCoordinatorsVal(response.data)
-                setTableRows(rows)
-            })
-            .catch(function (error) {
-                setTableRows(rows)
-            })
-    }, [match.params.id]);
-    useEffect(() => {
-
     }, [match.params.id]);
 
     function filtering() {
         let sortedListOfParticipants = []
-        for (let i = 0; i < participantsVal.length; i++) {
-            if (!coordinatorsVal.find((el) => el.id === participantsVal[i].id)) {
-                sortedListOfParticipants.push(participantsVal[i])
+        for (let i = 0; i < participants.length; i++) {
+            if (!coordinators.find((el) => el.id === participants[i].id)) {
+                sortedListOfParticipants.push(participants[i])
             }
         }
         return sortedListOfParticipants.map((el) => ({

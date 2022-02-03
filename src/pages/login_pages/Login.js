@@ -3,11 +3,16 @@ import Input from "../../components/input/input";
 import Button from "../../components/button/button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { login, logout } from '../../features/userSlice'
+import { useDispatch } from "react-redux";
+
 
 function Login_page (){
     const [Login, setLogin] = useState('');
     const [Password, setPassword] = useState('');
     const history  = useHistory();
+    const dispatch = useDispatch()
+
 
     let user =
         {
@@ -21,8 +26,8 @@ function Login_page (){
                 function (res) {
                     if(res.data){
                         sessionStorage.setItem('json', res.data);
+                        dispatch(login(res.data))
                         history.push('/');
-
                     }
                 }
             );

@@ -6,6 +6,7 @@ import {useHistory, useRouteMatch} from "react-router-dom";
 import axios from "axios";
 import {serverURL} from "../../config";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
+import Map from "../../components/map/Map";
 
 function SearchDetails() {
     const history = useHistory();
@@ -28,7 +29,7 @@ function SearchDetails() {
         })
     });
 
-    function Actions(close) {
+    function Actions({close}) {
         return (<div className={'space'}>
             <Button value={'ДА'} color="secondary" onClick={() => {
                 axios.delete(`${serverURL}/api/v1/searches/${id}`).then(() => {
@@ -46,7 +47,9 @@ function SearchDetails() {
     return (<div className={'searchDetails'}>
             <h1>Поиск ФИО</h1>
             <div className={'pageDetails'}>
-                <div className={'map'}></div>
+                <div className={'map'}>
+                    <Map dim={{height:'100%', width:'100%'}}/>
+                </div>
                 <div className={'info'}>
                     <div className={'buttons'}>
                         <Button value={'Учасники'} onClick={() => {

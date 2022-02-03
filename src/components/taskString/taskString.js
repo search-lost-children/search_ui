@@ -1,7 +1,6 @@
 import Radio from "../radio/radio"
 import React, {useState} from "react";
 import {useRouteMatch} from "react-router-dom";
-import Radio from "../radio/radio";
 
 function TaskString(props) {
     let color
