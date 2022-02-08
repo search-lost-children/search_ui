@@ -12,18 +12,20 @@ function Coordinates() {
     const id = match.params.id
     const [lostName, setLostName] = useState({})
     const [tasksList, setTasksList] = useState([])
-    const [latitude, setLatitude] = useState(0)
-    const [longitude, setLongitude] = useState(0)
+    //const [latitude, setLatitude] = useState(0)
+    //const [longitude, setLongitude] = useState(0)
 
     function startSendingCoordinates() {
         let coordinatesSendingInterval = setInterval(function (){
             function success(position) {
-                setLatitude(position.coords.latitude)
-                setLongitude(position.coords.longitude)
-
-                axios.post(`${serverURL}/api/v1/searches/${id}/coordinates/me`, [
-                    latitude, longitude
-                ])
+                //setLatitude(position.coords.latitude)
+                //setLongitude(position.coords.longitude)
+                let latitude = position.coords.latitude
+                let longitude = position.coords.longitude
+                axios.post(`${serverURL}/api/v1/searches/${id}/coordinates/me`, {
+                    latitude: latitude,
+                    longitude: longitude
+                })
                     .then(function (response) {
                         console.log("Данные о местонахождении были отправлены на сервер для дальнейшего построения пройденого Вами маршрута")
                     })
@@ -37,7 +39,9 @@ function Coordinates() {
             if (!navigator.geolocation) {
                 console.error('Geolocation не поддерживается вашим устройством/браузером')
             } else {
-                navigator.geolocation.getCurrentPosition(success, error);}}, 60000)
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+        }, 60000)
     }
 
     let test = [{
