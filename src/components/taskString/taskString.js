@@ -10,7 +10,7 @@ function TaskString(props) {
     const id = match.params.id
     const [radioValue, setRadioValue] = useState("Показать данные на карте")
 
-    function damnWTFIsThis(typeDep){
+    function depsDefining(typeDep){
         let deps
         if (typeDep === "solo") {
             deps = {
@@ -26,9 +26,9 @@ function TaskString(props) {
         return deps
     }
 
-    let taskRenderDeps = damnWTFIsThis(props.type)
+    let taskRenderDeps = depsDefining(props.type)
 
-    function changelabel(value){
+    function changeLabel (value){
         if(value === "Показать данные на карте"){
             setRadioValue("Маршрут выведен на карту")
         } else {
@@ -42,12 +42,12 @@ function TaskString(props) {
             <div>
                 <Radio
                     value={radioValue}
-                    onChange={(val) => {
-                        setRadioVal(val)
+                    onChange={() => {
+                        changeLabel()
                     }}
-                    label={'Radio Button1'}
+                    label={'Показать на карте'}
                     name={'RadioButton'}
-                    checked={changeLabel()}/>
+                    /*cheched={сюда функция нужна для вывода координат на карту. сделать не могу тк не знаю как работать с картой}*//>
             </div>
         </div>)
 }
