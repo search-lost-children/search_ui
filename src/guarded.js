@@ -7,7 +7,7 @@ const GuardedRoute = ({component: Component,  ...rest}) => (
 
         (props) => {
             let jwt = sessionStorage.getItem('json')
-            if (true || jwt) {
+            if (jwt) {
                 return <Component {...props} />
             }else{
                 return <Redirect to='/'/>

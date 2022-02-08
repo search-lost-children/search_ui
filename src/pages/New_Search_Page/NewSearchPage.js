@@ -26,7 +26,6 @@ function NewSearchPage() {
     const [info, setInfo] = useState();
     const [priority, setPriority] = useState();
     const [time, setTime] = useState();
-    const [author, setAuthor] = useState();
     const [description, setDescription] = useState();
     const [photo, setPhoto] = useState();
     const history = useHistory();
@@ -37,6 +36,20 @@ function NewSearchPage() {
     function axiosGet() {
         axios.get(`${serverURL}/api/v1/searches/${id}/events`).then(function (response) {
             setData(response.data)
+        }).catch(function (error) {
+            console.log('error')
+        }).then(function () {
+            // always executed
+        })
+
+        axios.get(`${serverURL}/api/v1/searches/${id}`).then(function (response) {
+            setFName(response.data.firstName);
+            setLName(response.data.lastName);
+            setCoordinates({lat : response.data.coordsLat, lng: response.data.coordsLng});
+            setDate(response.data.date);
+            setAddress(response.data.address);
+            setInfo(response.data.info);
+            setPhoto(response.data.photo);
         }).catch(function (error) {
             console.log('error')
         }).then(function () {
@@ -82,10 +95,6 @@ function NewSearchPage() {
                         <Input shrink type="datetime-local" label={'Дата и время'} onChange={(time) => {
                             setTime(time)
                         }}></Input>
-                        <p>Назначте автора задания</p>
-                        <Input type="author" label={'Автор'} onChange={(author) => {
-                            setAuthor(author)
-                        }}></Input>
                         <p>Введите основные детали, примечания</p>
                         <TextField style={{width: '100%'}} type="description" label={'Описание'}
                                    onChange={(description) => {
@@ -106,8 +115,7 @@ function NewSearchPage() {
             <Button value={'Сохранить'} onClick={() => {
                 axios.post(`${serverURL}/api/v1/searches/${id}/events`, {
                     "priority": priority,
-                    "when": new Date(time),
-                    "author": author,
+                    "time": new Date(time),
                     "description": description,
                 })
                     .then(function (resp) {
@@ -239,24 +247,23 @@ function NewSearchPage() {
                             "firstName": firstName,
                             "lastName": lastName,
                             "date": date,
-                            "coordinates": coordinates,
+                            "coordinates":  {'latitude': coordinates.lat, 'longitude': coordinates.lng},
                             "address": address,
                             "info": info,
                             "photo": photo
                         })
-                            .then(function (resp) {
-                                history.push(`/searches/${resp.data.id}/edit`);
-                            })
-                            .catch(function (error) {
-                                history.push(`/searches/1/edit`);
-                                console.log(error);
-                            });
+                        .then(function (resp) {
+                            history.push(`/searches/${resp.data.id}/edit`);
+                        })
+                        .catch(function (error) {
+
+                        });
                     }
                     return axios.put(`${serverURL}/api/v1/searches/${id}`, {
                         "firstName": firstName,
                         "lastName": lastName,
                         "date": date,
-                        "coordinates": coordinates,
+                        "coordinates":  {'latitude': coordinates.lat, 'longitude': coordinates.lng},
                         "address": address,
                         "info": info,
                         "photo": photo
