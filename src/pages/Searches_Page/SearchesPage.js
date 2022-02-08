@@ -7,6 +7,8 @@ import axios from "axios";
 import 'reactjs-popup/dist/index.css';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import {serverURL} from "../../config";
+import {useSelector} from "react-redux";
+import GuardedRoute from "../../guarded";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);
@@ -19,7 +21,7 @@ function SearchesPage() {
         }).then(function () {
             // always executed
         });
-    });
+    },[]);
 
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
@@ -64,13 +66,25 @@ function SearchesPage() {
         }
     ];
 
+    const user = useSelector((state) => {
+        return state.user.user
+    })
+
+    if(user.role !== 'admin'){
+
+    }else{
+
+    }
+
     return (<div className={'searchesPage'}>
 
-            <div className={'initButton'}>
-                <Button value={'Инициировать'} onClick={() => {
-                    history.push('/searches/new')
-                }}></Button>
-            </div>
+        {user.role !== 'admin' ? '' : <div className={'initButton'}>
+            <Button value={'Инициировать'} onClick={() => {
+                history.push('/searches/new')
+            }}></Button>
+        </div>}
+
+
 
             <div className={'table'}>
                 <GridTable columns={columns} rows={rows}></GridTable>

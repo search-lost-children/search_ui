@@ -5,6 +5,7 @@ import jwt_interceptor from "./config_interceptors";
 
 import {
   BrowserRouter as Router,
+  HashRouter,
   Switch,
   Route
 } from "react-router-dom";
@@ -26,7 +27,7 @@ function App() {
   return (
     <div className="App">
       <div className={"container"}>
-          <Router>
+          <HashRouter>
             <Switch>
                 <GuardedRoute path={'/documentation'} component={DocumentationPage}/>
                 <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
@@ -42,7 +43,7 @@ function App() {
                 <Route exact path={'/registration_page'} component={Registration_page}/>
                 <Route exact path={'/registration_error'} component={Registration_error}/>
             </Switch>
-          </Router>
+          </HashRouter>
       </div>
     </div>
   );
