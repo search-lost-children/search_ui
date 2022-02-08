@@ -3,16 +3,16 @@ import Input from "../../components/input/input";
 import Button from "../../components/button/button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import Snackbar from '@mui/material/Snackbar';
 import { login, logout } from '../../features/userSlice'
 import { useDispatch } from "react-redux";
-
 
 function Login_page (){
     const [Login, setLogin] = useState('');
     const [Password, setPassword] = useState('');
     const history  = useHistory();
+    const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch()
-
 
     let user =
         {
@@ -21,7 +21,7 @@ function Login_page (){
 
     function user_login () {
 
-            alert(' verification good')
+
             axios.post('http://localhost:3000/api/v1/auth', user).then(
                 function (res) {
                     if(res.data){
@@ -29,6 +29,9 @@ function Login_page (){
                         dispatch(login(res.data))
                         history.push('/');
                     }
+                }, (resp) => {
+                    setOpen(true)
+                    console.log(resp)
                 }
             );
 
@@ -54,6 +57,14 @@ function Login_page (){
             <Input type='password' label={'password'} value={Password} onChange={(val)=> setPassword((val))}></Input>
             <Button disabled = {user_verification()} value={'Log in'} onClick={()=>{user_login()}}></Button>
             <Button value={'registration'} onClick={()=>{history.push('/registration_page')}}></Button>
+
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={() => {setOpen(false)}}
+                message="Login failed"
+            />
+
         </div>
     )
 }
