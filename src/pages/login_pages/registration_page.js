@@ -7,20 +7,20 @@ import Snackbar from "@mui/material/Snackbar/Snackbar";
 
 function Registration_page() {
 
-    const [NewLogin, setNewLogin] = useState('');
-    const [NewFirstName, setNewFirstName] = useState('');
-    const [NewLastName, setNewLastName] = useState('');
-    const [NewPhoneNumber, setNewPhoneNumber] = useState('');
-    const [NewPassword, setNewPassword] = useState('');
-    const [NewPasswordVer, setNewPasswordVer] = useState('');
-    const [NewError, setNewError] = useState('');
+    const [newLogin, setNewLogin] = useState('');
+    const [newFirstName, setNewFirstName] = useState('');
+    const [newLastName, setNewLastName] = useState('');
+    const [newPhoneNumber, setNewPhoneNumber] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordVer, setNewPasswordVer] = useState('');
+    const [newError, setNewError] = useState('');
     const [open, setOpen] = React.useState(false);
     const history = useHistory();
 
 
     function verification() {
 
-        return (!NewLogin) || (!NewPassword) || !(NewPassword === NewPasswordVer) || (!NewPhoneNumber) || (!NewFirstName)
+        return (!newLogin) || (!newPassword) || !(newPassword === newPasswordVer) || (!newPhoneNumber) || (!newFirstName)
 
     }
 
@@ -28,11 +28,11 @@ function Registration_page() {
 
 
         axios.post('http://localhost:3000/api/v1/registration', {
-            login: NewLogin,
-            password: NewPassword,
-            firstName: NewFirstName,
-            lastName: NewLastName,
-            phoneNumber: NewPhoneNumber
+            login: newLogin,
+            password: newPassword,
+            firstName: newFirstName,
+            lastName: newLastName,
+            phoneNumber: newPhoneNumber
         }).then(() => {
             history.push('/login_page')
         }, ({response}) => {
@@ -48,15 +48,15 @@ function Registration_page() {
         <div className="About">
             <h1>Registration page</h1>
 
-            <Input type='login' label={'Login'} value={NewLogin} onChange={(val) => setNewLogin((val))}></Input>
-            <Input type='string' label={'имя'} value={NewFirstName} onChange={(val) => setNewFirstName((val))}></Input>
-            <Input type='string' label={'фамилия'} value={NewLastName}
+            <Input type='login' label={'Login'} value={newLogin} onChange={(val) => setNewLogin((val))}></Input>
+            <Input type='string' label={'имя'} value={newFirstName} onChange={(val) => setNewFirstName((val))}></Input>
+            <Input type='string' label={'фамилия'} value={newLastName}
                    onChange={(val) => setNewLastName((val))}></Input>
-            <Input type='string' label={'номер телефона'} value={NewPhoneNumber}
+            <Input type='string' label={'номер телефона'} value={newPhoneNumber}
                    onChange={(val) => setNewPhoneNumber((val))}></Input>
-            <Input type='password' label={'пароль'} value={NewPassword}
+            <Input type='password' label={'пароль'} value={newPassword}
                    onChange={(val) => setNewPassword((val))}></Input>
-            <Input type='password' label={'подтверждение пароля'} value={NewPasswordVer}
+            <Input type='password' label={'подтверждение пароля'} value={newPasswordVer}
                    onChange={(val) => setNewPasswordVer((val))}></Input>
 
             <Button disabled={verification()} value={'Registration'} onClick={() => verif_good()}></Button>
@@ -68,7 +68,7 @@ function Registration_page() {
                 onClose={() => {
                     setOpen(false)
                 }}
-                message={NewError}
+                message={newError}
             />
         </div>
     )
