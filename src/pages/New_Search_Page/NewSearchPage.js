@@ -13,8 +13,6 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import Select from "../../components/select/select";
 import TextField from "../../components/textarea/textarea";
-import Map from "../../components/map/Map";
-import MapIcon from '@mui/icons-material/Map';
 import MapInModal from "./MapInModal";
 
 function NewSearchPage() {
@@ -22,11 +20,12 @@ function NewSearchPage() {
     const [rows, setData] = useState([]);
     const [firstName, setFName] = useState();
     const [lastName, setLName] = useState();
-    const [place, setPlace] = useState();
-    const [text, setText] = useState();
+    const [date, setDate] = useState();
+    const [coordinates, setCoordinates] = useState();
+    const [address, setAddress] = useState('');
+    const [info, setInfo] = useState();
     const [priority, setPriority] = useState();
     const [time, setTime] = useState();
-    const [author, setAuthor] = useState();
     const [description, setDescription] = useState();
     const [photo, setPhoto] = useState();
     const history = useHistory();
@@ -37,6 +36,20 @@ function NewSearchPage() {
     function axiosGet() {
         axios.get(`${serverURL}/api/v1/searches/${id}/events`).then(function (response) {
             setData(response.data)
+        }).catch(function (error) {
+            console.log('error')
+        }).then(function () {
+            // always executed
+        })
+
+        axios.get(`${serverURL}/api/v1/searches/${id}`).then(function (response) {
+            setFName(response.data.firstName);
+            setLName(response.data.lastName);
+            setCoordinates({lat : response.data.coordsLat, lng: response.data.coordsLng});
+            setDate(response.data.date);
+            setAddress(response.data.address);
+            setInfo(response.data.info);
+            setPhoto(response.data.photo);
         }).catch(function (error) {
             console.log('error')
         }).then(function () {
@@ -82,10 +95,6 @@ function NewSearchPage() {
                         <Input shrink type="datetime-local" label={'Дата и время'} onChange={(time) => {
                             setTime(time)
                         }}></Input>
-                        <p>Назначте автора задания</p>
-                        <Input type="author" label={'Автор'} onChange={(author) => {
-                            setAuthor(author)
-                        }}></Input>
                         <p>Введите основные детали, примечания</p>
                         <TextField style={{width: '100%'}} type="description" label={'Описание'}
                                    onChange={(description) => {
@@ -106,8 +115,7 @@ function NewSearchPage() {
             <Button value={'Сохранить'} onClick={() => {
                 axios.post(`${serverURL}/api/v1/searches/${id}/events`, {
                     "priority": priority,
-                    "when": new Date(time),
-                    "author": author,
+                    "time": new Date(time),
                     "description": description,
                 })
                     .then(function (resp) {
@@ -179,7 +187,8 @@ function NewSearchPage() {
     ];
 
     function onMapApply(coords) {
-
+        setCoordinates(coords)
+        setAddress(JSON.stringify(coords))
     }
 
     return (<div className={'newSearchPage'}>
@@ -197,17 +206,24 @@ function NewSearchPage() {
                     </IconButton>
                     <p>Последний раз искали ...</p>
                 </div>
+                <div className={'date'}>
+                    <Input shrink type="datetime-local" label={"Дата пропажи"} onChange={(date) => {
+                        setDate(date)
+                    }}></Input>
+                </div>
                 <div className={'place'}>
-                    <Input type="place" label={"Точка сбора"} onChange={(place) => {
-                        setPlace(place)
+                    <Input value={address} type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
+                        setAddress(addressToSave)
                     }}></Input>
                     <div className={'map_small'}>
                         <MapInModal onApply={onMapApply}></MapInModal>
                     </div>
                 </div>
-                <TextArea type='text' label={"Вводная информация"} onChange={(text) => {
-                    setText(text)
+                <div className={"info"}>
+                <TextArea type='info' label={"Вводная информация"} onChange={(info) => {
+                    setInfo(info)
                 }}></TextArea>
+                </div>
                 <div className={'photo'}>
                     <p>Прикрепите фото человека, которого ищете:</p>
                     <Input type={'file'} onChange={(photo) => {
@@ -227,26 +243,29 @@ function NewSearchPage() {
             <div className={'buttonStart'}>
                 <Button value={isNew ? 'Начать' : 'Сохранить'} onClick={() => {
                     if (isNew) {
-                        return axios.post(`${serverURL}/api/v1/searches/new`, {
-                            "first name": firstName,
-                            "last name": lastName,
-                            "place": place,
-                            "text": text,
+                        return axios.post(`${serverURL}/api/v1/searches/`, {
+                            "firstName": firstName,
+                            "lastName": lastName,
+                            "date": date,
+                            "coordinates":  {'latitude': coordinates.lat, 'longitude': coordinates.lng},
+                            "address": address,
+                            "info": info,
                             "photo": photo
                         })
-                            .then(function (resp) {
-                                history.push(`/searches/${resp.data.id}/edit`);
-                            })
-                            .catch(function (error) {
-                                history.push(`/searches/1/edit`);
-                                console.log(error);
-                            });
+                        .then(function (resp) {
+                            history.push(`/searches/${resp.data.id}/edit`);
+                        })
+                        .catch(function (error) {
+
+                        });
                     }
                     return axios.put(`${serverURL}/api/v1/searches/${id}`, {
-                        "first name": firstName,
-                        "last name": lastName,
-                        "place": place,
-                        "text": text,
+                        "firstName": firstName,
+                        "lastName": lastName,
+                        "date": date,
+                        "coordinates":  {'latitude': coordinates.lat, 'longitude': coordinates.lng},
+                        "address": address,
+                        "info": info,
                         "photo": photo
                     })
                 }}></Button>
