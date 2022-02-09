@@ -13,6 +13,7 @@ import Button from "../components/button/button";
 import * as axios from "axios";
 import GridTable from "@nadavshaar/react-grid-table";
 import {serverURL} from "../config";
+import Username from "../components/tableCells/Username";
 
 
 function Coordinators() {
@@ -32,15 +33,6 @@ function Coordinators() {
             .then(function (response) {
                  setCoordinators(response.data)
             })
-    }
-
-    const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
-        return (
-            <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <span className='rgt-text-truncate' style={{marginLeft: 10}}>{value}</span>
-                {data.firstName} {data.lastName}
-            </div>
-        )
     }
 
     const DeleteButton = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {

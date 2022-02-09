@@ -8,6 +8,7 @@ import 'reactjs-popup/dist/index.css';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import {serverURL} from "../../config";
 import {useSelector} from "react-redux";
+import Username from "../../components/tableCells/Username";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);
@@ -22,14 +23,6 @@ function SearchesPage() {
         });
     },[]);
 
-    const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
-        return (
-            <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <span className='rgt-text-truncate' style={{marginLeft: 10}}>{value}</span>
-                {data.firstName} {data.lastName}
-            </div>
-        )
-    }
     const Do = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
