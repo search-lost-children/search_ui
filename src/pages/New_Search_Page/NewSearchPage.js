@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './NewSearchPage.css';
 import IconButton from '@mui/material/IconButton';
-import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
 import Search from '@mui/icons-material/Search';
 import Input from "../../components/input/input";
 import TextArea from "../../components/textarea/textarea";
@@ -11,12 +10,11 @@ import Button from "../../components/button/button";
 import {useHistory, useRouteMatch} from "react-router-dom";
 import axios from "axios";
 import {serverURL} from "../../config";
-import Select from "../../components/select/select";
-import TextField from "../../components/textarea/textarea";
 import MapInModal from "./MapInModal";
+import Username from "../../components/tableCells/Username";
+import NewEventModal from "../../components/event/NewEventModal";
 
 function NewSearchPage() {
-
     const [rows, setData] = useState([]);
     const [firstName, setFName] = useState();
     const [lastName, setLName] = useState();
@@ -24,16 +22,13 @@ function NewSearchPage() {
     const [coordinates, setCoordinates] = useState();
     const [address, setAddress] = useState('');
     const [info, setInfo] = useState();
-    const [priority, setPriority] = useState();
-    const [time, setTime] = useState();
-    const [description, setDescription] = useState();
     const [photo, setPhoto] = useState();
     const history = useHistory();
     const isNew = useRouteMatch('/searches/new');
     const match = useRouteMatch();
     const id = match.params.id;
 
-    function axiosGet() {
+    function fetchData() {
         axios.get(`${serverURL}/api/v1/searches/${id}/events`).then(function (response) {
             setData(response.data)
         }).catch(function (error) {
@@ -61,7 +56,7 @@ function NewSearchPage() {
         if (isNew) {
             return null
         }
-        return axiosGet();
+        return fetchData();
     }, []);
 
     function getTable() {
@@ -69,76 +64,11 @@ function NewSearchPage() {
             return null
         }
         return (<div>
-            <div className={'event'}>
-                События
-                <ModalWindow
-                    trigger={<IconButton disabled={isNew} aria-label="add">
-                        <AddCircleOutline/>
-                    </IconButton>}
-                    title={'Добавить событие'}
-                    actions={Actions}
-                >
-                    <div className={'field'}>
-                        <p>Назначте приоритет заданию</p>
-                        <Select label={'Приоритет'}
-                                options={[{label: '', value: ''},
-                                    {label: '1', value: '1'},
-                                    {label: '2', value: '2'},
-                                    {label: '3', value: '3'}
-                                ]}
-                                onChange={(priority) => {
-                                    setPriority(priority)
-                                }}
-                        >
-                        </Select>
-                        <p>Дата и время поиска</p>
-                        <Input shrink type="datetime-local" label={'Дата и время'} onChange={(time) => {
-                            setTime(time)
-                        }}></Input>
-                        <p>Введите основные детали, примечания</p>
-                        <TextField style={{width: '100%'}} type="description" label={'Описание'}
-                                   onChange={(description) => {
-                                       setDescription(description)
-                                   }}></TextField>
-                    </div>
-                </ModalWindow>
-
-            </div>
+            <NewEventModal onSave={fetchData} searchId={id} isNew={isNew} />
             <div className={'table'}>
                 <GridTable width="max-content" columns={columns} rows={rows}></GridTable>
             </div>
         </div>)
-    }
-
-    function Actions({close}) {
-        return (<div className={'save'}>
-            <Button value={'Сохранить'} onClick={() => {
-                axios.post(`${serverURL}/api/v1/searches/${id}/events`, {
-                    "priority": priority,
-                    "time": new Date(time),
-                    "description": description,
-                })
-                    .then(function (resp) {
-                        close()
-                    }).catch(function (error) {
-                    console.log(error);
-                }).then(function () {
-                    axiosGet()
-                })
-            }}></Button>
-
-            <Button value={'Отменить'} onClick={() => {
-                close();
-            }}></Button>
-        </div>)
-    }
-
-    const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
-        return (
-            <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                {data.firstName} {data.lastName}
-            </div>
-        )
     }
 
     const Do = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
