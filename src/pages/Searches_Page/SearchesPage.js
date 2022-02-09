@@ -70,12 +70,6 @@ function SearchesPage() {
         return state.user.user
     })
 
-    if(user.role !== 'admin'){
-
-    }else{
-
-    }
-
     return (<div className={'searchesPage'}>
 
         {user.role !== 'admin' ? '' : <div className={'initButton'}>
