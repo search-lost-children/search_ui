@@ -21,8 +21,10 @@ import Registration_error from "./pages/login_pages/registration_error";
 import GuardedRoute from "./guarded";
 import NewSearchPage from "./pages/New_Search_Page/NewSearchPage";
 import TasksList from './pages/Tasks_List_Page/TasksList';
+import Notification from "./components/notification/notification";
 
 function App() {
+
     jwt_interceptor();
   return (
     <div className="App">
@@ -45,6 +47,7 @@ function App() {
             </Switch>
           </HashRouter>
       </div>
+      <Notification />
     </div>
   );
 }

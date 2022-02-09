@@ -3,15 +3,14 @@ import Input from "../../components/input/input";
 import Button from "../../components/button/button";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Snackbar from '@mui/material/Snackbar';
 import { login, logout } from '../../features/userSlice'
+import { showNotification } from '../../features/notificationSlice'
 import { useDispatch } from "react-redux";
 
 function Login_page (){
     const [Login, setLogin] = useState('');
     const [Password, setPassword] = useState('');
     const history  = useHistory();
-    const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch()
 
     function user_login () {
@@ -28,8 +27,11 @@ function Login_page (){
                     history.push('/searches');
                 }
             }, (resp) => {
-                setOpen(true)
-                console.log(resp)
+                dispatch(showNotification({
+                    duration: 5000,
+                    message: 'Не верный логин или пароль',
+                    severity: 'error'
+                }))
             }
         );
     }
@@ -53,14 +55,6 @@ function Login_page (){
             <Input type='password' label={'password'} value={Password} onChange={(val)=> setPassword((val))}></Input>
             <Button disabled = {user_verification()} value={'Log in'} onClick={()=>{user_login()}}></Button>
             <Button value={'registration'} onClick={()=>{history.push('/registration_page')}}></Button>
-
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => {setOpen(false)}}
-                message="Login failed"
-            />
-
         </div>
     )
 }
