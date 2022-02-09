@@ -22,6 +22,7 @@ import GuardedRoute from "./guarded";
 import NewSearchPage from "./pages/New_Search_Page/NewSearchPage";
 import TasksList from './pages/Tasks_List_Page/TasksList';
 import Notification from "./components/notification/notification";
+import Participants from "./pages/Participants/Participants";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
                 <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
                 <GuardedRoute exact path={'/searches/new'} component={NewSearchPage}/>
                 <GuardedRoute exact path={'/searches/:id/coordinators'} component={Coordinators}/>
+                <GuardedRoute exact path={'/searches/:id/participants'} component={Participants}/>
                 <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>
                 <GuardedRoute exact path={'/searches/:id/edit'} component={NewSearchPage}/>
                 <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>

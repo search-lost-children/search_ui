@@ -8,7 +8,6 @@ import 'reactjs-popup/dist/index.css';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import {serverURL} from "../../config";
 import {useSelector} from "react-redux";
-import GuardedRoute from "../../guarded";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);

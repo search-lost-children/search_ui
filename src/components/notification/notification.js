@@ -12,7 +12,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function Notification () {
     const dispatch = useDispatch()
     const _notifications = useSelector((state)=> {
-        debugger
         return state.notifications.notifications
     });
 
