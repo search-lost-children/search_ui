@@ -14,28 +14,24 @@ function Login_page (){
     const [open, setOpen] = React.useState(false);
     const dispatch = useDispatch()
 
-    let user =
-        {
-            login: Login, password: Password
-        }
-
     function user_login () {
 
-
-            axios.post('http://localhost:3000/api/v1/auth', user).then(
-                function (res) {
-                    if(res.data){
-                        sessionStorage.setItem('json', res.data);
-                        dispatch(login(res.data))
-                        history.push('/');
-                    }
-                }, (resp) => {
-                    setOpen(true)
-                    console.log(resp)
+        let user = {
+                login: Login, 
+                password: Password
+            }
+        axios.post('http://localhost:3000/api/v1/auth', user).then(
+            function (res) {
+                if(res.data){
+                    sessionStorage.setItem('json', res.data.token);
+                    dispatch(login(res.data))
+                    history.push('/searches');
                 }
-            );
-
-
+            }, (resp) => {
+                setOpen(true)
+                console.log(resp)
+            }
+        );
     }
     function user_verification (login,Password) {
         if (login === '') {
