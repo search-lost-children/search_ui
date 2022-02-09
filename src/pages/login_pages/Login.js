@@ -17,20 +17,21 @@ function Login_page (){
     function user_login () {
 
         let user = {
-                login: Login, password: Password
+                login: Login, 
+                password: Password
             }
-            axios.post('http://localhost:3000/api/v1/auth', user).then(
-                function (res) {
-                    if(res.data){
-                        sessionStorage.setItem('json', res.data.token);
-                        dispatch(login(res.data))
-                        history.push('/searches');
-                    }
-                }, (resp) => {
-                    setOpen(true)
-                    console.log(resp)
+        axios.post('http://localhost:3000/api/v1/auth', user).then(
+            function (res) {
+                if(res.data){
+                    sessionStorage.setItem('json', res.data.token);
+                    dispatch(login(res.data))
+                    history.push('/searches');
                 }
-            );
+            }, (resp) => {
+                setOpen(true)
+                console.log(resp)
+            }
+        );
     }
     function user_verification (login,Password) {
         if (login === '') {
