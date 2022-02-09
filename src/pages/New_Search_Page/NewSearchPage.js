@@ -57,7 +57,7 @@ function NewSearchPage() {
             return null
         }
         return fetchData();
-    }, []);
+    }, [id]);
 
     function getTable() {
         if (isNew) {

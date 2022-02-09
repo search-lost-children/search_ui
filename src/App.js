@@ -1,10 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import jwt_interceptor from "./config_interceptors";
 
 import {
-  BrowserRouter as Router,
   HashRouter,
   Switch,
   Route
@@ -23,6 +21,7 @@ import NewSearchPage from "./pages/New_Search_Page/NewSearchPage";
 import TasksList from './pages/Tasks_List_Page/TasksList';
 import Notification from "./components/notification/notification";
 import Participants from "./pages/Participants/Participants";
+import MainPage from "./pages/main/MainPage";
 
 function App() {
 
@@ -43,6 +42,7 @@ function App() {
                 <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
                 <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>
                 <GuardedRoute exact path={'/searches/:id/tasks_list'} component={TasksList}/>
+                <GuardedRoute exact path={'/'} component={MainPage}/>
                 <Route exact path={'/login_page'} component={Login_page}/>
                 <Route exact path={'/registration_page'} component={Registration_page}/>
                 <Route exact path={'/registration_error'} component={Registration_error}/>

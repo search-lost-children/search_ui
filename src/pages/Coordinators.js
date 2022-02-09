@@ -1,13 +1,9 @@
 import React from "react";
 import {useEffect} from "react";
 import {useState} from "react";
-
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route, useLocation, useHistory, useRouteMatch
+    useLocation, useHistory, useRouteMatch
 } from "react-router-dom";
-import DocumentationPage from "./documentation/Documentation";
 import Select from "../components/select/select";
 import Button from "../components/button/button";
 import * as axios from "axios";
@@ -15,10 +11,7 @@ import GridTable from "@nadavshaar/react-grid-table";
 import {serverURL} from "../config";
 import Username from "../components/tableCells/Username";
 
-
 function Coordinators() {
-    let location = useLocation()
-    let history = useHistory()
     let match = useRouteMatch()
     const [selectVal, setSelectVal] = useState('')
     const [lostName, setLostName] = useState({})
