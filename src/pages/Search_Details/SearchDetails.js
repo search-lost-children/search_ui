@@ -7,12 +7,14 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import Map from "../../components/map/Map";
+import Select from "../../components/select/select";
 
 function SearchDetails() {
     const history = useHistory();
     let match = useRouteMatch();
     const id = match.params.id;
     const [data, setData] = useState();
+    const [status, setStatus] = useState();
     const [people, setPeople] = useState(false);
     const [zones, setZones] = useState(false);
     const [markings, setMarkings] = useState(false);
@@ -32,7 +34,8 @@ function SearchDetails() {
     function Actions({close}) {
         return (<div className={'space'}>
             <Button value={'ДА'} color="secondary" onClick={() => {
-                axios.delete(`${serverURL}/api/v1/searches/${id}`).then(() => {
+                axios.put(`${serverURL}/api/v1/searches/${id}`, {"status": status}
+                ).then(() => {
                     close();
                     history.push('/searches')
                 })
@@ -85,6 +88,14 @@ function SearchDetails() {
                             >
                                 <div>
                                     <h2 align="center">Уверенны, что хотите завершить поиск?</h2>
+                                    <p>Выберите статус поиска:</p>
+                                    <Select shrink label={"Статус поиска"}
+                                            value={status}
+                                            options={[{label: 'Активен', value: 'active'},
+                                                {label: 'Найден, жив', value: 'finished Success'},
+                                                {label: 'Найден, погиб', value: 'finished Died'}]}
+                                            onChange={(val)=>{setStatus(val)}}
+                                            ></Select>
                                 </div>
                             </ModalWindow>
                         </div>
