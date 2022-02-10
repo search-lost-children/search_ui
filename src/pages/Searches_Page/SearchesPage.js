@@ -7,6 +7,8 @@ import axios from "axios";
 import 'reactjs-popup/dist/index.css';
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import {serverURL} from "../../config";
+import {useSelector} from "react-redux";
+import Username from "../../components/tableCells/Username";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);
@@ -19,16 +21,8 @@ function SearchesPage() {
         }).then(function () {
             // always executed
         });
-    });
+    },[]);
 
-    const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
-        return (
-            <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <span className='rgt-text-truncate' style={{marginLeft: 10}}>{value}</span>
-                {data.firstName} {data.lastName}
-            </div>
-        )
-    }
     const Do = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
@@ -64,13 +58,19 @@ function SearchesPage() {
         }
     ];
 
+    const user = useSelector((state) => {
+        return state.user.user
+    })
+
     return (<div className={'searchesPage'}>
 
-            <div className={'initButton'}>
-                <Button value={'Инициировать'} onClick={() => {
-                    history.push('/searches/new')
-                }}></Button>
-            </div>
+        {user.role !== 'admin' ? '' : <div className={'initButton'}>
+            <Button value={'Инициировать'} onClick={() => {
+                history.push('/searches/new')
+            }}></Button>
+        </div>}
+
+
 
             <div className={'table'}>
                 <GridTable columns={columns} rows={rows}></GridTable>

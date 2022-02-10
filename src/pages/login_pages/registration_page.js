@@ -3,30 +3,25 @@ import Input from "../../components/input/input";
 import Button from "../../components/button/button";
 import {useHistory} from "react-router-dom";
 import axios from "axios";
-import Snackbar from "@mui/material/Snackbar/Snackbar";
+import {useDispatch} from "react-redux";
+import {showNotification} from "../../features/notificationSlice";
 
 function Registration_page() {
-
+    const dispatch = useDispatch()
     const [newLogin, setNewLogin] = useState('');
     const [newFirstName, setNewFirstName] = useState('');
     const [newLastName, setNewLastName] = useState('');
     const [newPhoneNumber, setNewPhoneNumber] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [newPasswordVer, setNewPasswordVer] = useState('');
-    const [newError, setNewError] = useState('');
-    const [open, setOpen] = React.useState(false);
     const history = useHistory();
 
 
     function verification() {
-
         return (!newLogin) || (!newPassword) || !(newPassword === newPasswordVer) || (!newPhoneNumber) || (!newFirstName)
-
     }
 
     async function verif_good(Password, PasswordVer) {
-
-
         axios.post('http://localhost:3000/api/v1/registration', {
             login: newLogin,
             password: newPassword,
@@ -34,14 +29,28 @@ function Registration_page() {
             lastName: newLastName,
             phoneNumber: newPhoneNumber
         }).then(() => {
+            dispatch(showNotification({
+                message: 'Вы успешно зарегистрировались',
+                severity: 'success'
+            }))
             history.push('/login_page')
         }, ({response}) => {
             if (response.data.code === 23505) {
-                setNewError("login is already taken")
-            }else{
-                setNewError(`invalid value in the ${response.data.details[0].context.key} field`)
+                dispatch(showNotification({
+                    message: 'Данный логин уже занят',
+                    severity: 'error'
+                }))
+            }else if(response.data.details){
+                dispatch(showNotification({
+                    message: `Не верные данные в поле ${response.data.details[0].context.key}`,
+                    severity: 'error'
+                }))
+            } else {
+                showNotification({
+                    message: `Какая-то непонятная ошибка сервера. Сообщите об этом администратору.`,
+                    severity: 'error'
+                })
             }
-            setOpen(true)
         });
     }
     return (
@@ -60,16 +69,6 @@ function Registration_page() {
                    onChange={(val) => setNewPasswordVer((val))}></Input>
 
             <Button disabled={verification()} value={'Registration'} onClick={() => verif_good()}></Button>
-
-
-            <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={() => {
-                    setOpen(false)
-                }}
-                message={newError}
-            />
         </div>
     )
 }

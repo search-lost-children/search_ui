@@ -1,5 +1,4 @@
 import Popup from "reactjs-popup";
-import Button from "../button/button";
 import React from 'react';
 import './ModalWindow.css';
 

@@ -1,31 +1,11 @@
 import GoogleMapReact from 'google-map-react';
-import Marker from "./Marker";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function Map (props) {
     const [map, setMap] = useState()
     const [maps, setMaps] = useState()
     const [paths, setPaths] = useState([])
     const [polygon, setPolygon] = useState()
-
-    const debounce = (delay) => {
-        let timer;
-        let lastClick;
-        return (coord) => {
-            if (!props.map) return;
-            if (lastClick && (Date.now() - lastClick)  < delay) {
-                clearTimeout(timer)
-                lastClick = undefined;
-                if (props.map.onDblClick) {
-                    return props.map.onDblClick(coord)
-                }
-            }
-            lastClick = Date.now();
-            if(props.map.onClick) {
-                timer = setTimeout(() => props.map.onClick(coord), delay)
-            }
-        }
-    }
 
     const mapProps = {
         defaultZoom: 11,
@@ -35,7 +15,7 @@ export default function Map (props) {
         },
         ...props.map,
     }
-    const key = 'AIzaSyC4kaVTkqLRAYU3vgGa_KNcjzDBF-R7SVo';//this is not valid key :)
+    // const key = 'AIzaSyC4kaVTkqLRAYU3vgGa_KNcjzDBF-R7SVo';//this is not valid key :)
     useEffect(()=> {
         if (map && props.markers && props.markers.length) {
             props.markers.map((coords, i)=> {
@@ -93,7 +73,6 @@ export default function Map (props) {
             poly.setMap(map);
             setPolygon(poly)
         } else {
-            debugger
             if (polygon) {
                 polygon.setMap(null)
             }

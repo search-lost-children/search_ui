@@ -1,18 +1,25 @@
 import React from 'react';
 import {Route, Redirect} from "react-router-dom";
+import {useSelector} from "react-redux";
+import Loading from "./components/loading/Loading";
 
-const GuardedRoute = ({component: Component,  ...rest}) => (
+const GuardedRoute = ({component: Component,  ...rest}) => {
+    useSelector((state) => {
+        console.log(state.user.user);
+        return state
+    })
 
-    <Route {...rest} render={
+
+    return (<Route {...rest} render={
 
         (props) => {
             let jwt = sessionStorage.getItem('json')
-            if (true || jwt) {
+            if (jwt) {
                 return <Component {...props} />
             }else{
                 return <Redirect to='/'/>
             }
-        }}/>
-)
+        }}/>)
+}
 
 export default GuardedRoute;

@@ -9,6 +9,7 @@ function TaskString(props) {
     const id = match.params.id
     const [radioValue, setRadioValue] = useState("Показать данные на карте")
 
+
     function depsDefining(typeDep){
         let deps
         if (typeDep === "solo") {
@@ -40,13 +41,16 @@ function TaskString(props) {
             <div><font color={taskRenderDeps.color}>{taskRenderDeps.taskTypeLabel}</font></div>
             <div>
                 <Radio
-                    value={radioValue}
-                    onChange={() => {
+                    value = {props.radioValForValueOption}
+                    onChange={(val) => {
                         changeLabel()
+                        props.setRadioVal(val)
+                        /*сюда функция нужна для вывода координат на карту. сделать не могу тк не знаю как работать с картой*/
                     }}
-                    label={'Показать на карте'}
+                    checked={props.radioVal === props.radioValForValueOption}
+                    label={radioValue}
                     name={'RadioButton'}
-                    /*cheched={сюда функция нужна для вывода координат на карту. сделать не могу тк не знаю как работать с картой}*//>
+                    />
             </div>
         </div>)
 }

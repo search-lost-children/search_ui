@@ -1,23 +1,17 @@
 import React from "react";
 import {useEffect} from "react";
 import {useState} from "react";
-
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route, useLocation, useHistory, useRouteMatch
+    useLocation, useHistory, useRouteMatch
 } from "react-router-dom";
-import DocumentationPage from "./documentation/Documentation";
 import Select from "../components/select/select";
 import Button from "../components/button/button";
 import * as axios from "axios";
 import GridTable from "@nadavshaar/react-grid-table";
 import {serverURL} from "../config";
-
+import Username from "../components/tableCells/Username";
 
 function Coordinators() {
-    let location = useLocation()
-    let history = useHistory()
     let match = useRouteMatch()
     const [selectVal, setSelectVal] = useState('')
     const [lostName, setLostName] = useState({})
@@ -32,15 +26,6 @@ function Coordinators() {
             .then(function (response) {
                  setCoordinators(response.data)
             })
-    }
-
-    const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
-        return (
-            <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <span className='rgt-text-truncate' style={{marginLeft: 10}}>{value}</span>
-                {data.firstName} {data.lastName}
-            </div>
-        )
     }
 
     const DeleteButton = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {

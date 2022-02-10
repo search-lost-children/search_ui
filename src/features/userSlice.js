@@ -7,7 +7,7 @@ export const counterSlice = createSlice({
     },
     reducers: {
         login: (state, payload) => {
-            state.user = payload;
+            state.user = payload.payload;
         },
         logout: (state) => {
             state.user = undefined
