@@ -22,7 +22,7 @@ function Login_page (){
                 login: Login, 
                 password: Password
             }
-        axios.post(`${serverURL}/api/v1/registration`, user).then(
+        axios.post(`${serverURL}/api/v1/auth`, user).then(
             function (res) {
                 if(res.data){
                     sessionStorage.setItem('json', res.data.token);
