@@ -32,8 +32,8 @@ function App() {
           <HashRouter>
             <Switch>
                 <GuardedRoute path={'/documentation'} component={DocumentationPage}/>
-                <GuardedRoute exact path={'/searches'} component={SearchesPage}/>
-                <GuardedRoute exact path={'/searches/new'} component={NewSearchPage}/>
+                <GuardedRoute exact path={'/searches'} component={SearchesPage} />
+                <GuardedRoute exact path={'/searches/new'} component={NewSearchPage} justFor={['admin']}/>
                 <GuardedRoute exact path={'/searches/:id/coordinators'} component={Coordinators}/>
                 <GuardedRoute exact path={'/searches/:id/participants'} component={Participants}/>
                 <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>

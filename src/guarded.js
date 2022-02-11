@@ -1,24 +1,43 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Redirect} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Loading from "./components/loading/Loading";
+import axios from "axios";
+import {serverURL} from "./config";
+import {login} from "./features/userSlice";
 
-const GuardedRoute = ({component: Component,  ...rest}) => {
-    useSelector((state) => {
-        console.log(state.user.user);
-        return state
-    })
+const GuardedRoute = ({component: Component, ...rest}) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch()
+    const user = useSelector((state) => state.user.user)
 
+    if (user === undefined) {
+        axios.get(`${serverURL}/api/v1/auth`).then(function (res) {
+                if (res.data) {
+                    dispatch(login(res.data))
+                }
+                setIsLoading(false)
+            }
+        )
+    }
+
+    if (isLoading){
+        return <Loading></Loading>
+    }
 
     return (<Route {...rest} render={
 
         (props) => {
-            let jwt = sessionStorage.getItem('json')
-            if (jwt) {
-                return <Component {...props} />
+            if(user){
+                if(rest.justFor === undefined || rest.justFor.includes(user.role)) {
+                    return <Component {...props} />
+                } else {
+                    return <Redirect to='/'/>
+                }
             }else{
-                return <Redirect to='/'/>
+                return <Redirect to='/login_page'/>
             }
+
         }}/>)
 }
 
