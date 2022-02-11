@@ -40,7 +40,6 @@ function App() {
                 <GuardedRoute exact path={'/searches/:id/edit'} component={NewSearchPage}/>
                 <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
                 <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
-                <GuardedRoute exact path={'/searches/:id/new_task'} component={NewTask}/>
                 <GuardedRoute exact path={'/searches/:id/tasks_list'} component={TasksList}/>
                 <GuardedRoute exact path={'/'} component={MainPage}/>
                 <Route exact path={'/login_page'} component={Login_page}/>
