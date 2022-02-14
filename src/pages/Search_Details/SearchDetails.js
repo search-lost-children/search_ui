@@ -13,23 +13,33 @@ function SearchDetails() {
     const history = useHistory();
     let match = useRouteMatch();
     const id = match.params.id;
-    const [data, setData] = useState();
+    const [peopleCoordinates, setPeopleCoordinated] = useState();
     const [status, setStatus] = useState();
-    const [people, setPeople] = useState(false);
-    const [zones, setZones] = useState(false);
+    const [showPeopleCoordinates, setShowShowPeopleCoordinatesCoordinates] = useState(false);
+    const [showZones, setShowZonesCheck] = useState(false);
+    const [searchZones, setSearchZones] = useState([]);
     const [markings, setMarkings] = useState(false);
 
     useEffect(() => {
         let timerId = setInterval(function () {
-            axios.get(`/searches/${id}/coordinates/`)
+            axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
                 .then(function (response) {
-                    setData(response.data)
+                    setPeopleCoordinated(response.data)
                 })
         }, 60000)
         return (function () {
             clearInterval(timerId)
         })
-    });
+    },[id]);
+
+    useEffect(() => {
+        if(showZones) {
+            axios.get(`${serverURL}/api/v1/searches/${id}/tasks`).then(({data}) => {
+                setSearchZones(data)
+            })
+        }
+
+    }, [id, showZones])
 
     function Actions({close}) {
         return (<div className={'space'}>
@@ -47,11 +57,31 @@ function SearchDetails() {
         </div>)
     }
 
+    const mapProps = {
+        pathes: [],
+        square: []
+    }
+
+    if(showZones) {
+        searchZones.forEach((task) => {
+            if (task.locationType === 'square') {
+                mapProps.square.push(JSON.parse(task.location))
+            } else {
+                mapProps.pathes.push(JSON.parse(task.location))
+            }
+        })
+    }
+
+    if(showPeopleCoordinates) {
+
+    }
+
+
     return (<div className={'searchDetails'}>
             <h1>Поиск ФИО</h1>
             <div className={'pageDetails'}>
                 <div className={'map'}>
-                    <Map dim={{height:'100%', width:'100%'}}/>
+                    <Map dim={{height:'100%', width:'100%'}} {...mapProps} />
                 </div>
                 <div className={'info'}>
                     <div className={'buttons'}>
@@ -70,11 +100,11 @@ function SearchDetails() {
                     </div>
                     <div className={'bottomBox'}>
                         <div className={'checkboxes'}>
-                            <CheckBox name={'People'} checked={people} label={'Люди'} onChange={(val) => {
-                                setPeople(val)
+                            <CheckBox name={'People'} checked={showPeopleCoordinates} label={'Люди'} onChange={(val) => {
+                                setShowShowPeopleCoordinatesCoordinates(val)
                             }}></CheckBox>
-                            <CheckBox name={'Zones'} checked={zones} label={'Зоны поиска'} onChange={(val) => {
-                                setZones(val)
+                            <CheckBox name={'Zones'} checked={showZones} label={'Зоны поиска'} onChange={(val) => {
+                                setShowZonesCheck(val)
                             }}></CheckBox>
                             <CheckBox name={'Markings'} checked={markings} label={'Пометки'} onChange={(val) => {
                                 setMarkings(val)

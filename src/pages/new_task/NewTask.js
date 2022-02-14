@@ -40,7 +40,6 @@ function NewTask() {
         arr = DataSq
     }else {
         arr = DataPart.map (function(elem){
-            debugger
             return {
                 label: elem.user.firstName + ' ' + elem.user.lastName,
                 value: elem.userId
