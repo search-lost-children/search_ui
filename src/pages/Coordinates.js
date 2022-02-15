@@ -1,17 +1,21 @@
 import {serverURL} from "../config";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useRouteMatch} from "react-router-dom";
 import TaskString from "../components/taskString/taskString";
+import Map from "../components/map/Map"
+import Marker from "../components/map/Marker"
 import tableCells from './Coordinates.css'
-
-
 
 function Coordinates() {
     let match = useRouteMatch()
+    let tmp
     const id = match.params.id
     const [lostName, setLostName] = useState({})
     const [tasksList, setTasksList] = useState([])
+    const [radioVal, setRadioVal] = useState()
+    const [myCoordinates,setMyCoordinates] = useState()
+    const [coordinatesArray, setCoordinatesArray] = useState([])
     //const [latitude, setLatitude] = useState(0)
     //const [longitude, setLongitude] = useState(0)
 
@@ -32,6 +36,12 @@ function Coordinates() {
                     .catch(function (error) {
                         console.error("Произошла ошибка при попытке отправить данные на сервер")
                     });
+                tmp = [...coordinatesArray, {
+                    lng: longitude,
+                    lat: latitude,
+                    time: new Date()
+                }]
+                setCoordinatesArray(tmp)
             }
             function error() {
                 console.error('Невозможно получить ваше местоположение')
@@ -67,6 +77,12 @@ function Coordinates() {
             .then(function (response) {
                 // setTasksList(response.data)
                 setTasksList(test)
+            })
+            .catch(function (error) {
+            })
+        axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/me`)
+            .then(function (response) {
+                setCoordinatesArray(response.data)
             })
             .catch(function (error) {
                 setTasksList(test)
