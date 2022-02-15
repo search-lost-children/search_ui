@@ -10,6 +10,7 @@ import Marker from "../components/map/Marker"
 
 function Coordinates() {
     let match = useRouteMatch()
+    let tmp
     const id = match.params.id
     const [lostName, setLostName] = useState({
         firstName: "",
@@ -17,6 +18,8 @@ function Coordinates() {
     })
     const [tasksList, setTasksList] = useState([])
     const [radioVal, setRadioVal] = useState()
+    const [myCoordinates,setMyCoordinates] = useState()
+    const [coordinatesArray, setCoordinatesArray] = useState([])
     //const [latitude, setLatitude] = useState(0)
     //const [longitude, setLongitude] = useState(0)
 
@@ -37,6 +40,12 @@ function Coordinates() {
                     .catch(function (error) {
                         console.error("Произошла ошибка при попытке отправить данные на сервер")
                     });
+                tmp = [...coordinatesArray, {
+                    lng: longitude,
+                    lat: latitude,
+                    time: new Date()
+                }]
+                setCoordinatesArray(tmp)
             }
             function error() {
                 console.error('Невозможно получить ваше местоположение')
@@ -88,6 +97,12 @@ function Coordinates() {
         axios.get(`${serverURL}/api/v1/searches/${id}/tasks`)
             .then(function (response) {
                 setTasksList(response.data)
+            })
+            .catch(function (error) {
+            })
+        axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/me`)
+            .then(function (response) {
+                setCoordinatesArray(response.data)
             })
             .catch(function (error) {
             })
