@@ -15,6 +15,7 @@ import Username from "../../components/tableCells/Username";
 import NewEventModal from "../../components/event/NewEventModal";
 import {showNotification} from "../../features/notificationSlice";
 import {useDispatch} from "react-redux";
+import moment from "moment";
 
 function NewSearchPage() {
     const [rows, setData] = useState([]);
@@ -30,6 +31,7 @@ function NewSearchPage() {
     const match = useRouteMatch();
     const id = match.params.id;
     const dispatch = useDispatch()
+
 
     function fetchData() {
         axios.get(`${serverURL}/api/v1/searches/${id}/events`).then(function (response) {
@@ -131,10 +133,10 @@ debugger
             <h1>ФИО: {firstName} {lastName} </h1>
             <div className={'content'}>
                 <div className={'whenFind'}>
-                    <Input  value={firstName} type="firstName" label={"Имя"} onChange={(firstName) => {
+                    <Input shrink value={firstName} type="firstName" label={"Имя"} onChange={(firstName) => {
                         setFName(firstName)
                     }}></Input>
-                    <Input value={lastName} type="lastName" label={"Фамилия"} onChange={(lastName) => {
+                    <Input shrink value={lastName} type="lastName" label={"Фамилия"} onChange={(lastName) => {
                         setLName(lastName)
                     }}></Input>
                     <IconButton aria-label="add">
@@ -143,12 +145,12 @@ debugger
                     <p>Последний раз искали ...</p>
                 </div>
                 <div className={'date'}>
-                    <Input shrink value={new Date(date).toISOString().substring(0, 16)} type="datetime-local" label={"Дата пропажи"} onChange={(date) => {
+                    <Input shrink value={moment(date).format("yyyy-MM-DDTHH:mm")} type="datetime-local" label={"Дата пропажи"} onChange={(date) => {
                         setDate(date)
                     }}></Input>
                 </div>
                 <div className={'place'}>
-                    <Input value={address} type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
+                    <Input shrink value={address} type="coordinates" label={"Точка сбора"} onChange={(addressToSave) => {
                         setAddress(addressToSave)
                     }}></Input>
                     <div className={'map_small'}>
@@ -156,7 +158,7 @@ debugger
                     </div>
                 </div>
                 <div className={"info"}>
-                <TextArea value={info} type='info' label={"Вводная информация"} onChange={(info) => {
+                <TextArea shrink value={info} type='info' label={"Вводная информация"} onChange={(info) => {
                     setInfo(info)
                 }}></TextArea>
                 </div>
