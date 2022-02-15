@@ -13,6 +13,8 @@ function SquadsSearch() {
     const [selectVal2, setSelectVal2] = useState('')
     const [rows, setRows ] = useState([]);
     const [DataPart, setDataPart]= useState([]);
+    let match = useRouteMatch()
+    const id = match.params.id
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
@@ -29,7 +31,7 @@ function SquadsSearch() {
                     title={'Modal Title'}
                 >
                     <div>
-                        Some random text
+                        Delete
                     </div>
                 </ModalWindow>
             </div>
@@ -95,9 +97,9 @@ function SquadsSearch() {
                     <div className="Button1">
                     <Button value={'Добавить в группу'} onClick={() => {
                         let firstLastName = DataPart.find ((elem) => elem.id===parseInt(selectVal1))
-
-                        setRows([firstLastName])
-                        //alert('button is clicked')
+                        // rows.push (firstLastName)
+                        console.log(firstLastName);
+                        setRows([...rows, firstLastName])
                     }}></Button>
                     </div>
                 </div>
@@ -116,7 +118,7 @@ function SquadsSearch() {
             </div>
             <div className="Button2">
                 <Button value={'Сохранить'} onClick={() => {
-                    axios.post(`http://localhost:3000/api/v1/searches/:id/participants`,rows)
+                    axios.post(`http://localhost:3000/api/v1/searches/${id}/squads`,rows)
                 }}></Button>
             </div>
         </div>
