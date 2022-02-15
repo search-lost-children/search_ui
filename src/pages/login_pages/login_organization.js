@@ -73,10 +73,10 @@ function Login_organization (){
     return (
         <div className="About">
 
-            <h1>login organization</h1>
-            <p>you already have account in different organizations. Choose one to log in</p>
-            <Select label={'Select Form'} value={selectOrg} options={selectOptions} onChange={(val)=>{setSelectOrg(val)}}> </Select>
-            <Button value={'submit'} onClick={()=>{fill_check(selectOrg)}}></Button>
+            <h1>авторизовать организацию</h1>
+            <p>у вас уже есть аккаунты в разных организациях. Выберите один, чтобы войти</p>
+            <Select label={'выберите организацию'} value={selectOrg} options={selectOptions} onChange={(val)=>{setSelectOrg(val)}}> </Select>
+            <Button value={'подтвердить'} onClick={()=>{fill_check(selectOrg)}}></Button>
         </div>
     )
 }

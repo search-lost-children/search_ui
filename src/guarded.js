@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Loading from "./components/loading/Loading";
@@ -10,8 +10,7 @@ const GuardedRoute = ({component: Component, ...rest}) => {
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
-
-    if (user === undefined) {
+    useEffect(()=> { if (user === undefined) {
         axios.get(`${serverURL}/api/v1/auth`).then(function (res) {
                 if (res.data) {
                     dispatch(login(res.data))
@@ -19,7 +18,9 @@ const GuardedRoute = ({component: Component, ...rest}) => {
                 setIsLoading(false)
             }
         )
-    }
+    }else{
+        setIsLoading(false)
+    }},[])
 
     if (isLoading){
         return <Loading></Loading>
