@@ -6,65 +6,79 @@ import TaskString from "../components/taskString/taskString";
 import Map from "../components/map/Map"
 import Marker from "../components/map/Marker"
 import tableCells from './Coordinates.css'
+import {showNotification} from "../features/notificationSlice";
+import {useDispatch} from "react-redux";
 
 function Coordinates() {
-    let match = useRouteMatch()
-    let tmp
+    let match = useRouteMatch();
+    const dispatch = useDispatch();
     const id = match.params.id
     const [lostName, setLostName] = useState({})
     const [tasksList, setTasksList] = useState([])
     const [radioVal, setRadioVal] = useState()
-    const [myCoordinates,setMyCoordinates] = useState()
-    const [coordinatesArray, setCoordinatesArray] = useState([])
-    //const [latitude, setLatitude] = useState(0)
-    //const [longitude, setLongitude] = useState(0)
+    const [myCoordinates,setMyCoordinates] = useState([])
 
     function startSendingCoordinates() {
         let coordinatesSendingInterval = setInterval(function (){
             function success(position) {
-                //setLatitude(position.coords.latitude)
-                //setLongitude(position.coords.longitude)
                 let latitude = position.coords.latitude
                 let longitude = position.coords.longitude
                 axios.post(`${serverURL}/api/v1/searches/${id}/coordinates/me`, {
                     latitude: latitude,
                     longitude: longitude
-                })
-                    .then(function (response) {
-                        console.log("Данные о местонахождении были отправлены на сервер для дальнейшего построения пройденого Вами маршрута")
-                    })
-                    .catch(function (error) {
-                        console.error("Произошла ошибка при попытке отправить данные на сервер")
-                    });
-                tmp = [...coordinatesArray, {
+                }).catch(function (error) {
+                    dispatch(showNotification({
+                        message: 'При загрузке данных произошла ошибка.',
+                        severity: 'error'
+                    }))
+                });
+                setMyCoordinates([...myCoordinates, {
                     lng: longitude,
                     lat: latitude,
                     time: new Date()
-                }]
-                setCoordinatesArray(tmp)
+                }])
             }
             function error() {
-                console.error('Невозможно получить ваше местоположение')
+                dispatch(showNotification({
+                    message: 'Геолокация не поддерживается Вашим устройством. \n Включите геолокацию и обновите страницу.',
+                    severity: 'error'
+                }))
             }
             if (!navigator.geolocation) {
-                console.error('Geolocation не поддерживается вашим устройством/браузером')
+                dispatch(showNotification({
+                    message: 'Геолокация не поддерживается Вашим устройством. \n Включите геолокацию и обновите страницу.',
+                    severity: 'error'
+                }))
             } else {
                 navigator.geolocation.getCurrentPosition(success, error);
             }
         }, 60000)
     }
 
-    let test = [{
-        label: "Task1",
-        type: "solo",
-        coordinates: [0.1111111, 0.77777777],
-        status: "open"
-    }, {
-        label: "Task2",
-        type: "group",
-        coordinates: [0.1111111, 0.77777777],
-        status: "open"
-    }]
+
+
+    useEffect(() => {
+        let test = [
+            {
+                label: "Task1",
+                type: "solo",
+                coordinates: [77777, 77777],
+                status: "open"
+            },
+            {
+                label: "Task2",
+                type: "group",
+                coordinates: [77777, 77777],
+                status: "closed"
+            },
+            {
+                label: "Task3",
+                type: "group",
+                coordinates: [77777, 77777],
+                status: "open"
+            }
+        ]
+        setTasksList(test)
 
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/`)
@@ -72,6 +86,10 @@ function Coordinates() {
                 setLostName(response.data)
             })
             .catch(function (error) {
+                dispatch(showNotification({
+                    message: 'При загрузке данных произошла ошибка',
+                    severity: 'error'
+                }))
             })
         axios.get(`${serverURL}/api/v1/searches/${id}/tasks`)
             .then(function (response) {
@@ -79,13 +97,20 @@ function Coordinates() {
                 setTasksList(test)
             })
             .catch(function (error) {
+                dispatch(showNotification({
+                    message: 'При загрузке данных произошла ошибка',
+                    severity: 'error'
+                }))
             })
         axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/me`)
             .then(function (response) {
-                setCoordinatesArray(response.data)
+                setMyCoordinates(response.data)
             })
             .catch(function (error) {
-                setTasksList(test)
+                dispatch(showNotification({
+                    message: 'При загрузке данных произошла ошибка',
+                    severity: 'error'
+                }))
             })
        startSendingCoordinates()
 
@@ -107,7 +132,11 @@ function Coordinates() {
         <div className={'tableCells'}>
             <h1> Имя, фамилия пропавшего: {lostName.firstName + " " + lostName.lastName} </h1>
             <div className={'elements'}>{tasksTable()}</div>
-            {/*<div>MAP</div>*/}
+            <center>
+                <div className={'map'}>
+                    <Map dim={{height:'100%', width:'100%'}}/>
+                </div>
+            </center>
         </div>
     )}
 

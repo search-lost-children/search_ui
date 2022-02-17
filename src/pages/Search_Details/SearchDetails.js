@@ -46,72 +46,21 @@ function SearchDetails() {
             if(i === coordinatesStorage.length - 1 && tmp === undefined){
                 coordinatesStorage.push(createCoordinateStorageObj(data[1].userId, data[1].firstName, data[1].lastName, data[1].lat, data[1].lng, data[1].time))
             }
-            }
-
         }
     }
+
 
     useEffect(() => {
         let timerId = setInterval(function () {
             axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
                 .then(function (response) {
-                    [
-                        {
-                            "userId": 1,
-                            "firstName": "dgfdf",
-                            "lastName": "dfdgf",
-                            "lng": "35.0627573",
-                            "lat": "48.4613372",
-                            "time": "2022-02-10T18:35:46.571Z"
-                        },
-                        {
-                            "userId": 1,
-                            "firstName": "dgfdf",
-                            "lastName": "dfdgf",
-                            "lng": "35.0627573",
-                            "lat": "48.4613372",
-                            "time": "2022-02-10T18:35:48.642Z"
-                        },
-                        {
-                            "userId": 3,
-                            "firstName": "123",
-                            "lastName": "123",
-                            "lng": "35.0627573",
-                            "lat": "48.4613372",
-                            "time": "2022-02-17T18:12:37.501Z"
-                        }
-                    ]
-
-                    [
-                        {
-                            userid: 1,
-                            firstName: '',
-                            lastName: '',
-                            coordinates: [
-                                {
-                                    "lng": "35.0627573",
-                                    "lat": "48.4613372",
-                                    "time": "2022-02-10T18:35:46.571Z"
-                                },
-                                {
-                                    "lng": "35.0627573",
-                                    "lat": "48.4613372",
-                                    "time": "2022-02-10T18:35:46.571Z"
-                                }
-                            ]
-                        }
-                    {
-                        userId:2,
-                            coordinates: [
-
-                    ]
-                    }
-                        ]
                     setData(response.data)
                 })
         }, 60000)
-        return (function () {
+        return function () {
             clearInterval(timerId)
+        }
+    });
         })
     },[id]);
 
