@@ -17,10 +17,93 @@ function SearchDetails() {
     const [zones, setZones] = useState(false);
     const [markings, setMarkings] = useState(false);
 
+    function createCoordinateStorageObj(id, firstName, lastName, lat, lng, time) {
+        return {
+            userid: id,
+            firstName: firstName,
+            lastName: lastName,
+            coordinates: [
+                {
+                    lng: lng,
+                    lat: lat,
+                    time: time
+                }]
+        }
+    }
+
+    function dataStoring(data){
+        let coordinatesStorage = []
+        let tmp
+        for(let i = 0; i < coordinatesStorage.length; i++){
+            if (i === 0) {
+                coordinatesStorage.push(createCoordinateStorageObj(data[1].userId, data[1].firstName, data[1].lastName, data[1].lat, data[1].lng, data[1].time))
+                continue
+            }
+            tmp = data.find((el) => el.userId === coordinatesStorage[i].userId)
+            if(i === coordinatesStorage.length - 1 && tmp === undefined){
+                coordinatesStorage.push(createCoordinateStorageObj(data[1].userId, data[1].firstName, data[1].lastName, data[1].lat, data[1].lng, data[1].time))
+            }
+            }
+
+        }
+    }
+
     useEffect(() => {
         let timerId = setInterval(function () {
-            axios.get(`/searches/${id}/coordinates/`)
+            axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
                 .then(function (response) {
+                    [
+                        {
+                            "userId": 1,
+                            "firstName": "dgfdf",
+                            "lastName": "dfdgf",
+                            "lng": "35.0627573",
+                            "lat": "48.4613372",
+                            "time": "2022-02-10T18:35:46.571Z"
+                        },
+                        {
+                            "userId": 1,
+                            "firstName": "dgfdf",
+                            "lastName": "dfdgf",
+                            "lng": "35.0627573",
+                            "lat": "48.4613372",
+                            "time": "2022-02-10T18:35:48.642Z"
+                        },
+                        {
+                            "userId": 3,
+                            "firstName": "123",
+                            "lastName": "123",
+                            "lng": "35.0627573",
+                            "lat": "48.4613372",
+                            "time": "2022-02-17T18:12:37.501Z"
+                        }
+                    ]
+
+                    [
+                        {
+                            userid: 1,
+                            firstName: '',
+                            lastName: '',
+                            coordinates: [
+                                {
+                                    "lng": "35.0627573",
+                                    "lat": "48.4613372",
+                                    "time": "2022-02-10T18:35:46.571Z"
+                                },
+                                {
+                                    "lng": "35.0627573",
+                                    "lat": "48.4613372",
+                                    "time": "2022-02-10T18:35:46.571Z"
+                                }
+                            ]
+                        }
+                    {
+                        userId:2,
+                            coordinates: [
+
+                    ]
+                    }
+                        ]
                     setData(response.data)
                 })
         }, 60000)
