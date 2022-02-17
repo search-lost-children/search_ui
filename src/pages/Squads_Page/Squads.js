@@ -7,6 +7,7 @@ import SquadsTable from "../../components/squadsTable/squadsTable";
 import GridTable from "@nadavshaar/react-grid-table";
 import axios from "axios";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
+import {serverURL} from "../../config";
 
 function SquadsSearch() {
     const [selectVal1, setSelectVal1] = useState('')
@@ -15,6 +16,21 @@ function SquadsSearch() {
     const [DataPart, setDataPart]= useState([]);
     let match = useRouteMatch()
     const id = match.params.id
+
+    const getRows = (() => {
+        console.log(rows);
+        return rowsg
+    })()
+
+    function deleteEl(el) {
+
+        const _rows = getRows
+        debugger
+        const index = rows.indexOf(el);// 0 - 9
+        rows.splice(index, 1)
+
+        setRows(rows );
+    }
     const Username = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
@@ -26,14 +42,7 @@ function SquadsSearch() {
     const Do = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                <ModalWindow
-                    trigger={<Button value={'Удалить'}></Button>}
-                    title={'Modal Title'}
-                >
-                    <div>
-                        Delete
-                    </div>
-                </ModalWindow>
+                <Button value={'Удалить'} onClick={(()=> () => deleteEl(data))()}></Button>
             </div>
         )
     }
@@ -55,7 +64,6 @@ function SquadsSearch() {
         axios.get('/api/v1/searches/:id/participants').then(function (response) {
             setDataPart (response.data)
         }).catch(function (error) {
-            console.log('error')
             //remove this
             setDataPart([{
                 id:1,
@@ -98,7 +106,6 @@ function SquadsSearch() {
                     <Button value={'Добавить в группу'} onClick={() => {
                         let firstLastName = DataPart.find ((elem) => elem.id===parseInt(selectVal1))
                         // rows.push (firstLastName)
-                        console.log(firstLastName);
                         setRows([...rows, firstLastName])
                     }}></Button>
                     </div>
