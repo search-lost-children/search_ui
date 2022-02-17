@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import {serverURL} from "../../config";
 import Box from '@mui/material/Box';
 
-
 function Login_page (){
     const [Login, setLogin] = useState('');
     const [Password, setPassword] = useState('');
@@ -66,8 +65,6 @@ function Login_page (){
             <Button disabled = {user_verification()} value={'логин'} onClick={()=>{user_login()}}></Button>
             <Button value={'зарегистрироваться'} onClick={()=>{history.push('/registration_page')}}></Button>
             </Box>
-
-
 
         </div>
     )
