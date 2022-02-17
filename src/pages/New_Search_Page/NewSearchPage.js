@@ -32,7 +32,6 @@ function NewSearchPage() {
     const id = match.params.id;
     const dispatch = useDispatch()
 
-
     function fetchData() {
         axios.get(`${serverURL}/api/v1/searches/${id}/events`).then(function (response) {
             setData(response.data)
