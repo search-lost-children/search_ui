@@ -26,7 +26,7 @@ function Login_page (){
                 if(res.data){
                     sessionStorage.setItem('json', res.data.token);
                     dispatch(login(res.data))
-                    history.push('/searches');
+                    history.push('/');
                 }
             }, (resp) => {
                 dispatch(showNotification({
