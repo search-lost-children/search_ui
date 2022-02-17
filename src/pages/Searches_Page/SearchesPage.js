@@ -9,6 +9,8 @@ import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import {serverURL} from "../../config";
 import {useSelector} from "react-redux";
 import Username from "../../components/tableCells/Username";
+import Box from "@mui/material/Box";
+import Input from "../../components/input/input";
 
 function SearchesPage() {
     const [rows, setData] = useState([]);
@@ -27,11 +29,19 @@ function SearchesPage() {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
                 <ModalWindow
-                    trigger={<Button value={'Edit'}></Button>}
-                    title={'Modal Title'}
+                    trigger={<Button value={'действие'}></Button>}
+                    title={'выберите действие'}
                 >
                     <div>
-                        Some random text
+                        <Box
+                            component="form"
+                            sx={{'& button': { m: 1, width: '35ch' },}}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <Button value={'перейти к управлению'} onClick={()=>{history.push(`/searches/${data.id}/details`)}}></Button>
+                            <Button value={'изменить поиск'} onClick={()=>{history.push(`/searches/${data.id}/увше`)}}></Button>
+                        </Box>
                     </div>
                 </ModalWindow>
             </div>

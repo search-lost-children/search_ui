@@ -10,17 +10,21 @@ const GuardedRoute = ({component: Component, ...rest}) => {
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
-    useEffect(()=> { if (user === undefined) {
-        axios.get(`${serverURL}/api/v1/auth`).then(function (res) {
-                if (res.data) {
-                    dispatch(login(res.data))
+
+    useEffect(() => {
+        if (user === undefined) {
+            axios.get(`${serverURL}/api/v1/auth`).then(function (res) {
+                    if (res.data) {
+                        dispatch(login(res.data))
+                    }
+                    setIsLoading(false)
                 }
-                setIsLoading(false)
-            }
-        )
-    }else{
-        setIsLoading(false)
-    }},[])
+            )
+        } else {
+            setIsLoading(false)
+        }
+    }, [])
+
 
     if (isLoading){
         return <Loading></Loading>

@@ -47,7 +47,7 @@ export default function UserView () {
         <h2>This is user view</h2>
         {cards.length ? <div style={{display: 'flex'}}>
             {cards}
-        </div> : null}
+        </div> : <h3>Здесь пока нет активных поисков :)</h3>}
 
     </div>);
 }
