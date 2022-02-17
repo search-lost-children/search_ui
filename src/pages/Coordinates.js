@@ -55,8 +55,6 @@ function Coordinates() {
         }, 60000)
     }
 
-
-
     useEffect(() => {
         let test = [
             {
@@ -79,6 +77,7 @@ function Coordinates() {
             }
         ]
         setTasksList(test)
+    },[match.params.id])
 
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/`)
@@ -138,7 +137,8 @@ function Coordinates() {
                 </div>
             </center>
         </div>
-    )}
+    )
+}
 
 export default Coordinates
 

@@ -1,7 +1,6 @@
 import Radio from "../radio/radio"
 import React, {useState} from "react";
 import {useRouteMatch} from "react-router-dom";
-import Radio from "../radio/radio";
 
 function TaskString(props) {
     let color
@@ -53,22 +52,3 @@ function TaskString(props) {
 }
 
 export default TaskString
-
-
-
-
-
-
-
-
-
-
-{/*<Button*/}
-{/*    onClick = {() => {*/}
-{/*        // also тут должна быть функция, которая будет передавать координаты на карту для отрисовки маршрута*/}
-{/*        setButtonValue("В процессе...")*/}
-{/*        setButtonStatus(true)*/}
-{/*    }}*/}
-{/*    value={buttonValue}*/}
-{/*    disabled={buttonStatus}>*/}
-{/*</Button>*/}

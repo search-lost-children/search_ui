@@ -54,15 +54,13 @@ function SearchDetails() {
         let timerId = setInterval(function () {
             axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
                 .then(function (response) {
-                    setData(response.data)
+                    setPeopleCoordinated(response.data)
                 })
         }, 60000)
         return function () {
             clearInterval(timerId)
         }
-    });
-        })
-    },[id]);
+    }, [id]);
 
     useEffect(() => {
         if(showZones) {
