@@ -6,6 +6,7 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {showNotification} from "../../features/notificationSlice";
 import {serverURL} from "../../config";
+import Box from '@mui/material/Box';
 
 
 function Registration_page() {
@@ -57,20 +58,29 @@ function Registration_page() {
     }
     return (
         <div className="About">
-            <h1>Registration page</h1>
-
-            <Input type='login' label={'Login'} value={newLogin} onChange={(val) => setNewLogin((val))}></Input>
-            <Input type='string' label={'имя'} value={newFirstName} onChange={(val) => setNewFirstName((val))}></Input>
+            <h1>Страница регистрации</h1>
+     <Box
+         component="form"
+         sx={{
+             '& .MuiTextField-root': { m: 1, width: '25ch' },
+         }}
+         noValidate
+         autoComplete="off"
+     >
+            <Input required type='login' label={'Логин'} value={newLogin} onChange={(val) => setNewLogin((val))}></Input>
+            <Input required type='string' label={'имя'} value={newFirstName} onChange={(val) => setNewFirstName((val))}></Input>
             <Input type='string' label={'фамилия'} value={newLastName}
                    onChange={(val) => setNewLastName((val))}></Input>
-            <Input type='string' label={'номер телефона'} value={newPhoneNumber}
+            <Input required type='string' label={'номер телефона'} value={newPhoneNumber}
                    onChange={(val) => setNewPhoneNumber((val))}></Input>
-            <Input type='password' label={'пароль'} value={newPassword}
+            <Input required type='password' label={'пароль'} value={newPassword}
                    onChange={(val) => setNewPassword((val))}></Input>
-            <Input type='password' label={'подтверждение пароля'} value={newPasswordVer}
+            <Input required type='password' label={'подтверждение пароля'} value={newPasswordVer}
                    onChange={(val) => setNewPasswordVer((val))}></Input>
 
-            <Button disabled={verification()} value={'Registration'} onClick={() => verif_good()}></Button>
+            <Button required disabled={verification()} value={'Регистрация'} onClick={() => verif_good()}></Button>
+
+     </Box>
         </div>
     )
 }

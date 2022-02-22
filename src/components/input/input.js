@@ -14,6 +14,7 @@ function Input(props) {
         <div className="inputForm">
             <TextField
                 id="outlined-basic"
+                required={props.required}
                 disabled={props.disabled}
                 type={props.type}
                 label={props.label}

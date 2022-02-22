@@ -7,8 +7,7 @@ import { login, logout } from '../../features/userSlice'
 import { showNotification } from '../../features/notificationSlice'
 import { useDispatch } from "react-redux";
 import {serverURL} from "../../config";
-
-
+import Box from '@mui/material/Box';
 
 function Login_page (){
     const [Login, setLogin] = useState('');
@@ -27,7 +26,7 @@ function Login_page (){
                 if(res.data){
                     sessionStorage.setItem('json', res.data.token);
                     dispatch(login(res.data))
-                    history.push('/searches');
+                    history.push('/');
                 }
             }, (resp) => {
                 dispatch(showNotification({
@@ -51,13 +50,22 @@ function Login_page (){
     return (
         <div className="About">
 
-            <h1>login page</h1>
+            <h1>страница авторизации</h1>
+            <Box
+                component="form"
+                sx={{
+                    '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    '& button': { m: 1, width: '25ch' },
+                }}
+                noValidate
+                autoComplete="off"
+            >
+            <Input type='login' label={'логин'} value={Login} onChange={(val)=> setLogin((val))}></Input>
+            <Input type='password' label={'пароль'} value={Password} onChange={(val)=> setPassword((val))}></Input>
+            <Button disabled = {user_verification()} value={'логин'} onClick={()=>{user_login()}}></Button>
+            <Button value={'зарегистрироваться'} onClick={()=>{history.push('/registration_page')}}></Button>
+            </Box>
 
-            <Input type='login' label={'Login'} value={Login} onChange={(val)=> setLogin((val))}></Input>
-
-            <Input type='password' label={'password'} value={Password} onChange={(val)=> setPassword((val))}></Input>
-            <Button disabled = {user_verification()} value={'Log in'} onClick={()=>{user_login()}}></Button>
-            <Button value={'registration'} onClick={()=>{history.push('/registration_page')}}></Button>
         </div>
     )
 }
