@@ -23,7 +23,6 @@ import TasksList from './pages/Tasks_List_Page/TasksList';
 import Notification from "./components/notification/notification";
 import Participants from "./pages/Participants/Participants";
 import MainPage from "./pages/main/MainPage";
-import Coordinates from "./pages/Coordinates";
 
 function App() {
     jwt_interceptor();

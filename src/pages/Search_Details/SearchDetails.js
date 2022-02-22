@@ -8,21 +8,22 @@ import {serverURL} from "../../config";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import Map from "../../components/map/Map";
 import Select from "../../components/select/select";
+import {getColor} from "../../services/color.service";
 
 function SearchDetails() {
     const history = useHistory();
     let match = useRouteMatch();
     const id = match.params.id;
-    const [peopleCoordinates, setPeopleCoordinated] = useState();
+    const [peopleCoordinates, setPeopleCoordinated] = useState([]);
     const [status, setStatus] = useState();
     const [showPeopleCoordinates, setShowShowPeopleCoordinatesCoordinates] = useState(false);
     const [showZones, setShowZonesCheck] = useState(false);
     const [searchZones, setSearchZones] = useState([]);
     const [markings, setMarkings] = useState(false);
 
-    function createCoordinateStorageObject({id, firstName, lastName, lat, lng, time}) {
+    function createCoordinateStorageObject({userId, firstName, lastName, lat, lng, time}) {
         return {
-            userid: id,
+            userId: userId,
             firstName: firstName,
             lastName: lastName,
             coordinates: [
@@ -35,9 +36,10 @@ function SearchDetails() {
     }
 
     function dataStoring(data){
-        let sorted = []
+        let grouped = []
+        debugger
         for(let i = 0; i < data.length; i++){
-            let findResult = sorted.find((el) => el.userId === data[i].userId)
+            let findResult = grouped.find((el) => el.userId === data[i].userId)
             if( findResult !== undefined){
                 findResult.coordinates.push({
                     lng: data[i].lng,
@@ -45,19 +47,22 @@ function SearchDetails() {
                     time: data[i].time
                 })
             }else{
-                sorted.push(createCoordinateStorageObject(data[i]))
+                grouped.push(createCoordinateStorageObject(data[i]))
             }
         }
-        return sorted
+        return grouped
     }
 
-    useEffect(() => {
-        let timerId = setInterval(function () {
-            axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
-                .then(function (response) {
-                    setPeopleCoordinated(dataStoring(response.data))
-                })
-        }, 60000)
+    async function requestCoordinates() {
+        axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
+            .then(function (response) {
+                setPeopleCoordinated(dataStoring(response.data.sort((a,b) => new Date(a.time)-new Date(b.time))))
+            })
+    }
+
+    useEffect(async () => {
+        let timerId = setInterval(requestCoordinates, 60000)
+        await requestCoordinates()
         return function () {
             clearInterval(timerId)
         }
@@ -90,7 +95,8 @@ function SearchDetails() {
 
     const mapProps = {
         pathes: [],
-        square: []
+        square: [],
+        markers: []
     }
 
     if(showZones) {
@@ -104,7 +110,30 @@ function SearchDetails() {
     }
 
     if(showPeopleCoordinates) {
+        peopleCoordinates.forEach((el) => {
+            const lastCoordinate = el.coordinates[el.coordinates.length - 1 ]
+            mapProps.markers.push({
+                lat: lastCoordinate.lat,
+                lng: lastCoordinate.lng,
+                infoWindow: {
+                    content:
+`<div> 
+    <div> Имя ${el.firstName} </div>
+    <div>Фамилия ${el.lastName} </div>
+    <div>Номер телефона ${el.phoneNumber}</div>  
+</div>`
 
+                }
+            })
+            debugger
+            mapProps.pathes.push( {
+                path: el.coordinates,
+                geodesic: true,
+                strokeColor: getColor(el.userId),
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            })
+        })
     }
 
 

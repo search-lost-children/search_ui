@@ -2,12 +2,12 @@ import {serverURL} from "../config";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useRouteMatch} from "react-router-dom";
-import TaskString from "../components/taskString/taskString";
+import TaskInfo from "../components/taskInfo/taskInfo";
 import Map from "../components/map/Map"
-import Marker from "../components/map/Marker"
-import tableCells from './Coordinates.css'
 import {showNotification} from "../features/notificationSlice";
 import {useDispatch} from "react-redux";
+import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function Coordinates() {
     let match = useRouteMatch();
@@ -15,8 +15,8 @@ function Coordinates() {
     const id = match.params.id
     const [lostName, setLostName] = useState({})
     const [tasksList, setTasksList] = useState([])
-    const [radioVal, setRadioVal] = useState()
     const [myCoordinates,setMyCoordinates] = useState([])
+    const [lastMyCoordinate, setLastMyCoordinate] = useState(undefined)
 
     function startSendingCoordinates() {
         let coordinatesSendingInterval = setInterval(function (){
@@ -32,11 +32,12 @@ function Coordinates() {
                         severity: 'error'
                     }))
                 });
-                setMyCoordinates([...myCoordinates, {
+                console.log(myCoordinates);
+                setLastMyCoordinate( {
                     lng: longitude,
                     lat: latitude,
                     time: new Date()
-                }])
+                })
             }
             function error() {
                 dispatch(showNotification({
@@ -53,31 +54,14 @@ function Coordinates() {
                 navigator.geolocation.getCurrentPosition(success, error);
             }
         }, 60000)
+
+        return coordinatesSendingInterval
     }
 
     useEffect(() => {
-        let test = [
-            {
-                label: "Task1",
-                type: "solo",
-                coordinates: [77777, 77777],
-                status: "open"
-            },
-            {
-                label: "Task2",
-                type: "group",
-                coordinates: [77777, 77777],
-                status: "closed"
-            },
-            {
-                label: "Task3",
-                type: "group",
-                coordinates: [77777, 77777],
-                status: "open"
-            }
-        ]
-        setTasksList(test)
-    },[match.params.id])
+        if(!lastMyCoordinate) return
+        setMyCoordinates([...myCoordinates, lastMyCoordinate])
+    }, [lastMyCoordinate])
 
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/`)
@@ -92,8 +76,10 @@ function Coordinates() {
             })
         axios.get(`${serverURL}/api/v1/searches/${id}/tasks`)
             .then(function (response) {
-                // setTasksList(response.data)
-                setTasksList(test)
+                setTasksList(response.data.map(el => ({
+                    ...el,
+                    selected: false
+                })))
             })
             .catch(function (error) {
                 dispatch(showNotification({
@@ -103,7 +89,7 @@ function Coordinates() {
             })
         axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/me`)
             .then(function (response) {
-                setMyCoordinates(response.data)
+                setMyCoordinates(response.data.sort((a, b) => new Date(a.time) - new Date(b.time)))
             })
             .catch(function (error) {
                 dispatch(showNotification({
@@ -111,29 +97,74 @@ function Coordinates() {
                     severity: 'error'
                 }))
             })
-       startSendingCoordinates()
-
+        const interval = startSendingCoordinates()
+        return () => {
+            clearInterval(interval)
+        }
     }, [match.params.id]);
 
+    function onTaskSelect (taskId, selected) {
+        const item = tasksList.find(el => el.id === taskId);
+        item.selected = selected;
 
+        setTasksList([...tasksList])
+    }
 
     function tasksTable(){
-        let tasksListToRender = []
+        let tasksListToRender = [];
         for (let i = 0; i < tasksList.length; i++) {
-            if(tasksList[i].status === "open"){
-                tasksListToRender.push(<TaskString label={tasksList[i].label} type={tasksList[i].type} coordinates={tasksList[i].coordinates} />)
-            }
+            tasksListToRender.push(
+                <TaskInfo
+                    onChange={onTaskSelect}
+                    key={tasksList[i].id}
+                    id={tasksList[i].id}
+                    label={tasksList[i].label}
+                    type={tasksList[i].taskType}
+                    coordinates={tasksList[i].coordinates} />
+            )
         }
         return tasksListToRender
+    }
+
+    const mapProps = {
+        pathes: [myCoordinates],
+        square: [],
+        markers: []
+    }
+
+    tasksList.filter(task => task.selected).forEach((task) => {
+        if (task.locationType === 'square') {
+            mapProps.square.push(JSON.parse(task.location))
+        } else {
+            mapProps.pathes.push(JSON.parse(task.location))
+        }
+    })
+
+    if (myCoordinates.length) {
+        debugger
+        mapProps.markers.push(myCoordinates[myCoordinates.length - 1])
     }
 
     return (
         <div className={'tableCells'}>
             <h1> Имя, фамилия пропавшего: {lostName.firstName + " " + lostName.lastName} </h1>
-            <div className={'elements'}>{tasksTable()}</div>
+            <div className={'elements'}>
+                <Accordion sx={{ width: '100%', flexShrink: 0 }}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                    >
+                        <Typography>Задачи</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {tasksTable()}
+                    </AccordionDetails>
+                </Accordion>
+            </div>
             <center>
                 <div className={'map'}>
-                    <Map dim={{height:'100%', width:'100%'}}/>
+                    <Map dim={{height:'100%', width:'100%'}} {...mapProps} />
                 </div>
             </center>
         </div>
