@@ -127,7 +127,7 @@ function NewSearchPage() {
         setCoordinates(coords)
         setAddress(JSON.stringify(coords))
     }
-debugger
+
     return (<div className={'newSearchPage'}>
             <h1>ФИО: {firstName} {lastName} </h1>
             <div className={'content'}>

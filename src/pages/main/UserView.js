@@ -7,10 +7,13 @@ import {Card, CardActions, CardContent, CardMedia, Typography} from "@mui/materi
 import CheckIcon from '@mui/icons-material/Check';
 import { green } from '@mui/material/colors';
 import Button from "../../components/button/button";
+import {useHistory} from "react-router-dom";
 
 export default function UserView () {
     const dispatch = useDispatch()
     const [searches, setSearches] = useState([])
+    const history = useHistory();
+
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches?status=active&relations=participants`).then(function (response) {
             setSearches(response.data)
@@ -21,6 +24,26 @@ export default function UserView () {
             }))
         })
     }, [])
+
+    function goToSearch (isPart, id) {
+        if (!isPart) {
+            axios.post(`${serverURL}/api/v1/searches/${id}/participants`).then(()=> {
+                dispatch(showNotification({
+                    message: 'Вы присоеденились к поиску',
+                    severity: 'success'
+                }))
+                history.push(`/searches/${id}/coordinates`)
+            }, () => {
+                dispatch(showNotification({
+                    message: 'Не получилось присоединиться к поиску. Попробуйте позже.',
+                    severity: 'error'
+                }))
+            })
+        } else {
+            history.push(`/searches/${id}/coordinates`)
+        }
+    }
+
     const cards = searches.map((search, i) => {
         const isPart = !!search.participants.length;
         return <Card style={{width: '300px'}} key={i}>
@@ -39,7 +62,7 @@ export default function UserView () {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button value={isPart? "Перейти на странице" : "Принять участие"}></Button>
+                <Button value={isPart? "Перейти на страницу" : "Принять участие"} onClick={()=>goToSearch(isPart, search.id)}></Button>
             </CardActions>
         </Card>
     })

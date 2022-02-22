@@ -49,7 +49,7 @@ export default function Map (props) {
             })
             setMarkers(_markers)
         }
-    }, [props.markers])
+    }, [props.markers, maps])
 
     useEffect(()=> {
         if (map && props.pathes) {
@@ -83,7 +83,7 @@ export default function Map (props) {
                 path.path.setMap(null)
             })
         }
-    }, [props.pathes])
+    }, [props.pathes, maps])
 
     useEffect(()=> {
         if (map && props.square) {
@@ -106,7 +106,7 @@ export default function Map (props) {
                 polygon.setMap(null)
             }
         }
-    },[props.square])
+    },[props.square, maps])
 
     function handleApiLoaded(_map, _maps) {
         setMap(_map);

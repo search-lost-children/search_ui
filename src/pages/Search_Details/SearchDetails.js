@@ -38,7 +38,6 @@ function SearchDetails() {
 
     function dataStoring(data){
         let grouped = []
-        debugger
         for(let i = 0; i < data.length; i++){
             let findResult = grouped.find((el) => el.userId === data[i].userId)
             if( findResult !== undefined){
@@ -126,7 +125,7 @@ function SearchDetails() {
 
                 }
             })
-            debugger
+
             mapProps.pathes.push( {
                 path: el.coordinates,
                 geodesic: true,

@@ -8,12 +8,16 @@ import {showNotification} from "../features/notificationSlice";
 import {useDispatch} from "react-redux";
 import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import moment from "moment";
+import ModalWindow from "../components/ModalWindow/ModalWindow";
+import MapIcon from "@mui/icons-material/Map";
+import Button from "../components/button/button";
 
 function Coordinates() {
     let match = useRouteMatch();
     const dispatch = useDispatch();
     const id = match.params.id
-    const [lostName, setLostName] = useState({})
+    const [lostInfo, setLostInfo] = useState({})
     const [tasksList, setTasksList] = useState([])
     const [myCoordinates,setMyCoordinates] = useState([])
     const [lastMyCoordinate, setLastMyCoordinate] = useState(undefined)
@@ -32,7 +36,6 @@ function Coordinates() {
                         severity: 'error'
                     }))
                 });
-                console.log(myCoordinates);
                 setLastMyCoordinate( {
                     lng: longitude,
                     lat: latitude,
@@ -66,7 +69,7 @@ function Coordinates() {
     useEffect(() => {
         axios.get(`${serverURL}/api/v1/searches/${id}/`)
             .then(function (response) {
-                setLostName(response.data)
+                setLostInfo(response.data)
             })
             .catch(function (error) {
                 dispatch(showNotification({
@@ -141,14 +144,59 @@ function Coordinates() {
     })
 
     if (myCoordinates.length) {
-        debugger
         mapProps.markers.push(myCoordinates[myCoordinates.length - 1])
+    }
+
+    function Actions ({close}) {
+        return (<div>
+            <Button onClick={() => {
+                close()
+            }} value={'Закрыть'}></Button>
+        </div>)
     }
 
     return (
         <div className={'tableCells'}>
-            <h1> Имя, фамилия пропавшего: {lostName.firstName + " " + lostName.lastName} </h1>
+            <h1> Имя, фамилия пропавшего: {lostInfo.firstName + " " + lostInfo.lastName} </h1>
             <div className={'elements'}>
+                <Accordion sx={{ width: '100%', flexShrink: 0 }}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel2a-header"
+                    >
+                        <Typography>Информация о пропавшем</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <div>
+                            <img className={'img'} src={lostInfo.photo} />
+                        </div>
+                        <div>
+                            <p>
+                                Дата пропажи: {moment(lostInfo.date).format('DD.MM.YYY hh:mm')}
+                            </p>
+                            Вводная информация: {lostInfo.info}
+                        </div>
+                        <div>
+                            Точка сбора:
+                            <div>
+                                <ModalWindow
+                                    trigger={<div style={{cursor:"pointer"}}>Открыть карту <MapIcon ></MapIcon> </div>}
+                                    title={'Точка сбора'}
+                                    actions={Actions}
+                                >
+                                    <div style={{height: '50vh', width:'50vw'}}>
+                                        <Map markers={[{lat: lostInfo.coordLat, lng: lostInfo.coordLong}]} dim={{height: '50vh', width:'50vw'}}/>
+                                    </div>
+
+                                </ModalWindow>
+                            </div>
+                            <div>
+                                <a href={`http://maps.google.com/?q=@${lostInfo.coordLat},${lostInfo.coordLong}`}>Открыть навигатор</a>
+                            </div>
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
                 <Accordion sx={{ width: '100%', flexShrink: 0 }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
