@@ -19,7 +19,7 @@ function SquadsSearch() {
 
     const getRows = (() => {
         console.log(rows);
-        return rowsg
+        return rows
     })()
 
     function deleteEl(el) {
@@ -61,24 +61,14 @@ function SquadsSearch() {
         }]
 
     useEffect(() => {
-        axios.get('/api/v1/searches/:id/participants').then(function (response) {
-            setDataPart (response.data)
+        axios.get(`${serverURL}/api/v1/searches/${id}/participants`).then(function (response) {
+            setDataPart (response.data.map(el => ({
+                id: el.id,
+                firstName: el.user.firstName,
+                lastName: el.user.lastName
+            })))
+
         }).catch(function (error) {
-            //remove this
-            setDataPart([{
-                id:1,
-                firstName: 'asd',
-                lastName: 'qwdscx'
-            }, {
-                id:2,
-                firstName: 'asdqwer',
-                lastName: 'qwdscx'
-            },
-            {
-                id:3,
-                firstName: 'rtyughfn',
-                lastName: 'qwdscx'
-            }])
 
         })
     }, [])
@@ -125,7 +115,10 @@ function SquadsSearch() {
             </div>
             <div className="Button2">
                 <Button value={'Сохранить'} onClick={() => {
-                    axios.post(`http://localhost:3000/api/v1/searches/${id}/squads`,rows)
+                    axios.post(`http://localhost:3000/api/v1/searches/${id}/squads`, {
+                        coordinatorId: selectVal2,
+                        participants: rows.map(row => row.id)
+                    })
                 }}></Button>
             </div>
         </div>
