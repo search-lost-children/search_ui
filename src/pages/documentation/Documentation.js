@@ -127,25 +127,7 @@ function DocumentationPage() {
             }}></Button>
         </div>
 
-        <div>
-            <h3>Radio</h3>
-            <pre>
-                <code>
-                    {'<Radio name={\'RadioButton\'} value={\'val1\'} checked={false} label={\'Radio Button\'} onClick={()=>{}}></Radio>'}
-                    <div>name='имя радио-баттона'</div>
-                    <div>value= значение радио</div>
-                    <div>checked=false-если радио-баттон выбран</div>
-                    <div>label='лейбл для радио-баттона'</div>
-                    <div>onChange='Что будет делать радио-баттон при нажатии'</div>
-                </code>
-            </pre>
-            <Radio value={'val1'} onChange={(val) => {
-                setRadioVal(val)
-            }} label={'Radio Button1'} name={'RadioButton'} checked={radioVal === 'val1'}></Radio>
-            <Radio value={'val2'} onChange={(val) => {
-                setRadioVal(val)
-            }} label={'Radio Button2'} name={'RadioButton'} checked={radioVal === 'val2'}></Radio>
-        </div>
+
         <div>
             <h3>TextArea</h3>
             <pre>
@@ -231,7 +213,25 @@ function DocumentationPage() {
                 </div>
             </ModalWindow>
         </div>
-
+        <div>
+            <h3>Radio</h3>
+            <pre>
+                <code>
+                    {'<Radio name={\'RadioButton\'} value={\'val1\'} checked={false} label={\'Radio Button\'} onClick={()=>{}}></Radio>'}
+                    <div>name='имя радио-баттона'</div>
+                    <div>value= значение радио</div>
+                    <div>checked=false-если радио-баттон выбран</div>
+                    <div>label='лейбл для радио-баттона'</div>
+                    <div>onChange='Что будет делать радио-баттон при нажатии'</div>
+                </code>
+            </pre>
+            <Radio value={'val1'} onChange={(val) => {
+                setRadioVal(val)
+            }} label={'Radio Button1'} name={'RadioButton'} checked={radioVal === 'val1'}></Radio>
+            <Radio value={'val2'} onChange={(val) => {
+                setRadioVal(val)
+            }} label={'Radio Button2'} name={'RadioButton'} checked={radioVal === 'val2'}></Radio>
+        </div>
         <div>
             <h3>Table</h3>
             <pre>

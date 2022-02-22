@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Redirect} from "react-router-dom";
+import {Route, Redirect, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Loading from "./components/loading/Loading";
 import axios from "axios";
@@ -7,6 +7,7 @@ import {serverURL} from "./config";
 import {login} from "./features/userSlice";
 
 const GuardedRoute = ({component: Component, ...rest}) => {
+    const history = useHistory();
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
@@ -18,6 +19,8 @@ const GuardedRoute = ({component: Component, ...rest}) => {
                         dispatch(login(res.data))
                     }
                     setIsLoading(false)
+                }, () => {
+                    history.push('/login_page')
                 }
             )
         } else {

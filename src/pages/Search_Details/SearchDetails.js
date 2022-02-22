@@ -8,29 +8,65 @@ import {serverURL} from "../../config";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import Map from "../../components/map/Map";
 import Select from "../../components/select/select";
+import {getColor} from "../../services/color.service";
 
 function SearchDetails() {
     const history = useHistory();
     let match = useRouteMatch();
     const id = match.params.id;
-    const [peopleCoordinates, setPeopleCoordinated] = useState();
+    const [peopleCoordinates, setPeopleCoordinated] = useState([]);
     const [status, setStatus] = useState();
     const [showPeopleCoordinates, setShowShowPeopleCoordinatesCoordinates] = useState(false);
     const [showZones, setShowZonesCheck] = useState(false);
     const [searchZones, setSearchZones] = useState([]);
     const [markings, setMarkings] = useState(false);
 
-    useEffect(() => {
-        let timerId = setInterval(function () {
-            axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
-                .then(function (response) {
-                    setPeopleCoordinated(response.data)
+    function createCoordinateStorageObject({userId, firstName, lastName, lat, lng, time}) {
+        return {
+            userId: userId,
+            firstName: firstName,
+            lastName: lastName,
+            coordinates: [
+                {
+                    lng: lng,
+                    lat: lat,
+                    time: time
+                }]
+        }
+    }
+
+    function dataStoring(data){
+        let grouped = []
+        debugger
+        for(let i = 0; i < data.length; i++){
+            let findResult = grouped.find((el) => el.userId === data[i].userId)
+            if( findResult !== undefined){
+                findResult.coordinates.push({
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    time: data[i].time
                 })
-        }, 60000)
-        return (function () {
+            }else{
+                grouped.push(createCoordinateStorageObject(data[i]))
+            }
+        }
+        return grouped
+    }
+
+    async function requestCoordinates() {
+        axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
+            .then(function (response) {
+                setPeopleCoordinated(dataStoring(response.data.sort((a,b) => new Date(a.time)-new Date(b.time))))
+            })
+    }
+
+    useEffect(async () => {
+        let timerId = setInterval(requestCoordinates, 60000)
+        await requestCoordinates()
+        return function () {
             clearInterval(timerId)
-        })
-    },[id]);
+        }
+    }, [id]);
 
     useEffect(() => {
         if(showZones) {
@@ -59,7 +95,8 @@ function SearchDetails() {
 
     const mapProps = {
         pathes: [],
-        square: []
+        square: [],
+        markers: []
     }
 
     if(showZones) {
@@ -73,7 +110,30 @@ function SearchDetails() {
     }
 
     if(showPeopleCoordinates) {
+        peopleCoordinates.forEach((el) => {
+            const lastCoordinate = el.coordinates[el.coordinates.length - 1 ]
+            mapProps.markers.push({
+                lat: lastCoordinate.lat,
+                lng: lastCoordinate.lng,
+                infoWindow: {
+                    content:
+`<div> 
+    <div> Имя ${el.firstName} </div>
+    <div>Фамилия ${el.lastName} </div>
+    <div>Номер телефона ${el.phoneNumber}</div>  
+</div>`
 
+                }
+            })
+            debugger
+            mapProps.pathes.push( {
+                path: el.coordinates,
+                geodesic: true,
+                strokeColor: getColor(el.userId),
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            })
+        })
     }
 
 
