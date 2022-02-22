@@ -7,17 +7,20 @@ import axios from "axios";
 import {serverURL} from "../../config";
 import ModalWindow from "../../components/ModalWindow/ModalWindow";
 import Map from "../../components/map/Map";
+import Select from "../../components/select/select";
 
 function SearchDetails() {
     const history = useHistory();
     let match = useRouteMatch();
     const id = match.params.id;
-    const [data, setData] = useState();
-    const [people, setPeople] = useState(false);
-    const [zones, setZones] = useState(false);
+    const [peopleCoordinates, setPeopleCoordinated] = useState();
+    const [status, setStatus] = useState();
+    const [showPeopleCoordinates, setShowShowPeopleCoordinatesCoordinates] = useState(false);
+    const [showZones, setShowZonesCheck] = useState(false);
+    const [searchZones, setSearchZones] = useState([]);
     const [markings, setMarkings] = useState(false);
 
-    function createCoordinateStorageObj(id, firstName, lastName, lat, lng, time) {
+    function createCoordinateStorageObject({id, firstName, lastName, lat, lng, time}) {
         return {
             userid: id,
             firstName: firstName,
@@ -32,90 +35,48 @@ function SearchDetails() {
     }
 
     function dataStoring(data){
-        let coordinatesStorage = []
-        let tmp
-        for(let i = 0; i < coordinatesStorage.length; i++){
-            if (i === 0) {
-                coordinatesStorage.push(createCoordinateStorageObj(data[1].userId, data[1].firstName, data[1].lastName, data[1].lat, data[1].lng, data[1].time))
-                continue
+        let sorted = []
+        for(let i = 0; i < data.length; i++){
+            let findResult = sorted.find((el) => el.userId === data[i].userId)
+            if( findResult !== undefined){
+                findResult.coordinates.push({
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    time: data[i].time
+                })
+            }else{
+                sorted.push(createCoordinateStorageObject(data[i]))
             }
-            tmp = data.find((el) => el.userId === coordinatesStorage[i].userId)
-            if(i === coordinatesStorage.length - 1 && tmp === undefined){
-                coordinatesStorage.push(createCoordinateStorageObj(data[1].userId, data[1].firstName, data[1].lastName, data[1].lat, data[1].lng, data[1].time))
-            }
-            }
-
         }
+        return sorted
     }
 
     useEffect(() => {
         let timerId = setInterval(function () {
             axios.get(`${serverURL}/api/v1/searches/${id}/coordinates/`)
                 .then(function (response) {
-                    [
-                        {
-                            "userId": 1,
-                            "firstName": "dgfdf",
-                            "lastName": "dfdgf",
-                            "lng": "35.0627573",
-                            "lat": "48.4613372",
-                            "time": "2022-02-10T18:35:46.571Z"
-                        },
-                        {
-                            "userId": 1,
-                            "firstName": "dgfdf",
-                            "lastName": "dfdgf",
-                            "lng": "35.0627573",
-                            "lat": "48.4613372",
-                            "time": "2022-02-10T18:35:48.642Z"
-                        },
-                        {
-                            "userId": 3,
-                            "firstName": "123",
-                            "lastName": "123",
-                            "lng": "35.0627573",
-                            "lat": "48.4613372",
-                            "time": "2022-02-17T18:12:37.501Z"
-                        }
-                    ]
-
-                    [
-                        {
-                            userid: 1,
-                            firstName: '',
-                            lastName: '',
-                            coordinates: [
-                                {
-                                    "lng": "35.0627573",
-                                    "lat": "48.4613372",
-                                    "time": "2022-02-10T18:35:46.571Z"
-                                },
-                                {
-                                    "lng": "35.0627573",
-                                    "lat": "48.4613372",
-                                    "time": "2022-02-10T18:35:46.571Z"
-                                }
-                            ]
-                        }
-                    {
-                        userId:2,
-                            coordinates: [
-
-                    ]
-                    }
-                        ]
-                    setData(response.data)
+                    setPeopleCoordinated(dataStoring(response.data))
                 })
         }, 60000)
         return (function () {
             clearInterval(timerId)
         })
-    });
+    },[id]);
+
+    useEffect(() => {
+        if(showZones) {
+            axios.get(`${serverURL}/api/v1/searches/${id}/tasks`).then(({data}) => {
+                setSearchZones(data)
+            })
+        }
+
+    }, [id, showZones])
 
     function Actions({close}) {
         return (<div className={'space'}>
             <Button value={'ДА'} color="secondary" onClick={() => {
-                axios.delete(`${serverURL}/api/v1/searches/${id}`).then(() => {
+                axios.put(`${serverURL}/api/v1/searches/${id}`, {"status": status}
+                ).then(() => {
                     close();
                     history.push('/searches')
                 })
@@ -127,11 +88,31 @@ function SearchDetails() {
         </div>)
     }
 
+    const mapProps = {
+        pathes: [],
+        square: []
+    }
+
+    if(showZones) {
+        searchZones.forEach((task) => {
+            if (task.locationType === 'square') {
+                mapProps.square.push(JSON.parse(task.location))
+            } else {
+                mapProps.pathes.push(JSON.parse(task.location))
+            }
+        })
+    }
+
+    if(showPeopleCoordinates) {
+
+    }
+
+
     return (<div className={'searchDetails'}>
             <h1>Поиск ФИО</h1>
             <div className={'pageDetails'}>
                 <div className={'map'}>
-                    <Map dim={{height:'100%', width:'100%'}}/>
+                    <Map dim={{height:'100%', width:'100%'}} {...mapProps} />
                 </div>
                 <div className={'info'}>
                     <div className={'buttons'}>
@@ -150,11 +131,11 @@ function SearchDetails() {
                     </div>
                     <div className={'bottomBox'}>
                         <div className={'checkboxes'}>
-                            <CheckBox name={'People'} checked={people} label={'Люди'} onChange={(val) => {
-                                setPeople(val)
+                            <CheckBox name={'People'} checked={showPeopleCoordinates} label={'Люди'} onChange={(val) => {
+                                setShowShowPeopleCoordinatesCoordinates(val)
                             }}></CheckBox>
-                            <CheckBox name={'Zones'} checked={zones} label={'Зоны поиска'} onChange={(val) => {
-                                setZones(val)
+                            <CheckBox name={'Zones'} checked={showZones} label={'Зоны поиска'} onChange={(val) => {
+                                setShowZonesCheck(val)
                             }}></CheckBox>
                             <CheckBox name={'Markings'} checked={markings} label={'Пометки'} onChange={(val) => {
                                 setMarkings(val)
@@ -168,6 +149,14 @@ function SearchDetails() {
                             >
                                 <div>
                                     <h2 align="center">Уверенны, что хотите завершить поиск?</h2>
+                                    <p>Выберите статус поиска:</p>
+                                    <Select shrink label={"Статус поиска"}
+                                            value={status}
+                                            options={[{label: 'Активен', value: 'active'},
+                                                {label: 'Найден, жив', value: 'finished Success'},
+                                                {label: 'Найден, погиб', value: 'finished Died'}]}
+                                            onChange={(val)=>{setStatus(val)}}
+                                            ></Select>
                                 </div>
                             </ModalWindow>
                         </div>

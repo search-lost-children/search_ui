@@ -6,6 +6,9 @@ import axios from "axios";
 import { login, logout } from '../../features/userSlice'
 import { showNotification } from '../../features/notificationSlice'
 import { useDispatch } from "react-redux";
+import {serverURL} from "../../config";
+
+
 
 function Login_page (){
     const [Login, setLogin] = useState('');
@@ -19,7 +22,7 @@ function Login_page (){
                 login: Login, 
                 password: Password
             }
-        axios.post('http://localhost:3000/api/v1/auth', user).then(
+        axios.post(`${serverURL}/api/v1/auth`, user).then(
             function (res) {
                 if(res.data){
                     sessionStorage.setItem('json', res.data.token);

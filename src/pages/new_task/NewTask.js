@@ -6,6 +6,7 @@ import Select from "../../components/select/select";
 import Button from "../../components/button/button";
 import axios from "axios";
 import Map from "../../components/map/Map";
+import {serverURL} from "../../config";
 
 function NewTask() {
     const [groupOrIndividual, setGroupOrIndividual ] = useState('group');
@@ -20,13 +21,13 @@ function NewTask() {
     const id = match.params.id
 
     useEffect(() => {
-        axios.get('/api/v1/searches/:id/coordinators/participants').then(function (response) {
+        axios.get(`${serverURL}/api/v1/searches/${id}/participants?`).then(function (response) {
             setDataPart (response.data)
         }).catch(function (error) {
             console.log('error')
         })
 
-        axios.get('/api/v1/searches/:id/coordinators/squads').then(function (response) {
+        axios.get(`${serverURL}/api/v1/searches/${id}/squads`).then(function (response) {
             setDataSq(response.data)
         }).catch(function (error) {
             console.log('error')
@@ -38,15 +39,15 @@ function NewTask() {
     if (groupOrIndividual==='group'){
         arr = DataSq
     }else {
-        arr = DataPart
+        arr = DataPart.map (function(elem){
+            return {
+                label: elem.user.firstName + ' ' + elem.user.lastName,
+                value: elem.userId
+            }
+        })
     }
 
-    let options = arr.map (function(elem){
-        return {
-            label: elem.firstName + ' ' + elem.lastName,
-            value: elem.id
-        }
-    })
+    let options = arr;
 
     const mapSettings = {
         onClick: (coords) => {

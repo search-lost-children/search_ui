@@ -5,6 +5,8 @@ import {useHistory} from "react-router-dom";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {showNotification} from "../../features/notificationSlice";
+import {serverURL} from "../../config";
+
 
 function Registration_page() {
     const dispatch = useDispatch()
@@ -22,7 +24,7 @@ function Registration_page() {
     }
 
     async function verif_good(Password, PasswordVer) {
-        axios.post('http://localhost:3000/api/v1/registration', {
+        axios.post(`${serverURL}/api/v1/registration`, {
             login: newLogin,
             password: newPassword,
             firstName: newFirstName,
