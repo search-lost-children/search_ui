@@ -21,11 +21,12 @@ function SearchDetails() {
     const [searchZones, setSearchZones] = useState([]);
     const [markings, setMarkings] = useState(false);
 
-    function createCoordinateStorageObject({userId, firstName, lastName, lat, lng, time}) {
+    function createCoordinateStorageObject({userId, firstName, lastName, lat, lng, time, phoneNumber}) {
         return {
-            userId: userId,
-            firstName: firstName,
-            lastName: lastName,
+            userId,
+            firstName,
+            lastName,
+            phoneNumber,
             coordinates: [
                 {
                     lng: lng,
