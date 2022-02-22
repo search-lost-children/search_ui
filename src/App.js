@@ -23,9 +23,9 @@ import TasksList from './pages/Tasks_List_Page/TasksList';
 import Notification from "./components/notification/notification";
 import Participants from "./pages/Participants/Participants";
 import MainPage from "./pages/main/MainPage";
+import Coordinates from "./pages/Coordinates";
 
 function App() {
-
     jwt_interceptor();
   return (
     <div className="App">
@@ -43,6 +43,7 @@ function App() {
                 <GuardedRoute exact path={'/searches/:id/details'} component={SearchDetails}/>
                 <GuardedRoute exact path={'/login_page/organizations'} component={Login_organization}/>
                 <GuardedRoute exact path={'/searches/:id/tasks_list'} component={TasksList}/>
+                <GuardedRoute exact path={'/searches/:id/coordinates'} component={Coordinates}/>
                 <GuardedRoute exact path={'/'} component={MainPage}/>
                 <Route exact path={'/login_page'} component={Login_page}/>
                 <Route exact path={'/registration_page'} component={Registration_page}/>

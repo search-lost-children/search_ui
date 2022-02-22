@@ -58,10 +58,10 @@ function SearchDetails() {
                     setPeopleCoordinated(dataStoring(response.data))
                 })
         }, 60000)
-        return (function () {
+        return function () {
             clearInterval(timerId)
-        })
-    },[id]);
+        }
+    }, [id]);
 
     useEffect(() => {
         if(showZones) {
