@@ -1,5 +1,5 @@
 import React, {useState, useEffect}from 'react';
-import { Link, useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import './new_task.css'
 import Radio from "../../components/radio/radio";
 import Select from "../../components/select/select";
@@ -7,6 +7,7 @@ import Button from "../../components/button/button";
 import axios from "axios";
 import Map from "../../components/map/Map";
 import {serverURL} from "../../config";
+import {useShowError, useShowSuccess} from "../../services/notification.service";
 
 function NewTask() {
     const [groupOrIndividual, setGroupOrIndividual ] = useState('group');
@@ -16,38 +17,45 @@ function NewTask() {
     const [DataSq, setDataSq]= useState([]);
     const [waypoints, setWaypoints] = useState([])
 
+    const showError = useShowError()
+    const showSuccess = useShowSuccess()
+
     const history = useHistory();
     let match = useRouteMatch()
     const id = match.params.id
 
     useEffect(() => {
-        axios.get(`${serverURL}/api/v1/searches/${id}/participants?`).then(function (response) {
+        axios.get(`${serverURL}/api/v1/searches/${id}/participants`).then(function (response) {
             setDataPart (response.data)
         }).catch(function (error) {
-            console.log('error')
+            showError('При загрузке участников произошла ошибка')
         })
 
         axios.get(`${serverURL}/api/v1/searches/${id}/squads`).then(function (response) {
             setDataSq(response.data)
         }).catch(function (error) {
-            console.log('error')
+            showError('При загрузке отрядов произошла ошибка')
         })
-    }, [])
+    }, [id])
 
-    let arr;
+    let options;
 
     if (groupOrIndividual==='group'){
-        arr = DataSq
+        options = DataSq.map((squad) => {
+            return {
+                label: `Коорд: ${squad.coordinator.user.firstName}, уч: ${squad.participants.length}`,
+                value: squad.id
+            }
+        })
     }else {
-        arr = DataPart.map (function(elem){
+        options = DataPart.map (function(elem){
             return {
                 label: elem.user.firstName + ' ' + elem.user.lastName,
-                value: elem.userId
+                value: elem.id
             }
         })
     }
 
-    let options = arr;
 
     const mapSettings = {
         onClick: (coords) => {
@@ -71,39 +79,59 @@ function NewTask() {
         <div className="New Task">
             <h2>Новое задание</h2>
             <div className="Radio">
-                    <Radio name={'groupOrIndividual'} checked={groupOrIndividual === 'group'} label={'Экипаж'} value={'group'} onChange={(val)=>{setGroupOrIndividual(val)}}></Radio>
-                    <Radio name={'groupOrIndividual'} checked={groupOrIndividual === 'individual'} label={'Индивидуально'} value={'individual'} onChange={(val)=>{setGroupOrIndividual(val)}}></Radio>
+                    <Radio
+                        name={'groupOrIndividual'}
+                        checked={groupOrIndividual === 'group'}
+                        label={'Отряд'}
+                        value={'group'}
+                        onChange={(val)=>{setGroupOrIndividual(val); setSelectVal('')}} />
+                    <Radio
+                        name={'groupOrIndividual'}
+                        checked={groupOrIndividual === 'individual'}
+                        label={'Индивидуально'}
+                        value={'individual'}
+                        onChange={(val)=>{setGroupOrIndividual(val); setSelectVal('')}} />
             </div>
             <div className="Select">
                     <Select
-                            label={'Select '}
-                            value={selectVal}
-                            options={options}
-                            onChange={(val)=>{setSelectVal(val)}}>
-                    </Select>
+                        label={'Select '}
+                        value={selectVal}
+                        options={options}
+                        onChange={(val)=>{setSelectVal(val)}} />
+
             </div>
             <div className="Radio" >
-                    <Radio name={'RadioButton2'} checked={WayOrSquare === 'square'} label={'Область'} value={'square'} onChange={(val)=>{setWayOrSquare(val); setWaypoints([])}}></Radio>
-                    <Radio name={'RadioButton2'} checked={WayOrSquare === 'way'} label={'Путь'} value={'way'} onChange={(val)=>{setWayOrSquare(val); setWaypoints([])}}></Radio>
+                    <Radio
+                        name={'RadioButton2'}
+                        checked={WayOrSquare === 'square'}
+                        label={'Область'}
+                        value={'square'}
+                        onChange={(val)=>{setWayOrSquare(val); setWaypoints([])}} />
+                    <Radio
+                        name={'RadioButton2'}
+                        checked={WayOrSquare === 'way'}
+                        label={'Путь'}
+                        value={'way'}
+                        onChange={(val)=>{setWayOrSquare(val); setWaypoints([])}} />
             </div>
             <div className="Map">
                     <Map {...mapWaypoints} map={mapSettings} dim={{width: '100%', height:'100%'}} />
             </div>
             <div className="Button">
                     <Button value={'Применить'} onClick={()=>{
-                        console.log(selectVal);
-                        axios.post(`http://localhost:3000/api/v1/searches/${id}/tasks`,{
+                        axios.post(`${serverURL}/api/v1/searches/${id}/tasks`,{
                             taskType: groupOrIndividual,
                             locationType: WayOrSquare,
                             location: waypoints,
-                            executorId: '1'
+                            executorId: selectVal
                         })
                             .then(function (response) {
-                                history.push(`/searches/${id}`)
-                            }).catch(function (error) {
-                                console.log('error')
+                                showSuccess('Задание сохранено')
+                                history.push(`/searches/${id}/details`)
+                            }, function (error) {
+                                showError('При сохранении задания произошла ошибка')
                             })
-                    }}></Button>
+                    }} />
             </div>
         </div>
     )
