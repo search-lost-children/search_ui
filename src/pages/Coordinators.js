@@ -14,8 +14,7 @@ import Username from "../components/tableCells/Username";
 function Coordinators() {
     let match = useRouteMatch()
     const [selectVal, setSelectVal] = useState('')
-    const [lostName, setLostName] = useState({})
-    const [tableRows, setTableRows] = useState([])
+    const [lostInfo, setLostInfo] = useState({})
     const [participants, setParticipants] = useState([])
     const [coordinators, setCoordinators] = useState([])
 
@@ -24,7 +23,7 @@ function Coordinators() {
     function getCoordinators(){
         axios.get(`${serverURL}/api/v1/searches/${id}/coordinators`)
             .then(function (response) {
-                 setCoordinators(response.data)
+                setCoordinators(response.data)
             })
     }
 
@@ -47,8 +46,8 @@ function Coordinators() {
     const columns = [
         {
             id: 1,
-            field: 'username',
-            label: 'Username',
+            field: 'user',
+            label: 'ФИО',
             cellRenderer: Username,
         },
         {
@@ -64,47 +63,53 @@ function Coordinators() {
             .then(function (response) {
                 setParticipants(response.data)
             })
+        axios.get(`${serverURL}/api/v1/searches/${id}/`).then(({data}) => {
+            setLostInfo(data)
+        })
         getCoordinators()
     }, [match.params.id]);
 
-    function filtering() {
+    function filteringAndMap() {
         let sortedListOfParticipants = []
         for (let i = 0; i < participants.length; i++) {
-            if (!coordinators.find((el) => el.id === participants[i].id)) {
+            if (!coordinators.find((el) => el.userId === participants[i].userId)) {
                 sortedListOfParticipants.push(participants[i])
             }
         }
         return sortedListOfParticipants.map((el) => ({
             value: el.id,
-            label: el.lastName + " " + el.firstName
+            label: el.user.lastName + " " + el.user.firstName
         }))
     }
 
-    let selectOptions = filtering()
+    let selectOptions = filteringAndMap()
     return (
         <div>
-            <h1> Координаторы поиска {lostName.firstName + " " + lostName.lastName} </h1>
+            <h1> Координаторы поиска {lostInfo.firstName + " " + lostInfo.lastName} </h1>
             <div>
-                <Select
-                    label={'Select Form'}
-                    value={selectVal}
-                    options={selectOptions}
-                    onChange={(val)=>{setSelectVal(val)}}/>
-                <Button
-                    onClick = {() => {
-                        axios.post(`${serverURL}/api/v1/searches/${id}/coordinators`, {
-                            id: selectVal
-                        })
-                            .then(function (response) {
-                                console.log(response);
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <Select
+                        label={'Select Form'}
+                        value={selectVal}
+                        options={selectOptions}
+                        onChange={(val)=>{setSelectVal(val)}}/>
+                    <Button
+                        onClick = {() => {
+                            axios.post(`${serverURL}/api/v1/searches/${id}/coordinators`, {
+                                participantId: selectVal
                             })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                    }}
-                    value={"Add"}>
-                </Button>
-                <GridTable columns={columns} rows={tableRows}></GridTable>
+                                .then(function (response) {
+                                    setSelectVal('')
+                                    getCoordinators()
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        }}
+                        value={"Добавить"}>
+                    </Button>
+                </div>
+                <GridTable columns={columns} rows={coordinators}></GridTable>
             </div>
         </div>
     );

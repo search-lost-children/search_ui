@@ -37,13 +37,13 @@ function Registration_page() {
                 severity: 'success'
             }))
             history.push('/login_page')
-        }, ({response}) => {
-            if (response.data.code === 23505) {
+        }, (response) => {
+            if (response.data && response.data.code && response.data.code === 23505) {
                 dispatch(showNotification({
                     message: 'Данный логин уже занят',
                     severity: 'error'
                 }))
-            }else if(response.data.details){
+            }else if(response.data && response.data.details){
                 dispatch(showNotification({
                     message: `Не верные данные в поле ${response.data.details[0].context.key}`,
                     severity: 'error'

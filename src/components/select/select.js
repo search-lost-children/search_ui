@@ -18,7 +18,7 @@ function uiSelect(props) {
             <FormControl>
                 <InputLabel>{props.label}</InputLabel>
                 <Select
-                    sx={{ minWidth: 120 }}
+                    sx={{ minWidth: 150 }}
                     disabled={props.disabled}
                     value={props.value}
                     onChange={onChange}>

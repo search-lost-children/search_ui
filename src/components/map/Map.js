@@ -31,6 +31,7 @@ export default function Map (props) {
         })
         if (map && props.markers && props.markers.length) {
             const _markers = props.markers.map((markerInfo, i)=> {
+                debugger
                 const marker = new maps.Marker({map, position: {
                         lat: parseFloat(markerInfo.lat),
                         lng: parseFloat(markerInfo.lng)

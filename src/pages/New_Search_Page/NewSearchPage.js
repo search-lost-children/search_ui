@@ -153,7 +153,7 @@ function NewSearchPage() {
                         setAddress(addressToSave)
                     }}></Input>
                     <div className={'map_small'}>
-                        <MapInModal onApply={onMapApply}></MapInModal>
+                        <MapInModal marker={coordinates} onApply={onMapApply}></MapInModal>
                     </div>
                 </div>
                 <div className={"info"}>

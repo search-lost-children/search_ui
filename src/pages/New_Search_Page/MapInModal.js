@@ -32,7 +32,7 @@ function MapInModal(props) {
         actions={Actions}
     >
         <div style={{height: '50vh', width:'50vw'}}>
-            <Map markers={[coords]} dim={{height: '50vh', width:'50vw'}} map={mapSettings}/>
+            <Map markers={coords ? [coords] : undefined} dim={{height: '50vh', width:'50vw'}} map={mapSettings}/>
         </div>
 
     </ModalWindow>)

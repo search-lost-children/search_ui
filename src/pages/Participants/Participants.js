@@ -20,12 +20,10 @@ export default function Participants (props) {
     const Do = ({tableManager, value, field, data, column, colIndex, rowIndex}) => {
         return (
             <div className='rgt-cell-inner' style={{display: 'flex', alignItems: 'center', overflow: 'hidden'}}>
-                            <Button value={value ? 'разблокировать': 'заблокировать'} onClick={()=>{}}></Button>
+                <Button value={!value ? 'разблокировать': 'заблокировать'} onClick={()=>{}}></Button>
             </div>
         )
     }
-
-
 
     const columns = [
         {
@@ -43,7 +41,8 @@ export default function Participants (props) {
         {
             id: 3,
             field: 'accessAllowed',
-            label: 'Доступfgf',
+            label: 'Доступ',
+            visible: false,
             cellRenderer: Do
         }
     ]
