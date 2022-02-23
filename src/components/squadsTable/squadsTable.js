@@ -1,42 +1,70 @@
 import './squadsTable.css'
-import Popup from "reactjs-popup";
-import React, {useState} from "react";
-import GridTable from "@nadavshaar/react-grid-table";
+import React from "react";
+import { DataGrid } from '@mui/x-data-grid';
+import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "../button/button";
+import {serverURL} from "../../config";
+import {useRouteMatch} from "react-router-dom";
+import axios from "axios";
+import {useShowError, useShowSuccess} from "../../services/notification.service";
 
 function SquadsTable (props) {
-    const [rows, setRows ] = useState([]);
-    const [form, setForm] = useState(true);
+    const showSuccess = useShowSuccess();
+    const showError = useShowError();
+    let match = useRouteMatch()
+    const id = match.params.id
+
     const columns = [
         {
-            id: 1,
             field: 'Name',
-            label: 'Name'
+            headerName: 'Name',
+            valueGetter: (params) => {
+                return `${params.row.user.firstName} ${params.row.user.lastName}`
+            }
         },
         {
-            id: 2,
             field: 'actionType',
-            label: 'Actions'
+            headerName: 'Actions',
+            visible: false
         }]
 
     return (
         <div className={'squadsPage'}>
-            <div className="Title" onClick={()=>setForm(!form)}>
-                <div>Координатор: {props.coordinator.firstName} </div>
-                <div>Участников: {props.table.length} </div>
-            </div>
-            <div style={{
-                display:form ? 'block' : 'none'
-            }}>
-                <div className={'table'}>
-                    <GridTable columns={columns} rows={props.table}></GridTable>
-                </div>
-                <div className="Button">
-                    <Button value={'Удалить'} onClick={() => {
-                        alert('button is clicked')
-                    }}></Button>
-                </div>
-            </div>
+            <Accordion sx={{ width: '100%', flexShrink: 0 }}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                >
+                    <div style={{width: '100%', display:'flex', justifyContent: 'space-between'}}>
+                        <div>Координатор: {props.squad.coordinator.user.firstName} {props.squad.coordinator.user.lastName}</div>
+                        <div>Участников: {props.squad.participants.length} </div>
+                    </div>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <div style={{ width: '100%' }}>
+                        <DataGrid
+                            rows={props.squad.participants}
+                            columns={columns}
+                            pageSize={5}
+                            rowsPerPageOptions={[5]}
+                            autoHeight
+                            disableSelectionOnClick
+                        />
+                    </div>
+                    <div className="Button">
+                        <Button value={'Удалить'} onClick={() => {
+                            const squadId = props.squad.id
+                            axios.delete(`${serverURL}/api/v1/searches/${id}/squads/${squadId}`).then(()=> {
+                                showSuccess('Отряд удален')
+                                props.onDelete()
+                            }, ()=> {
+                                showError('При удалении данных произошла обибка. Попробуйте позже')
+                            })
+                        }}></Button>
+                    </div>
+                </AccordionDetails>
+            </Accordion>
 
         </div>
     );
